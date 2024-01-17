@@ -3,8 +3,8 @@ import React from 'react'
 
 const EditAddress = () => {
   return (
-    <View>
-      <Text>EditAddress</Text>
+    <View className='h-screen w-screen justify-center items-center'>
+      <Text className='text-black '>EditAddress</Text>
     </View>
   )
 }

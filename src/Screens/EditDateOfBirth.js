@@ -3,9 +3,10 @@ import React from 'react'
 
 const EditDateOfBirth = () => {
   return (
-    <View>
-      <Text>EditDateOfBirth</Text>
-    </View>
+
+        <View className='h-screen w-screen justify-center items-center'>
+        <Text className='text-black '>EditDateOfBirth</Text>
+      </View>
   )
 }
 

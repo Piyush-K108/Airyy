@@ -162,8 +162,7 @@ const UserProfile = () => {
         </TouchableOpacity>
       </View>
       <View
-        
-        className="w-screen   items-center mt-3 text-black">
+        className="w-screen  items-center mt-3 text-black">
         <Text onPress={handelLogout} className="text-black">Logout</Text>
       </View>
     </View>
@@ -224,7 +223,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 0,
     margin: 30,
-    padding: 20,
+    padding: 10,
     // width:'100%' ,
     maxWidth: 850,
     backgroundColor: '#fff',
@@ -241,11 +240,13 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 15,
   },
+
   labelText: {
     fontSize: 16,
     color: '#000',
     fontWeight: 'bold',
   },
+  
   label: {
     fontSize: 14,
     color: '#000',

@@ -62,6 +62,7 @@ const EditEmail = () => {
             placeholder="Enter your new email"
             keyboardType="email-address"
             autoCapitalize="none"
+            placeholderTextColor={'black'}
           />
         ) : (
           <Text style={styles.emailText}>
@@ -168,12 +169,14 @@ const styles = StyleSheet.create({
     height: 40,
     borderWidth: 1,
     borderColor: '#ccc',
+    color:'black',
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 20,
   },
   emailText: {
     fontSize: 16,
+    color:'black',
     marginBottom: 20,
   },
 });

@@ -32,6 +32,7 @@ const EditName = () => {
           style={styles.input}
           placeholder="First Name"
           value={firstName}
+          placeholderTextColor={"#000"}
           onChangeText={setFirstName}
         />
       </View>
@@ -45,6 +46,7 @@ const EditName = () => {
         <TextInput
           style={styles.input}
           placeholder="Last Name"
+          placeholderTextColor={"#000"}
           value={lastName}
           onChangeText={setLastName}
         />
@@ -82,6 +84,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 1,
     borderColor: '#888',
+    color:'#000',
     borderRadius: 5,
     padding: 10,
   },
