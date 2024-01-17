@@ -20,7 +20,8 @@ const Navigation = () => {
   // Access the UID value from the Redux store using useSelector
 
   const loggedIn = useSelector(state => state.counter.loggedIn);
-console.log(loggedIn)
+  const phone = useSelector(state => state.counter.phone);
+console.log(loggedIn,"dsaj",phone)
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
@@ -30,8 +31,7 @@ console.log(loggedIn)
               name="BottomTabNavigation"
               component={BottomTabNavigation}
             />
-            <Stack.Screen name="UserProfile" component={UserProfile} />
-            <Stack.Screen name="Home" component={Home} />
+
 
             <Stack.Screen name="OtpScreen" component={OtpScreen} />
 

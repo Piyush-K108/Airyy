@@ -13,7 +13,7 @@ import React from 'react';
 import {useState} from 'react';
 import {DOMAIN} from '@env';
 import {useDispatch} from 'react-redux';
-import {login} from '../Redux/Counter/counterAction';
+import {login,phone} from '../Redux/Counter/counterAction';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {useSelector} from 'react-redux';
@@ -39,9 +39,10 @@ const Login = () => {
       });
       if (response.ok) {
         const data1 = await response.json();
-        const uid = data1.uid;
-        
+        console.log(number)
+        dispatch(phone(number))
         dispatch(login());
+
      
       } else {
         console.error('Failed to fetch OTP', response);

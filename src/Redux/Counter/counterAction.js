@@ -1,4 +1,4 @@
-import { LOGIN } from "./counterActionTypes";
+import { LOGIN,PHONE } from "./counterActionTypes";
 
 export const login = () => {
    return {
@@ -14,4 +14,9 @@ export const logout = () => {
   };
 };
 
-
+export const phone = (Phone)=>{
+  return{
+    type:PHONE,
+    payload:Phone
+  }
+}
