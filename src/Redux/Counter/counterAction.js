@@ -3,7 +3,7 @@ import { LOGIN } from "./counterActionTypes";
 export const login = () => {
    return {
      type: LOGIN,
-     payload: true
+     payload:true
    };
  };
 

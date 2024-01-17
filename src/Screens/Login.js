@@ -10,112 +10,104 @@ import {
 } from 'react-native';
 import BottomTabNavigator from '../Navigations/BottomTabNavigation';
 import React from 'react';
-import { useState } from 'react';
-import { DOMAIN } from "@env"
-import { useDispatch } from 'react-redux';
-import { updateUID } from '../Redux/Counter/counterAction';
+import {useState} from 'react';
+import {DOMAIN} from '@env';
+import {useDispatch} from 'react-redux';
+import {login} from '../Redux/Counter/counterAction';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useSelector } from 'react-redux';
 
-import { useNavigation } from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+
+import {useNavigation} from '@react-navigation/native';
 const Login = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [number, onChangeNumber] = React.useState('');
   const [countryCode, onChangeCountryCode] = React.useState('+91');
   const navigation = useNavigation();
-  const data = JSON.stringify({ phone: number })
+  const data = JSON.stringify({phone: number});
   const dispatch = useDispatch();
-  const uid = useSelector(((state) => state.counter.uid))
- 
-  const handleGetOtp = async () => {
+  const loggedIn = useSelector(state => state.counter.loggedIn);
 
+  const handleGetOtp = async () => {
     try {
       const response = await fetch(`https://${DOMAIN}/accounts/create_user/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: data, 
+        body: data,
       });
-      if (response.ok ) {
+      if (response.ok) {
         const data1 = await response.json();
         const uid = data1.uid;
-        dispatch(updateUID(uid));
-        navigation.navigate('OtpScreen');
-      }
-
-      else {
-        // Handle error response
         
-        console.error('Failed to fetch OTP');
+        dispatch(login());
+     
+      } else {
+        console.error('Failed to fetch OTP', response);
       }
     } catch (error) {
       // Handle fetch error
-    
+
       console.error('Error fetching OTP:', error);
     }
   };
-
-
+  React.useEffect(() => {
+    console.log(loggedIn);
+  }, [loggedIn]);
   const toggleCheckbox = () => {
     setIsChecked(!isChecked);
   };
 
-
-
-
   return (
     <>
-    <View style={styles.boxContainer}>
-      <View style={styles.box}>
-        <Image
-          source={require('../assets/BikeIMG.jpg')}
-          style={styles.image}
-        />
+      <View style={styles.boxContainer}>
+        <View style={styles.box}>
+          <Image
+            source={require('../assets/BikeIMG.jpg')}
+            style={styles.image}
+          />
 
-        <Text style={styles.text}>Welcome to AiRYY !</Text>
-        <Text style={styles.subText}>
-          We make traveling simple and smoother .
+          <Text style={styles.text}>Welcome to AiRYY !</Text>
+          <Text style={styles.subText}>
+            We make traveling simple and smoother .
+          </Text>
+        </View>
+        <Text style={styles.adventureText}>
+          Your Bike Adventure Begins Here!
         </Text>
-      </View>
-      <Text style={styles.adventureText}>Your Bike Adventure Begins Here!</Text>
-      <View style={styles.loginSignupContainer}>
-        <Text style={styles.loginSignupText}>Login or Signup</Text>
-      </View>
+        <View style={styles.loginSignupContainer}>
+          <Text style={styles.loginSignupText}>Login or Signup</Text>
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.countryCodeText}>{countryCode}</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter your mobile number"
-          onChangeText={onChangeNumber}
-          value={number}
-          keyboardType="numeric"
-          
-        />
-      </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.countryCodeText}>{countryCode}</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your mobile number"
+            onChangeText={onChangeNumber}
+            value={number}
+            keyboardType="numeric"
+          />
+        </View>
 
-      {/* code for button  */}
-      <TouchableOpacity style={styles.buttonContainer} onPress={handleGetOtp}>
-        <Text style={styles.buttonText}>GET OTP</Text>
-      </TouchableOpacity>
-
-      {/* code for check box  */}
-      <View style={styles.checkboxContainer}>
-        <TouchableOpacity
-          style={[styles.checkbox, isChecked && styles.checked]}
-          onPress={toggleCheckbox}>
-          {isChecked && <Icon name="check" color="#000" size={18} />}
+        {/* code for button  */}
+        <TouchableOpacity style={styles.buttonContainer} onPress={handleGetOtp}>
+          <Text style={styles.buttonText}>GET OTP</Text>
         </TouchableOpacity>
-        <Text style={styles.checkboxText}>
-          Get updates on calls/WhatsApp
-        </Text>
+
+        {/* code for check box  */}
+        <View style={styles.checkboxContainer}>
+          <TouchableOpacity
+            style={[styles.checkbox, isChecked && styles.checked]}
+            onPress={toggleCheckbox}>
+            {isChecked && <Icon name="check" color="#000" size={18} />}
+          </TouchableOpacity>
+          <Text style={styles.checkboxText}>Get updates on calls/WhatsApp</Text>
+        </View>
       </View>
-    </View>
- 
     </>
   );
-
 };
 
 const styles = StyleSheet.create({
@@ -131,7 +123,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 1.0, // Adjust the width as per your requirement
     height: 350,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 2.25,
     shadowRadius: 4,
     elevation: 20,
@@ -178,7 +170,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     padding: 20,
     shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.25,
     shadowRadius: 4,
     // elevation:10 ,
@@ -200,7 +192,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // Optional: Adjust the content alignment
     backgroundColor: 'white', // Set the background color to white
     shadowColor: '#000', // Box shadow color
-    shadowOffset: { width: 0, height: 2 }, // Box shadow offset
+    shadowOffset: {width: 0, height: 2}, // Box shadow offset
     shadowOpacity: 0.2, // Box shadow opacity
     shadowRadius: 2, // Box shadow radius
     elevation: 2, // Box shadow elevation for Android
@@ -210,11 +202,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginRight: 10,
+    color: 'black',
   },
   input: {
     flex: 1,
     fontSize: 16,
-    color:'black',
+    color: 'black',
     paddingVertical: 8,
   },
   loginSignupContainer: {

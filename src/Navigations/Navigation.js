@@ -20,7 +20,7 @@ const Navigation = () => {
   // Access the UID value from the Redux store using useSelector
 
   const loggedIn = useSelector(state => state.counter.loggedIn);
-
+console.log(loggedIn)
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>

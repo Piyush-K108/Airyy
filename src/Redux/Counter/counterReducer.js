@@ -1,8 +1,7 @@
-import { BIKE_TYPE, LOGIN} from "./counterActionTypes";
+import { LOGIN } from "./counterActionTypes";
 
 const initialState = {
   loggedIn: false,
-
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -10,9 +9,8 @@ const counterReducer = (state = initialState, action) => {
     case LOGIN:
       return {
         ...state,
-        loggedIn: action.payload // Update loggedIn based on the payload value
+        loggedIn: action.payload,
       };
-    
 
     default:
       return state;

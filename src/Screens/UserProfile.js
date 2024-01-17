@@ -1,34 +1,50 @@
 import React from 'react';
-import {View, Text, StyleSheet , ImageBackground , Dimensions, Touchable,Image , TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  Dimensions,
+  Touchable,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
-import { black } from 'react-native-paper/lib/typescript/src/styles/themes/v2/colors';
+import {black} from 'react-native-paper/lib/typescript/src/styles/themes/v2/colors';
 import {List} from 'react-native-paper';
+import {useDispatch} from 'react-redux';
+import {logout} from '../Redux/Counter/counterAction';
+import { useSelector } from 'react-redux';
 const UserProfile = () => {
   const navigation = useNavigation();
+  const loggedIn = useSelector(state => state.counter.loggedIn);
   const [expanded, setExpanded] = React.useState(true);
-
+  const dispatch = useDispatch();
   const handlePress = () => setExpanded(!expanded);
   const handleEditName = () => {
     navigation.navigate('EditName');
-  }
+  };
 
-   const handleEmailEdit = () => {
+  const handleEmailEdit = () => {
     navigation.navigate('EditEmail');
-   }
-   const handleGenderEdit = () => {
+  };
+  const handleGenderEdit = () => {
     navigation.navigate('EditGender');
-   }
-   const handleAddressEdit = () => {
+  };
+  const handleAddressEdit = () => {
     navigation.navigate('EditAddress');
-   }
-   const handleDobEdit = () => {
+  };
+  const handleDobEdit = () => {
     navigation.navigate('EditDateOfBirth');
-   }
-
-
-
-
+  };
+  const handelLogout = () => {
+    console.log('sjkb')
+    dispatch(logout());
+  };
+  React.useEffect(() => {
+    console.log(loggedIn);
+  }, [loggedIn]);
   return (
     <View style={styles.container}>
       <View style={styles.boxContainer}>
@@ -145,11 +161,12 @@ const UserProfile = () => {
           </View>
         </TouchableOpacity>
       </View>
-      <View className='w-screen text-black'>
-      <Text className='text-black'>Logout</Text>
+      <View
+        
+        className="w-screen   items-center mt-3 text-black">
+        <Text onPress={handelLogout} className="text-black">Logout</Text>
+      </View>
     </View>
-    </View>
-    
   );
 };
 
@@ -163,7 +180,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   boxContainer: {
-    width: Dimensions.get('window').width * 1.0, 
+    width: Dimensions.get('window').width * 1.0,
     height: 200,
     backgroundColor: '#ff553e',
     justifyContent: 'space-around',
@@ -229,8 +246,11 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: 'bold',
   },
-
-  
+  label: {
+    fontSize: 14,
+    color: '#000',
+    fontWeight: 'bold',
+  },
 });
 
 export default UserProfile;
