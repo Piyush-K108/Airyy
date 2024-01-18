@@ -1,6 +1,15 @@
 import React, {useState, useRef} from 'react';
-import {StyleSheet, View, TextInput, Text, Keyboard} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  Text,
+  Keyboard,
+  Dimensions,
+  Image ,
+} from 'react-native';
 import {WebView} from 'react-native-webview';
+import user from '../images/userProfile.png'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import mapTemplate from '../Components/mapTemplate';
 import {useSelector} from 'react-redux';
@@ -14,10 +23,10 @@ export default function Home() {
 
   const onButtonClick = () => {
     const [lng, lat] = mapCenter.split(',');
-    console.log(lng,lat)
+    console.log(lng, lat);
     // const markerCode = `
     //   var marker = L.marker([${parseFloat(lat)}, ${parseFloat(lng)}]).addTo(map);`;
-    // console.log(markerCode)  
+    // console.log(markerCode)
     // webRef.injectJavaScript(markerCode);
     webRef.injectJavaScript(
       `map.setCenter([${parseFloat(lng)}, ${parseFloat(lat)}])`,
@@ -30,8 +39,29 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <View styles={styles.header}>
-        <Text style={styles.HomeHead2}>Which Place do you want to select?</Text>
+      <View style={styles.header}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            width: '100%',
+            marginTop: 30,
+            // paddingHorizontal: 0,
+            // paddingVertical:40 ,
+          }}>
+          <View>
+            <Text style={{color: '#000', fontSize: 18}}>Find your</Text>
+            <Text style={{color: '#000', fontSize: 18}}>
+              
+              favorite motorcyle !
+            </Text>
+          </View>
+          {/* This empty view takes up remaining space on the left */}
+          <Image source={user} style={{width: 50, height: 50}} />
+        </View>
+        
+
         <View style={styles.containerForSearch}>
           <View style={styles.searchBar__unclicked}>
             <TextInput
@@ -75,32 +105,43 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#feb101',
-    height: 100,
+    justifyContent: 'center',
+    // backgroundColor: '#FFFBA8',
+    // backgroundColor: '#ff553e',
+    backgroundColor: '#ffff',
+  
+
+   
   },
   header: {
+    flex: 1,
     alignItems: 'center',
-    paddingTop: 20,
+    justifyContent: 'center',
+  
+    
+  
   },
   containerForSearch: {
-    marginTop: 15,
+    flex: 1,
     justifyContent: 'center',
-    backgroundColor: 'transparent',
+    paddingHorizontal: 20,
     alignItems: 'center',
     width: '90%',
-    marginBottom: 20,
+    // marginBottom: 10,
   },
   searchBar__unclicked: {
-    padding: 10,
+    padding: 2,
     flexDirection: 'row',
     width: '100%',
-    backgroundColor: '#d9dbda',
+    backgroundColor: '#ffff',
+    elevation: 5,
     borderRadius: 15,
     alignItems: 'center',
   },
   inputForSearch: {
     fontSize: 20,
     marginLeft: 10,
+    color: 'black',
     flex: 1,
   },
   HomeHead2: {
@@ -108,10 +149,11 @@ const styles = StyleSheet.create({
     color: '#888888',
     fontWeight: '600',
     fontFamily: 'Poppins-Light',
-    marginBottom: 10,
+    // marginBottom: 10,
+    textAlign: 'center',
   },
   mapContainer: {
-    flex: 1,
+    flex: 2,
     width: '100%',
   },
   map: {
