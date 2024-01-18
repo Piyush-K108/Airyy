@@ -23,7 +23,7 @@ const mapTemplate = `
 
       <script>
         // create the map
-        tt.setProductInfo('TomTom Maps React Native Demo', '1.0');
+        
         let map = tt.map({
           key: "${API_KEY}",
           container: 'map',
@@ -32,11 +32,11 @@ const mapTemplate = `
         });
         let zoomKeyPressCount = 0;
 
-     
         map.on('dragend', function() {
           let center = map.getCenter();
           window.ReactNativeWebView.postMessage(center.lng.toFixed(3) + ", " + center.lat.toFixed(3));
         })
+        
       </script>
     </div>
   `;

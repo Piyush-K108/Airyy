@@ -14,12 +14,11 @@ export default function Home() {
 
   const onButtonClick = () => {
     const [lng, lat] = mapCenter.split(',');
-    const markerCode = `
-      var marker = L.marker([${parseFloat(lat)}, ${parseFloat(
-      lng,
-    )}]).addTo(map);
-    `;
-    webRef.injectJavaScript(markerCode);
+    console.log(lng,lat)
+    // const markerCode = `
+    //   var marker = L.marker([${parseFloat(lat)}, ${parseFloat(lng)}]).addTo(map);`;
+    // console.log(markerCode)  
+    // webRef.injectJavaScript(markerCode);
     webRef.injectJavaScript(
       `map.setCenter([${parseFloat(lng)}, ${parseFloat(lat)}])`,
     );
@@ -32,9 +31,7 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <View styles={styles.header}>
-        <Text style={styles.HomeHead2}>
-          Which Place do you want to select?
-        </Text>
+        <Text style={styles.HomeHead2}>Which Place do you want to select?</Text>
         <View style={styles.containerForSearch}>
           <View style={styles.searchBar__unclicked}>
             <TextInput
@@ -79,8 +76,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: '#feb101',
-    height:100
-    
+    height: 100,
   },
   header: {
     alignItems: 'center',
@@ -117,7 +113,6 @@ const styles = StyleSheet.create({
   mapContainer: {
     flex: 1,
     width: '100%',
-    
   },
   map: {
     flex: 1,

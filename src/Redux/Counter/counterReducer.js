@@ -1,7 +1,8 @@
-import { LOGIN } from "./counterActionTypes";
+import { LOGIN ,PHONE} from "./counterActionTypes";
 
 const initialState = {
   loggedIn: false,
+  phone:''
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -11,7 +12,11 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         loggedIn: action.payload,
       };
-
+    case PHONE:
+      return{
+        ...state,
+        phone: action.payload,
+      }
     default:
       return state;
   }
