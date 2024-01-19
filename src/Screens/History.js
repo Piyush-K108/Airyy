@@ -18,6 +18,8 @@ const History = () => {
   const [data, setData] = useState([]);
   const navigation = useNavigation();
   const phone2 = useSelector(state => state.counter.phone);
+  
+
 
   // Define a state variable to keep track of which buttons have been clicked
   const [clicked, setClicked] = useState(data.map(() => false));
@@ -29,12 +31,13 @@ const History = () => {
       `https://${DOMAIN}/User/history/${phone2}`,
     );
     
-    console.log(result.data.Data)
+   
     setData(result.data.Data);
+   
+   
 
   };
   useEffect(() => {
-    
     fetchData();
   }, []);
 
@@ -58,26 +61,30 @@ const History = () => {
         {/* FlatList */}
         <ScrollView>
           <View style={styles.container}>
-            {data.map((item, index) => (
-              <View  style={styles.UPIMethod}>
+            {data.reverse().map((item, index) => (
+              <View key={index} style={styles.UPIMethod}>
                 <Text style={styles.title}>{item.rental_date}{" "}{item.rental_time}</Text>
                 <Text style={styles.expertin}>{item.rental_date}{" "}{item.rental_time}</Text>
                 <Text style={styles.description}>{item.UPIMethod ? "Online":"Cash"}</Text>
                 <Text style={styles.description}>${item.Amount}</Text>
                
                 <TouchableOpacity
+             onPress={() => navigation.navigate('Bill', {
+              phoneNumber: phone2,
+              selectedDate: item.return_date,
+            })}
                   style={{
-                    padding: 10,
+                    padding: 5,
                     backgroundColor: '#0096FF',
                     borderRadius: 10,
                     width: 100,
                     alignItems: 'center',
-                    marginTop: 30,
+                    marginTop: 10,
                   }}
                   >
                   <Text
                     style={{color: '#ffffff', fontSize: 15, fontWeight: '600'}}>
-                    {requests[index]}
+                    Show
                   </Text>
                 </TouchableOpacity>
               </View>

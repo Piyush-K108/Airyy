@@ -66,6 +66,7 @@ export default function Home() {
           <View style={styles.searchBar__unclicked}>
             <TextInput
               style={styles.inputForSearch}
+              placeholderTextColor={'black'}
               placeholder="Search"
               value={search}
               onChangeText={text => {
