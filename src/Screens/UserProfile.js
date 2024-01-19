@@ -61,7 +61,7 @@ const UserProfile = () => {
         </View>
       </View>
       <Text
-        style={{fontSize: 25, color: '#000', marginLeft: -250, marginTop: 40}}>
+        style={{fontSize: 25, color: '#000', marginLeft: -250, marginTop: 30}}>
         Profile
       </Text>
       <View style={styles.parentContainerForProfile}>
@@ -213,9 +213,12 @@ const styles = StyleSheet.create({
   //Profile styling
 
   parentContainerForProfile: {
-    marginTop: 20,
-    paddingHorizontal: 20,
-    width: '110%',
+    flex:1 ,
+    alignItems:'center' ,
+    justifyContent:'center' ,
+    // marginTop: ,
+    // paddingHorizontal: 0,
+    width: '100%',
   },
   fieldContainer: {
     flexDirection: 'row',
@@ -225,7 +228,8 @@ const styles = StyleSheet.create({
     margin: 30,
     padding: 10,
     // width:'100%' ,
-    maxWidth: 850,
+    width:320 ,
+    // maxWidth: 850,
     backgroundColor: '#fff',
     shadowColor: '#000',
     shadowOffset: {
@@ -234,7 +238,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 1,
   },
 
   icon: {

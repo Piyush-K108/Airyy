@@ -13,7 +13,7 @@ import EditEmail from '../Screens/EditEmail';
 import EditGender from '../Screens/EditGender';
 import EditName from '../Screens/EditName';
 import UserProfile from '../Screens/UserProfile';
-
+import DrawerNavigation from './DrawerNavigation';
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
@@ -32,8 +32,8 @@ console.log(loggedIn,"dsaj",phone)
               component={BottomTabNavigation}
             />
 
-
             <Stack.Screen name="OtpScreen" component={OtpScreen} />
+            <Stack.Screen name="Drawer" component={DrawerNavigation} />
 
             <Stack.Screen name="EditAddress" component={EditAddress} />
             <Stack.Screen name="EditDateOfBirth" component={EditDateOfBirth} />
