@@ -21,7 +21,7 @@ const Navigation = () => {
 
   const loggedIn = useSelector(state => state.counter.loggedIn);
   const phone = useSelector(state => state.counter.phone);
-console.log(loggedIn,"dsaj",phone)
+
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
@@ -35,9 +35,7 @@ console.log(loggedIn,"dsaj",phone)
             <Stack.Screen name="OtpScreen" component={OtpScreen} />
             <Stack.Screen name="Bill" component={Bill} />
             <Stack.Screen name="UserProfile" component={UserProfile} />
-            <Stack.Screen name="Drawer" component={DrawerNavigation} />
 
-            
             <Stack.Screen name="EditDateOfBirth" component={EditDateOfBirth} />
             <Stack.Screen name="EditEmail" component={EditEmail} />
 

@@ -39,6 +39,13 @@ const UserProfile = () => {
       return 30;
     }
   };
+  const isFieldRequired = fieldValue => {
+    return fieldValue === null ? 'Required' : fieldValue;
+  };
+  const isFieldRequired2 = fieldValue => {
+    return fieldValue === null ? 'Required' : 'Submited';
+  };
+
   const handelLogout = () => {
     dispatch(logout());
   };
@@ -56,9 +63,10 @@ const UserProfile = () => {
     <View style={styles.container}>
       <View style={styles.boxContainer}>
         <TouchableOpacity onPress={() => handleEdit('EditName', data.name)}>
-          <Text style={{...styles.name, fontSize: getNameFontSize()}}>
-            {data.name}
-          </Text>
+
+          <Text style={{...styles.name, fontSize: getNameFontSize(), color: data.name? 'white' : 'red'}}>
+                {isFieldRequired(data.name)}
+              </Text>
           <Text style={styles.number}>{phone}</Text>
         </TouchableOpacity>
         {data && (
@@ -88,14 +96,16 @@ const UserProfile = () => {
             <Text style={styles.labelText}>Email</Text>
             <View
               style={{
-                marginLeft: 10,
+                marginLeft: 30,
                 borderBottomColor: 'green',
                 padding: 2,
-                width: 200,
+                width: 220,
                 alignItems: 'center',
                 fontWeight: 'bold',
               }}>
-              <Text style={styles.label}>{data.email}</Text>
+               <Text style={{...styles.label,  color: data.email ? 'black' : 'red'}}>
+                {isFieldRequired(data.email)}
+              </Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -111,14 +121,16 @@ const UserProfile = () => {
             <Text style={styles.labelText}>City</Text>
             <View
               style={{
-                marginLeft: 100,
+                marginLeft: 30,
                 borderBottomColor: 'green',
                 padding: 5,
-                width: 70,
+                width: 380,
                 alignItems: 'center',
                 fontWeight: 'bold',
               }}>
-              <Text style={styles.label}>{data.City}</Text>
+              <Text style={{...styles.label,  color: data.City ? 'black' : 'red'}}>
+                {isFieldRequired(data.City)}
+              </Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -134,15 +146,17 @@ const UserProfile = () => {
             <Text style={styles.labelText}>Gender</Text>
             <View
               style={{
-                marginLeft: 80,
+                marginLeft: 30,
 
                 borderBottomColor: 'green',
                 padding: 5,
-                width: 100,
+                width: 330,
                 alignItems: 'center',
                 fontWeight: 'bold',
               }}>
-              <Text style={styles.label}>{data.Gender}</Text>
+              <Text style={{...styles.label,  color: data.Gender ? 'black' : 'red'}}>
+                {isFieldRequired(data.Gender)}
+              </Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -158,14 +172,15 @@ const UserProfile = () => {
             <Text style={styles.labelText}>Date of birth</Text>
             <View
               style={{
-                marginLeft: 50,
+                marginLeft: 30,
                 borderBottomColor: 'green',
                 padding: 5,
-                width: 100,
+                width: 200,
                 alignItems: 'center',
                 fontWeight: 'bold',
               }}>
-              <Text style={styles.label}>
+         
+              <Text style={{...styles.label,color: data.Date_of_Birth==='Invalid Date' ? 'red' : 'black'}}>
                 {new Date(data.Date_of_Birth).toLocaleDateString('en-IN', {
                   day: 'numeric',
                   month: 'long',
@@ -184,6 +199,9 @@ const UserProfile = () => {
               style={styles.icon}
             />
             <Text style={styles.labelText}>Adhar Card</Text>
+            <Text className='ml-28' style={{...styles.label,  color: data.Adhar_Card ? 'green' : 'red'}}>
+                {isFieldRequired2(data.Adhar_Card)}
+              </Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleEdit('EditGender')}>
@@ -195,6 +213,9 @@ const UserProfile = () => {
               style={styles.icon}
             />
             <Text style={styles.labelText}>Driving License</Text>
+            <Text className='ml-20' style={{...styles.label,  color: data.license_id ? 'green' : 'red'}}>
+                {isFieldRequired2(data.license_id)}
+              </Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -264,6 +285,8 @@ const styles = StyleSheet.create({
   fieldContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent:'space-between',
+    
     marginBottom: 0,
     marginLeft: 0,
     margin: 20,

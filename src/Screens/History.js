@@ -52,19 +52,19 @@ const History = () => {
             fontWeight: '800',
           }}>
           {' '}
-          Previous Rides{' '}
+        Ride History{' '}
         </Text>
 
         {/* FlatList */}
         <ScrollView>
           <View style={styles.container}>
             {data.reverse().map((item, index) => (
-              <View key={index} style={styles.UPIMethod}>
+              <View key={index} style={styles.item}>
                 <Text style={styles.title}>{item.rental_date}{" "}{item.rental_time}</Text>
-                <Text style={styles.expertin}>{item.rental_date}{" "}{item.rental_time}</Text>
+                <Text style={styles.expertin}>{item.return_date}{" "}{item.return_time}</Text>
                 <Text style={styles.description}>{item.UPIMethod ? "Online":"Cash"}</Text>
-                <Text style={styles.description}>${item.Amount}</Text>
-               
+                <Text style={styles.description}>Rs{item.Amount}</Text>
+                <Image source={require('../assets/Bikes/IMG_9496.jpg')} style={styles.img} />
                 <TouchableOpacity
              onPress={() => navigation.navigate('Bill', {
               phoneNumber: phone2,
@@ -84,6 +84,7 @@ const History = () => {
                     Show
                   </Text>
                 </TouchableOpacity>
+                
               </View>
             ))}
           </View>
@@ -176,16 +177,16 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '700',
     color: 'black',
-    marginLeft: 180,
+    marginLeft: 120,
   },
   description: {
     fontSize: 16,
-    marginLeft: 180,
+    marginLeft: 120,
     color: 'black',
   },
 
   expertin: {
-    marginLeft: 180,
+    marginLeft: 120,
     color: 'black',
   },
 

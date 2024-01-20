@@ -1,7 +1,7 @@
 module.exports = function (api) {
   api.cache(true);
   return {
-    presets: ['module:@react-native/babel-preset'],
+    presets: ['module:@react-native/babel-preset'],     
     plugins: [
       [
         'module:react-native-dotenv',
@@ -14,7 +14,7 @@ module.exports = function (api) {
           safe: false,
           allowUndefined: true,
         },
-      ], ["nativewind/babel"],
+      ], "nativewind/babel",'react-native-reanimated/plugin',
     ],
   };
 };
