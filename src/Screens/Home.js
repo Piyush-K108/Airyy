@@ -54,7 +54,7 @@ export default function Home() {
             <Text style={{color: '#000', fontSize: 18}}>Find your</Text>
             <Text style={{color: '#000', fontSize: 18}}>
               
-              favorite motorcyle !
+              favorite Biks !
             </Text>
           </View>
           {/* This empty view takes up remaining space on the left */}

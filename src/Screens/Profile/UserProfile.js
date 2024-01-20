@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -9,65 +9,77 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
+import axios from 'axios';
+import {DOMAIN} from '@env';
 import {useNavigation} from '@react-navigation/native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome5';
-import {black} from 'react-native-paper/lib/typescript/src/styles/themes/v2/colors';
-import {List} from 'react-native-paper';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import {useDispatch} from 'react-redux';
-import {logout} from '../Redux/Counter/counterAction';
-import { useSelector } from 'react-redux';
+import {logout} from '../../Redux/Counter/counterAction';
+import {useSelector} from 'react-redux';
 const UserProfile = () => {
+  const currentYear = new Date().getFullYear();
   const navigation = useNavigation();
-  const loggedIn = useSelector(state => state.counter.loggedIn);
+  const phone = useSelector(state => state.counter.phone);
+
   const [expanded, setExpanded] = React.useState(true);
   const dispatch = useDispatch();
-  const handlePress = () => setExpanded(!expanded);
-  const handleEditName = () => {
-    navigation.navigate('EditName');
+  const [data, setData] = useState([]);
+  const handleEdit = (screen, props) => {
+    navigation.navigate(screen, {
+      prop: props,
+    });
   };
-
-  const handleEmailEdit = () => {
-    navigation.navigate('EditEmail');
-  };
-  const handleGenderEdit = () => {
-    navigation.navigate('EditGender');
-  };
-  const handleAddressEdit = () => {
-    navigation.navigate('EditAddress');
-  };
-  const handleDobEdit = () => {
-    navigation.navigate('EditDateOfBirth');
+  const getNameFontSize = () => {
+    if (data.name && data.name.includes(' ')) {
+      return 22;
+    } else {
+      return 30;
+    }
   };
   const handelLogout = () => {
-    console.log('sjkb')
     dispatch(logout());
   };
-  React.useEffect(() => {
-    console.log(loggedIn);
-  }, [loggedIn]);
+
+  const fetchData = async () => {
+    const result = await axios.get(`https://${DOMAIN}/User/Profile/${phone}/`);
+
+    setData(result.data.data);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.boxContainer}>
-        <TouchableOpacity onPress={handleEditName}>
-          <Text style={styles.name}>Raj Joshi</Text>
-          <Text style={styles.number}>+919685741041</Text>
+        <TouchableOpacity onPress={() => handleEdit('EditName', data.name)}>
+          <Text style={{...styles.name, fontSize: getNameFontSize()}}>
+            {data.name}
+          </Text>
+          <Text style={styles.number}>{phone}</Text>
         </TouchableOpacity>
-        <View style={styles.imgContainerForuserprofile}>
-          <Image
-            resizeMode="cover"
-            source={require('../assets/images/edit.png')}
-            style={styles.Editimage}
-          />
-        </View>
+        {data && (
+          <View style={styles.imgContainerForuserprofile}>
+            <Image
+              className="border-black border-2 w-10"
+              resizeMode="cover"
+              source={{uri: data.Adhar_Card}}
+              style={styles.Editimage}
+            />
+          </View>
+        )}
       </View>
       <Text
         style={{fontSize: 25, color: '#000', marginLeft: -250, marginTop: 30}}>
         Profile
       </Text>
       <View style={styles.parentContainerForProfile}>
-        <TouchableOpacity onPress={handleEmailEdit}>
+        <TouchableOpacity onPress={() => handleEdit('EditEmail', data.email)}>
           <View style={styles.fieldContainer}>
-            <FontAwesome
+            <FontAwesome5
               name="envelope"
               size={20}
               color="#73C2FB"
@@ -77,52 +89,49 @@ const UserProfile = () => {
             <View
               style={{
                 marginLeft: 10,
-
-                // borderWidth: 1,
                 borderBottomColor: 'green',
                 padding: 2,
                 width: 200,
                 alignItems: 'center',
                 fontWeight: 'bold',
               }}>
-              <Text style={styles.label}>prjoshi2710@gmail.com</Text>
+              <Text style={styles.label}>{data.email}</Text>
             </View>
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleGenderEdit}>
+        <TouchableOpacity onPress={() => handleEdit('EditGender')}>
           <View style={styles.fieldContainer}>
-            <FontAwesome
+            <FontAwesome5
               name="male"
               size={20}
               color="#08E8DE"
               style={styles.icon}
             />
-            <Text style={styles.labelText}>Gender</Text>
+            <Text style={styles.labelText}>City</Text>
             <View
               style={{
                 marginLeft: 100,
-                // borderWidth: 1,
                 borderBottomColor: 'green',
                 padding: 5,
                 width: 70,
                 alignItems: 'center',
                 fontWeight: 'bold',
               }}>
-              <Text style={styles.label}>Male</Text>
+              <Text style={styles.label}>{data.City}</Text>
             </View>
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleAddressEdit}>
+        <TouchableOpacity onPress={() => handleEdit('EditGender')}>
           <View style={styles.fieldContainer}>
-            <FontAwesome
-              name="address-card"
+            <MaterialCommunityIcons
+              name="gender-male-female"
               size={20}
               color="#8F00FF"
               style={styles.icon}
             />
-            <Text style={styles.labelText}>Address</Text>
+            <Text style={styles.labelText}>Gender</Text>
             <View
               style={{
                 marginLeft: 80,
@@ -133,14 +142,14 @@ const UserProfile = () => {
                 alignItems: 'center',
                 fontWeight: 'bold',
               }}>
-              <Text style={styles.label}>Indore</Text>
+              <Text style={styles.label}>{data.Gender}</Text>
             </View>
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleDobEdit}>
+        <TouchableOpacity onPress={() => handleEdit('EditDateOfBirth')}>
           <View style={styles.fieldContainer}>
-            <FontAwesome
+            <FontAwesome5
               name="birthday-cake"
               size={20}
               color="#FF007F"
@@ -156,15 +165,51 @@ const UserProfile = () => {
                 alignItems: 'center',
                 fontWeight: 'bold',
               }}>
-              <Text style={styles.label}>27-12-2002</Text>
+              <Text style={styles.label}>
+                {new Date(data.Date_of_Birth).toLocaleDateString('en-IN', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+                })}
+              </Text>
             </View>
           </View>
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleEdit('EditGender')}>
+          <View style={styles.fieldContainer}>
+            <FontAwesome5
+              name="address-card"
+              size={20}
+              color="#8F00FF"
+              style={styles.icon}
+            />
+            <Text style={styles.labelText}>Adhar Card</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleEdit('EditGender')}>
+          <View style={styles.fieldContainer}>
+            <FontAwesome
+              name="drivers-license-o"
+              size={20}
+              color="#8F00FF"
+              style={styles.icon}
+            />
+            <Text style={styles.labelText}>Driving License</Text>
+          </View>
+        </TouchableOpacity>
       </View>
-      <View
-        className="w-screen  items-center mt-3 text-black">
-        <Text onPress={handelLogout} className="text-black">Logout</Text>
+      <View className="w-screen  items-center mb-4 p-1 bg-yellow-500 ">
+        <Text
+          onPress={handelLogout}
+          className="text-white font-bold text-xl flex justify-center items-center">
+          Logout
+        </Text>
       </View>
+      <Text className="text-black mb-4">
+        {' '}
+        <Text className="text-yellow-500">&copy;</Text> {currentYear}{' '}
+        Airyyrides.com
+      </Text>
     </View>
   );
 };
@@ -173,28 +218,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingTop: 0,
-    // justifyContent:'center',
     alignItems: 'center',
   },
   boxContainer: {
     width: Dimensions.get('window').width * 1.0,
     height: 200,
-    backgroundColor: '#ff553e',
+    backgroundColor: 'rgb(234, 179, 8)',
     justifyContent: 'space-around',
     flexDirection: 'row',
     alignItems: 'center',
   },
   name: {
-    fontSize: 30,
     fontWeight: 'bold',
     color: '#FFF',
     marginBottom: 10,
     marginLeft: 50,
   },
   number: {
-    fontSize: 13,
+    fontSize: 18,
     color: '#FFF',
     // marginBottom: 40,
     marginLeft: 50,
@@ -213,22 +256,20 @@ const styles = StyleSheet.create({
   //Profile styling
 
   parentContainerForProfile: {
-    flex:1 ,
-    alignItems:'center' ,
-    justifyContent:'center' ,
-    // marginTop: ,
-    // paddingHorizontal: 0,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'start',
     width: '100%',
   },
   fieldContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 0,
     marginLeft: 0,
-    margin: 30,
+    margin: 20,
     padding: 10,
     // width:'100%' ,
-    width:320 ,
+    width: 320,
     // maxWidth: 850,
     backgroundColor: '#fff',
     shadowColor: '#000',
@@ -250,7 +291,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: 'bold',
   },
-  
+
   label: {
     fontSize: 14,
     color: '#000',

@@ -6,26 +6,27 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  Image ,
+  Image,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
-
+import {ProfileEdit} from './ProfileEdit';
+import {useRoute} from '@react-navigation/core';
 const EditEmail = () => {
- 
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [isEditing, setIsEditing] = useState(false);
-
+  const route = useRoute();
+  const {prop} = route.params;
   const handleEdit = () => {
     setIsEditing(true);
   };
-
-  const handleSave = () => {
-    // Perform the update email status logic here
+  const editProfile = ProfileEdit();
+  const handleSave = async () => {
     setIsEditing(false);
-  navigation.goBack();
+    const data = {email: email};
+    await editProfile(data);
   };
 
   return (
@@ -38,13 +39,18 @@ const EditEmail = () => {
           style={styles.Editimage}
         />
         <Image
-          source={require('../assets/images/edit.png')}
+          source={require('../../assets/images/edit.png')}
           style={styles.Editimage}
         />
         <Text style={styles.name}>Edit Email</Text>
       </View>
       <View style={styles.inputContainer}>
-        <View style={{flexDirection:'row' , alignItems:'center' , justifyContent:'center'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
           <FontAwesome
             name="envelope"
             size={20}
@@ -60,14 +66,12 @@ const EditEmail = () => {
             value={email}
             onChangeText={setEmail}
             placeholder="Enter your new email"
-            keyboardType="email-address"
+            keyboardType="email-Gender"
             autoCapitalize="none"
             placeholderTextColor={'black'}
           />
         ) : (
-          <Text style={styles.emailText}>
-            Current Email: prjoshi2710@gmail
-          </Text>
+          <Text style={styles.emailText}>Current Email: {prop}</Text>
         )}
 
         <TouchableOpacity
@@ -169,16 +173,21 @@ const styles = StyleSheet.create({
     height: 40,
     borderWidth: 1,
     borderColor: '#ccc',
-    color:'black',
+    color: 'black',
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 20,
   },
   emailText: {
     fontSize: 16,
-    color:'black',
+    color: 'black',
     marginBottom: 20,
   },
 });
 
 export default EditEmail;
+
+
+
+
+

@@ -31,11 +31,8 @@ const History = () => {
       `https://${DOMAIN}/User/history/${phone2}`,
     );
     
-   
     setData(result.data.Data);
    
-   
-
   };
   useEffect(() => {
     fetchData();

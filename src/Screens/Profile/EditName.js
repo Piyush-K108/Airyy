@@ -1,22 +1,25 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {View, Text, TextInput, StyleSheet , Image , Button , Dimensions , TouchableOpacity} from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
-import {useNavigation} from '@react-navigation/native';
+
+import { ProfileEdit } from './ProfileEdit';
+
 const EditName = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
- const navigation = useNavigation();
-  const handleUpdateName = () => {
-    
-    navigation.goBack();
+
+  const editProfile = ProfileEdit();
+  const handleUpdateName = async () => {
+    const data = { name: firstName + " " + lastName };
+    await editProfile(data);
+   
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.boxContainer}>
         <Image
-          source={require('../assets/images/edit.png')}
+          source={require('../../assets/images/edit.png')}
           style={styles.Editimage}
         />
         <Text style={styles.name}>Edit Name</Text>

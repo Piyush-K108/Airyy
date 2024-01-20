@@ -11,15 +11,16 @@ import {
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
-
+import { ProfileEdit } from './ProfileEdit';
 const EditGender = () => {
   const [gender, setGender] = useState('');
+  const editProfile = ProfileEdit();
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const navigation = useNavigation();
 
-  const handleUpdateGender = () => {
-    // Perform the update gender logic here
-    navigation.goBack();
+  const handleUpdateGender = async () => {
+    const data = { Gender: gender};
+    await editProfile(data);
   };
 
   const toggleDropdown = () => {
@@ -35,7 +36,7 @@ const EditGender = () => {
     <View style={styles.container}>
       <View style={styles.boxContainer}>
         <Image
-          source={require('../assets/images/edit.png')}
+          source={require('../../assets/images/edit.png')}
           style={styles.Editimage}
         />
         <Text style={styles.name}>Edit Gender</Text>
@@ -62,17 +63,17 @@ const EditGender = () => {
         <View style={styles.dropdownOptions}>
           <TouchableOpacity
             style={styles.option}
-            onPress={() => selectGender('male')}>
+            onPress={() => selectGender('Male')}>
             <Text style={styles.optionText}>Male</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.option}
-            onPress={() => selectGender('female')}>
+            onPress={() => selectGender('Female')}>
             <Text style={styles.optionText}>Female</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.option}
-            onPress={() => selectGender('other')}>
+            onPress={() => selectGender('Other')}>
             <Text style={styles.optionText}>Other</Text>
           </TouchableOpacity>
         </View>
