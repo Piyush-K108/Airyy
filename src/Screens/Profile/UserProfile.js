@@ -10,6 +10,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import axios from 'axios';
+import user from '../../images/userProfile.png'
+
 import {DOMAIN} from '@env';
 import {useNavigation} from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -31,6 +33,9 @@ const UserProfile = () => {
     navigation.navigate(screen, {
       prop: props,
     });
+  };
+  const handleProfilePic = () => {
+   
   };
   const getNameFontSize = () => {
     if (data.name && data.name.includes(' ')) {
@@ -54,6 +59,7 @@ const UserProfile = () => {
     const result = await axios.get(`https://${DOMAIN}/User/Profile/${phone}/`);
 
     setData(result.data.data);
+
   };
   useEffect(() => {
     fetchData();
@@ -63,21 +69,29 @@ const UserProfile = () => {
     <View style={styles.container}>
       <View style={styles.boxContainer}>
         <TouchableOpacity onPress={() => handleEdit('EditName', data.name)}>
-
-          <Text style={{...styles.name, fontSize: getNameFontSize(), color: data.name? 'white' : 'red'}}>
-                {isFieldRequired(data.name)}
-              </Text>
+          <Text
+            style={{
+              ...styles.name,
+              fontSize: getNameFontSize(),
+              color: data.name ? 'white' : 'red',
+            }}>
+            {isFieldRequired(data.name)}
+          </Text>
           <Text style={styles.number}>{phone}</Text>
         </TouchableOpacity>
         {data && (
-          <View style={styles.imgContainerForuserprofile}>
+          <TouchableOpacity
+          onPress={() => {
+            handleProfilePic()
+          }}>
+          <View className="rounded-full overflow-hidden">
             <Image
-              className="border-black border-2 w-10"
               resizeMode="cover"
-              source={{uri: data.Adhar_Card}}
-              style={styles.Editimage}
+              source={data.ProfilePic ? {uri: data.ProfilePic} : user}
+              className="w-20 h-20"
             />
           </View>
+        </TouchableOpacity>
         )}
       </View>
       <Text
@@ -103,7 +117,8 @@ const UserProfile = () => {
                 alignItems: 'center',
                 fontWeight: 'bold',
               }}>
-               <Text style={{...styles.label,  color: data.email ? 'black' : 'red'}}>
+              <Text
+                style={{...styles.label, color: data.email ? 'black' : 'red'}}>
                 {isFieldRequired(data.email)}
               </Text>
             </View>
@@ -128,7 +143,8 @@ const UserProfile = () => {
                 alignItems: 'center',
                 fontWeight: 'bold',
               }}>
-              <Text style={{...styles.label,  color: data.City ? 'black' : 'red'}}>
+              <Text
+                style={{...styles.label, color: data.City ? 'black' : 'red'}}>
                 {isFieldRequired(data.City)}
               </Text>
             </View>
@@ -154,7 +170,8 @@ const UserProfile = () => {
                 alignItems: 'center',
                 fontWeight: 'bold',
               }}>
-              <Text style={{...styles.label,  color: data.Gender ? 'black' : 'red'}}>
+              <Text
+                style={{...styles.label, color: data.Gender ? 'black' : 'red'}}>
                 {isFieldRequired(data.Gender)}
               </Text>
             </View>
@@ -179,8 +196,12 @@ const UserProfile = () => {
                 alignItems: 'center',
                 fontWeight: 'bold',
               }}>
-         
-              <Text style={{...styles.label,color: data.Date_of_Birth==='Invalid Date' ? 'red' : 'black'}}>
+              <Text
+                style={{
+                  ...styles.label,
+                  color:
+                    data.Date_of_Birth === 'Invalid Date' ? 'red' : 'black',
+                }}>
                 {new Date(data.Date_of_Birth).toLocaleDateString('en-IN', {
                   day: 'numeric',
                   month: 'long',
@@ -199,9 +220,14 @@ const UserProfile = () => {
               style={styles.icon}
             />
             <Text style={styles.labelText}>Adhar Card</Text>
-            <Text className='ml-28' style={{...styles.label,  color: data.Adhar_Card ? 'green' : 'red'}}>
-                {isFieldRequired2(data.Adhar_Card)}
-              </Text>
+            <Text
+              className="ml-28"
+              style={{
+                ...styles.label,
+                color: data.Adhar_Card ? 'green' : 'red',
+              }}>
+              {isFieldRequired2(data.Adhar_Card)}
+            </Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleEdit('EditGender')}>
@@ -213,9 +239,14 @@ const UserProfile = () => {
               style={styles.icon}
             />
             <Text style={styles.labelText}>Driving License</Text>
-            <Text className='ml-20' style={{...styles.label,  color: data.license_id ? 'green' : 'red'}}>
-                {isFieldRequired2(data.license_id)}
-              </Text>
+            <Text
+              className="ml-20"
+              style={{
+                ...styles.label,
+                color: data.license_id ? 'green' : 'red',
+              }}>
+              {isFieldRequired2(data.license_id)}
+            </Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -255,13 +286,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FFF',
     marginBottom: 10,
-    marginLeft: 50,
+    marginLeft: 20,
   },
   number: {
     fontSize: 18,
     color: '#FFF',
     // marginBottom: 40,
-    marginLeft: 50,
+    marginLeft: 20,
   },
   Editimage: {
     height: 100,
@@ -272,6 +303,7 @@ const styles = StyleSheet.create({
   imgContainerForuserprofile: {
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 140,
   },
 
   //Profile styling
@@ -285,8 +317,8 @@ const styles = StyleSheet.create({
   fieldContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent:'space-between',
-    
+    justifyContent: 'space-between',
+
     marginBottom: 0,
     marginLeft: 0,
     margin: 20,

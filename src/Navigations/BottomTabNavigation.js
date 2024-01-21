@@ -5,6 +5,7 @@ import Home from "../Screens/Home";
 import History from "../Screens/History";
 import UserProfile from "../Screens/Profile/UserProfile";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import EditComponent from "../Components/EditComponent";
 const Tab = createBottomTabNavigator();
 
 function BottomTabNavigation() {
@@ -37,7 +38,7 @@ function BottomTabNavigation() {
       >
             
             <Tab.Screen name="Home" component={Home} options = {{tabBarLabel : "Home"}}  />
-            <Tab.Screen name="History" component={History} options = {{tabBarLabel : "History"}}  />
+            <Tab.Screen name="History" component={EditComponent} options = {{tabBarLabel : "History"}}  />
             <Tab.Screen name="UserProfile" component={UserProfile} options = {{tabBarLabel : "UserProfile"}} />
         </Tab.Navigator>
     )
