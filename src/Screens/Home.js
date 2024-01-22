@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   StyleSheet,
   View,
@@ -6,23 +6,27 @@ import {
   Text,
   Keyboard,
   Dimensions,
-  Image ,
+  Image,
+  TouchableOpacity,
 } from 'react-native';
 import {WebView} from 'react-native-webview';
-import user from '../images/userProfile.png'
+import user from '../images/userProfile.png';
+import axios from 'axios';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import mapTemplate from '../Components/mapTemplate';
 import {useSelector} from 'react-redux';
-import {API_KEY} from '@env';
+import {DOMAIN} from '@env';
+import LeftModel from '../Components/LeftModel';
 export default function Home() {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
   const [mapCenter, setMapCenter] = useState('22.6881149,75.8630678');
-
+  const [data, setData] = useState([]);
   let webRef;
-
+  const phone = useSelector(state => state.counter.phone);
   const onButtonClick = () => {
     const [lng, lat] = mapCenter.split(',');
+
     console.log(lng, lat);
     // const markerCode = `
     //   var marker = L.marker([${parseFloat(lat)}, ${parseFloat(lng)}]).addTo(map);`;
@@ -37,32 +41,54 @@ export default function Home() {
     setMapCenter(event.nativeEvent.data);
   };
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-            width: '100%',
-            marginTop: 30,
-            // paddingHorizontal: 0,
-            // paddingVertical:40 ,
-          }}>
-          <View>
-            <Text style={{color: '#000', fontSize: 18}}>Find your</Text>
-            <Text style={{color: '#000', fontSize: 18}}>
-              
-              favorite Biks !
-            </Text>
-          </View>
-          {/* This empty view takes up remaining space on the left */}
-          <Image source={user} style={{width: 50, height: 50}} />
-        </View>
-        
+  const fetchData = async () => {
+    const result = await axios.get(`https://${DOMAIN}/User/Profile/${phone}/`);
 
-        <View style={styles.containerForSearch}>
+    setData(result.data.data);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const [isLeftDrawer, setIsLeftDrawer] = useState(false);
+
+  const handLeftDrawer = () => {
+    setIsLeftDrawer(!isLeftDrawer);
+  };
+
+  return (
+    <>
+      {isLeftDrawer && <LeftModel />}
+
+      <View className="h-screen flex flex-col">
+        {/* Header */}
+        <View className="py-8 px-5 w-screen flex flex-row justify-between">
+          <TouchableOpacity className={`${isLeftDrawer?" z-[100]":""}`} onPress={handLeftDrawer}>
+            <View className="mt-3  overflow-hidden rounded-full">
+              <MaterialIcons name="menu" size={32} color="#666" />
+            </View>
+          </TouchableOpacity>
+
+          <View className="rounded-full overflow-hidden">
+            <Image
+              resizeMode="cover"
+              source={data.ProfilePic ? {uri: data.ProfilePic} : user}
+              className="w-14 h-14"
+            />
+          </View>
+        </View>
+
+        {/* Text */}
+        <View className="px-5 w-screen  ">
+          <Text className="font-bold text-3xl text-black ">
+            Find your favorite
+          </Text>
+          <Text className="font-bold text-3xl mt-2 text-black">Biks !</Text>
+          <Text className="text-black mt-3">
+            Have a very pleasant experience
+          </Text>
+        </View>
+
+        <View className="justify-center px-5 pt-8 pb-2 ">
           <View style={styles.searchBar__unclicked}>
             <TextInput
               style={styles.inputForSearch}
@@ -87,18 +113,20 @@ export default function Home() {
             />
           </View>
         </View>
+
+        {/* Map */}
+        <View className="flex-1">
+          <WebView
+            ref={webRef}
+            onMessage={handleMapEvent}
+            style={styles.map}
+            originWhitelist={['*']}
+            source={{html: mapTemplate}}
+            allowsInlineMediaPlayback={true}
+          />
+        </View>
       </View>
-      <View style={styles.mapContainer}>
-        <WebView
-          ref={webRef}
-          onMessage={handleMapEvent}
-          style={styles.map}
-          originWhitelist={['*']}
-          source={{html: mapTemplate}}
-          allowsInlineMediaPlayback={true}
-        />
-      </View>
-    </View>
+    </>
   );
 }
 
@@ -107,21 +135,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    
+
     // backgroundColor: '#FFFBA8',
     // backgroundColor: '#ff553e',
     backgroundColor: '#ffff',
-  
-
-   
   },
   header: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  
-    
-  
   },
   containerForSearch: {
     flex: 1,
