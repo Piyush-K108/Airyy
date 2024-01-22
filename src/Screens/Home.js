@@ -62,9 +62,17 @@ export default function Home() {
       <View className="h-screen flex flex-col">
         {/* Header */}
         <View className="py-8 px-5 w-screen flex flex-row justify-between">
-          <TouchableOpacity className={`${isLeftDrawer?" z-[100]":""}`} onPress={handLeftDrawer}>
-            <View className="mt-3  overflow-hidden rounded-full">
-              <MaterialIcons name="menu" size={32} color="#666" />
+          <TouchableOpacity
+            className={`${isLeftDrawer ? 'z-[100] ' : ''}`}
+            onPress={handLeftDrawer}>
+            <View className="mt-3 flex-row   overflow-hidden rounded-full">
+              <MaterialIcons
+                name={`${isLeftDrawer ? 'arrow-back' : 'menu'}`}
+                size={32}
+                color="#666"
+              />
+              {isLeftDrawer &&<Text className='text-black ml-3 text-[22px]'>Menu</Text>}
+              
             </View>
           </TouchableOpacity>
 
