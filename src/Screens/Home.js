@@ -17,9 +17,11 @@ import mapTemplate from '../Components/mapTemplate';
 import {useSelector} from 'react-redux';
 import {DOMAIN} from '@env';
 import LeftModel from '../Components/LeftModel';
+import {useNavigation} from '@react-navigation/native';
 export default function Home() {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
+  const navigation = useNavigation();
   const [mapCenter, setMapCenter] = useState('22.6881149,75.8630678');
   const [data, setData] = useState([]);
   let webRef;
@@ -71,18 +73,20 @@ export default function Home() {
                 size={32}
                 color="#666"
               />
-              {isLeftDrawer &&<Text className='text-black ml-3 text-[22px]'>Menu</Text>}
-              
+              {isLeftDrawer && (
+                <Text className="text-black ml-3 text-[22px]">Menu</Text>
+              )}
             </View>
           </TouchableOpacity>
-
-          <View className="rounded-full overflow-hidden">
-            <Image
-              resizeMode="cover"
-              source={data.ProfilePic ? {uri: data.ProfilePic} : user}
-              className="w-14 h-14"
-            />
-          </View>
+          <TouchableOpacity onPress={()=>navigation.navigate('UserProfile')}>
+            <View className="rounded-full overflow-hidden">
+              <Image
+                resizeMode="cover"
+                source={data.ProfilePic ? {uri: data.ProfilePic} : user}
+                className="w-14 h-14"
+              />
+            </View>
+          </TouchableOpacity>
         </View>
 
         {/* Text */}

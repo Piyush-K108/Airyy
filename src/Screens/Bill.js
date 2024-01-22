@@ -16,24 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useRoute} from '@react-navigation/core';
 import {DOMAIN} from '@env';
 const screenWidth = Dimensions.get('window').width;
-const Checkbox = ({label, value, onPress}) => {
-  return (
-    <TouchableOpacity
-      style={[styles.checkboxContainer, {marginRight: 10}]}
-      onPress={onPress}>
-      <View
-        style={[
-          styles.checkbox,
-          {backgroundColor: value ? '#feb101' : 'transparent'},
-        ]}>
-        {value && <Text style={styles.checkmark}>✓</Text>}
-      </View>
-      <Text style={{fontWeight: 'bold', color: 'green', fontSize: 13}}>
-        {label}
-      </Text>
-    </TouchableOpacity>
-  );
-};
+
 const Bill = () => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(true);
