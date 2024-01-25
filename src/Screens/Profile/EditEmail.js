@@ -68,7 +68,7 @@ const EditEmail = () => {
             placeholder="Enter your new email"
             keyboardType="email-Gender"
             autoCapitalize="none"
-            placeholderTextColor={'black'}
+            placeholderTextColor={'#000000c2'}
           />
         ) : (
           <Text style={styles.emailText}>Current Email: {prop}</Text>
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     maxWidth: 100,
   },
   buttonText: {
-    color: 'black',
+    color: '#000000c2',
     fontSize: 19,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -173,14 +173,14 @@ const styles = StyleSheet.create({
     height: 40,
     borderWidth: 1,
     borderColor: '#ccc',
-    color: 'black',
+    color: '#000000c2',
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 20,
   },
   emailText: {
     fontSize: 16,
-    color: 'black',
+    color: '#000000c2',
     marginBottom: 20,
   },
 });

@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
 
   EditBtnText: {
-    color: 'black',
+    color: '#000000c2',
     fontSize: 17,
     fontWeight: 'bold',
     textAlign: 'center',

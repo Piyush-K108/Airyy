@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: 'black',
+    color: '#000000c2',
     marginTop: 15,
   },
   subText: {
@@ -165,12 +165,12 @@ const styles = StyleSheet.create({
 
   adventureText: {
     fontSize: 18,
-    color: 'black',
+    color: '#000000c2',
     marginTop: 15,
     marginBottom: 50,
     fontWeight: '600',
     padding: 20,
-    shadowColor: 'black',
+    shadowColor: '#000000c2',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.25,
     shadowRadius: 4,
@@ -203,12 +203,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginRight: 10,
-    color: 'black',
+    color: '#000000c2',
   },
   input: {
     flex: 1,
     fontSize: 16,
-    color: 'black',
+    color: '#000000c2',
     paddingVertical: 8,
   },
   loginSignupContainer: {
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
   loginSignupText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'black',
+    color: '#000000c2',
   },
   buttonContainer: {
     // backgroundColor: '#ffe550',
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    color: 'black',
+    color: '#000000c2',
     fontSize: 17,
     fontWeight: 'bold',
     textAlign: 'center',

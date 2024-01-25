@@ -1,31 +1,27 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState,useRef} from 'react';
 import {
   StyleSheet,
   View,
   TextInput,
   Text,
   Keyboard,
-  Dimensions,
-  Image,
-  TouchableOpacity,
 } from 'react-native';
 import {WebView} from 'react-native-webview';
-import user from '../images/userProfile.png';
-import axios from 'axios';
+
+
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import mapTemplate from '../Components/mapTemplate';
-import {useSelector} from 'react-redux';
-import {DOMAIN} from '@env';
-import LeftModel from '../Components/LeftModel';
-import {useNavigation} from '@react-navigation/native';
+import Header from '../Components/Header';
+
+
 export default function Home() {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
-  const navigation = useNavigation();
+
   const [mapCenter, setMapCenter] = useState('22.6881149,75.8630678');
-  const [data, setData] = useState([]);
+
   let webRef;
-  const phone = useSelector(state => state.counter.phone);
+
   const onButtonClick = () => {
     const [lng, lat] = mapCenter.split(',');
 
@@ -43,59 +39,21 @@ export default function Home() {
     setMapCenter(event.nativeEvent.data);
   };
 
-  const fetchData = async () => {
-    const result = await axios.get(`https://${DOMAIN}/User/Profile/${phone}/`);
 
-    setData(result.data.data);
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
-  const [isLeftDrawer, setIsLeftDrawer] = useState(false);
-
-  const handLeftDrawer = () => {
-    setIsLeftDrawer(!isLeftDrawer);
-  };
 
   return (
     <>
-      {isLeftDrawer && <LeftModel />}
-
       <View className="h-screen flex flex-col">
         {/* Header */}
-        <View className="py-8 px-5 w-screen flex flex-row justify-between">
-          <TouchableOpacity
-            className={`${isLeftDrawer ? 'z-[100] ' : ''}`}
-            onPress={handLeftDrawer}>
-            <View className="mt-3 flex-row   overflow-hidden rounded-full">
-              <MaterialIcons
-                name={`${isLeftDrawer ? 'arrow-back' : 'menu'}`}
-                size={32}
-                color="#666"
-              />
-              {isLeftDrawer && (
-                <Text className="text-black ml-3 text-[22px]">Menu</Text>
-              )}
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={()=>navigation.navigate('UserProfile')}>
-            <View className="rounded-full overflow-hidden">
-              <Image
-                resizeMode="cover"
-                source={data.ProfilePic ? {uri: data.ProfilePic} : user}
-                className="w-14 h-14"
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
+       <Header/>
 
         {/* Text */}
         <View className="px-5 w-screen  ">
-          <Text className="font-bold text-3xl text-black ">
+          <Text className="font-bold text-3xl text-[#000000c2] ">
             Find your favorite
           </Text>
-          <Text className="font-bold text-3xl mt-2 text-black">Biks !</Text>
-          <Text className="text-black mt-3">
+          <Text className="font-bold text-3xl mt-2 text-[#000000c2]">Biks !</Text>
+          <Text className="text-[#000000c2] mt-3">
             Have a very pleasant experience
           </Text>
         </View>
@@ -104,7 +62,7 @@ export default function Home() {
           <View style={styles.searchBar__unclicked}>
             <TextInput
               style={styles.inputForSearch}
-              placeholderTextColor={'black'}
+              placeholderTextColor={'#000000c2'}
               placeholder="Search"
               value={search}
               onChangeText={text => {
@@ -147,9 +105,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-
-    // backgroundColor: '#FFFBA8',
-    // backgroundColor: '#ff553e',
     backgroundColor: '#ffff',
   },
   header: {
@@ -177,7 +132,7 @@ const styles = StyleSheet.create({
   inputForSearch: {
     fontSize: 20,
     marginLeft: 10,
-    color: 'black',
+    color: '#000000c2',
     flex: 1,
   },
   HomeHead2: {

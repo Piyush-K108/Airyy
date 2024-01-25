@@ -139,17 +139,17 @@ const styles = StyleSheet.create({
   },
   cardTextContainer: {
     padding: 20,
-    color: 'black',
+    color: '#000000c2',
     flex: 1,
   },
   cardTitle: {
     fontSize: 20,
-    color: 'black',
+    color: '#000000c2',
     fontWeight: 'bold',
   },
   cardDescription: {
     fontSize: 16,
-    color: 'black',
+    color: '#000000c2',
     color: '#333',
     marginTop: 10,
   },
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: 8,
     flexDirection: 'column',
-    color: 'black',
+    color: '#000000c2',
     backgroundColor: '#ffffff',
     borderRadius: 10,
     padding: 20,
@@ -176,24 +176,24 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     fontWeight: '700',
-    color: 'black',
+    color: '#000000c2',
     marginLeft: 120,
   },
   description: {
     fontSize: 16,
     marginLeft: 120,
-    color: 'black',
+    color: '#000000c2',
   },
 
   expertin: {
     marginLeft: 120,
-    color: 'black',
+    color: '#000000c2',
   },
 
   img: {
     borderWidth: 3,
-    color: 'black',
-    borderColor: 'black',
+    color: '#000000c2',
+    borderColor: '#000000c2',
     borderRadius: 20,
     height: 100,
     width: 100,

@@ -9,34 +9,41 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import axios from 'axios';
-import user from '../../images/userProfile.png'
 
+import user from '../../images/userProfile.png'
+import axios from 'axios';
 import {DOMAIN} from '@env';
 import {useNavigation} from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import {useDispatch} from 'react-redux';
 import {logout} from '../../Redux/Counter/counterAction';
 import {useSelector} from 'react-redux';
+import EditComponent from '../../Components/EditComponent';
+
 const UserProfile = () => {
+  const [data, setData] = useState([]);
+  const [openEditComponent,setopenEditComponent] = useState('')
   const currentYear = new Date().getFullYear();
   const navigation = useNavigation();
   const phone = useSelector(state => state.counter.phone);
-
-  const [expanded, setExpanded] = React.useState(true);
   const dispatch = useDispatch();
-  const [data, setData] = useState([]);
+
+
   const handleEdit = (screen, props) => {
     navigation.navigate(screen, {
       prop: props,
     });
   };
+
   const handleProfilePic = () => {
    
   };
+  const handleEdit2 = (prop) => {
+   setopenEditComponent(prop)
+  };
+
   const getNameFontSize = () => {
     if (data.name && data.name.includes(' ')) {
       return 22;
@@ -44,9 +51,11 @@ const UserProfile = () => {
       return 30;
     }
   };
+
   const isFieldRequired = fieldValue => {
     return fieldValue === null ? 'Required' : fieldValue;
   };
+
   const isFieldRequired2 = fieldValue => {
     return fieldValue === null ? 'Required' : 'Submited';
   };
@@ -66,9 +75,11 @@ const UserProfile = () => {
   }, []);
 
   return (
+  
     <View style={styles.container}>
+    {openEditComponent==='name' && <EditComponent initialValue={data.name} onCancel={()=>setopenEditComponent('')}/>}
       <View style={styles.boxContainer}>
-        <TouchableOpacity onPress={() => handleEdit('EditName', data.name)}>
+        <TouchableOpacity onPress={()=>handleEdit2('name')} >
           <Text
             style={{
               ...styles.name,
@@ -118,7 +129,8 @@ const UserProfile = () => {
                 fontWeight: 'bold',
               }}>
               <Text
-                style={{...styles.label, color: data.email ? 'black' : 'red'}}>
+              className={`${data.email?"":"ml-[102px]"}`}
+                style={{...styles.label, color: data.email ? '#000000c2' : 'red'}}>
                 {isFieldRequired(data.email)}
               </Text>
             </View>
@@ -126,29 +138,31 @@ const UserProfile = () => {
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => handleEdit('EditGender')}>
-          <View style={styles.fieldContainer}>
-            <FontAwesome5
-              name="male"
+        <View style={styles.fieldContainer}>
+            <MaterialCommunityIcons
+              name="city"
               size={20}
-              color="#08E8DE"
+              color="#8F00FF"
               style={styles.icon}
             />
-            <Text style={styles.labelText}>City</Text>
+            <Text style={styles.labelText}>City{"  "}</Text>
             <View
               style={{
                 marginLeft: 30,
                 borderBottomColor: 'green',
                 padding: 5,
-                width: 380,
+                width: 200,
                 alignItems: 'center',
                 fontWeight: 'bold',
               }}>
               <Text
-                style={{...styles.label, color: data.City ? 'black' : 'red'}}>
+               className="ml-[131px]"
+                style={{...styles.label, color: data.Gender ? '#000000c2' : 'red'}}>
                 {isFieldRequired(data.City)}
               </Text>
             </View>
           </View>
+
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => handleEdit('EditGender')}>
@@ -163,15 +177,15 @@ const UserProfile = () => {
             <View
               style={{
                 marginLeft: 30,
-
                 borderBottomColor: 'green',
                 padding: 5,
-                width: 330,
+                width: 200,
                 alignItems: 'center',
                 fontWeight: 'bold',
               }}>
               <Text
-                style={{...styles.label, color: data.Gender ? 'black' : 'red'}}>
+               className="ml-[101px]"
+                style={{...styles.label, color: data.Gender ? '#000000c2' : 'red'}}>
                 {isFieldRequired(data.Gender)}
               </Text>
             </View>
@@ -200,7 +214,7 @@ const UserProfile = () => {
                 style={{
                   ...styles.label,
                   color:
-                    data.Date_of_Birth === 'Invalid Date' ? 'red' : 'black',
+                    data.Date_of_Birth === 'Invalid Date' ? 'red' : '#000000c2',
                 }}>
                 {new Date(data.Date_of_Birth).toLocaleDateString('en-IN', {
                   day: 'numeric',
@@ -257,7 +271,7 @@ const UserProfile = () => {
           Logout
         </Text>
       </View>
-      <Text className="text-black mb-4">
+      <Text className="text-[#000000c2] mb-4">
         {' '}
         <Text className="text-yellow-500">&copy;</Text> {currentYear}{' '}
         Airyyrides.com
@@ -276,7 +290,7 @@ const styles = StyleSheet.create({
   },
   boxContainer: {
     width: Dimensions.get('window').width * 1.0,
-    height: 200,
+    height: 180,
     backgroundColor: 'rgb(234, 179, 8)',
     justifyContent: 'space-around',
     flexDirection: 'row',
@@ -321,8 +335,8 @@ const styles = StyleSheet.create({
 
     marginBottom: 0,
     marginLeft: 0,
-    margin: 20,
-    padding: 10,
+    marginVertical: 20,
+    padding: 12,
     // width:'100%' ,
     width: 320,
     // maxWidth: 850,
