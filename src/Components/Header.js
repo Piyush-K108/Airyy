@@ -9,22 +9,7 @@ import {DOMAIN} from '@env';
 import LeftModel from '../Components/LeftModel';
 const Header = () => {
   const navigation = useNavigation();
-  const [isLeftDrawer, setIsLeftDrawer] = useState(false);
-  const phone = useSelector(state => state.counter.phone);
-  const [data, setData] = useState([]);
-
-  const handLeftDrawer = () => {
-    setIsLeftDrawer(!isLeftDrawer);
-  };
-
-  const fetchData = async () => {
-    const result = await axios.get(`https://${DOMAIN}/User/Profile/${phone}/`);
-    setData(result.data.data);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const data = useSelector((state) => state.counter.profile);
 
   return (
     <>

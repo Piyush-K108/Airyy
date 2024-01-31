@@ -29,7 +29,7 @@ const EditDateOfBirth = () => {
     const data = {Date_of_Birth: formattedToday};
 
     try {
-      await editProfile(data);
+      await editProfile(data, 'application/json');
       // Handle success or navigate to another screen
     } catch (error) {
       console.error('Error saving Date of Birth:', error);

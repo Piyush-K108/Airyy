@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View} from 'react-native';
-import Header from '../Components/Header';
+import Header from '../../Components/Header';
 
 const Book = () => {
   return (

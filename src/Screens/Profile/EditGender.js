@@ -20,7 +20,7 @@ const EditGender = () => {
 
   const handleUpdateGender = async () => {
     const data = { Gender: gender};
-    await editProfile(data);
+    await editProfile(data, 'application/json');
   };
 
   const toggleDropdown = () => {
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     maxWidth: 390,
   },
   EditBtnText: {
-    color: '#000000c2',
+    color: '#121212',
     fontSize: 17,
     fontWeight: 'bold',
     textAlign: 'center',

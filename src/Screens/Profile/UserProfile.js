@@ -10,26 +10,91 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import user from '../../images/userProfile.png'
+import user from '../../images/userProfile.png';
 import axios from 'axios';
 import {DOMAIN} from '@env';
+import {launchImageLibrary} from 'react-native-image-picker';
 import {useNavigation} from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch} from 'react-redux';
-import {logout} from '../../Redux/Counter/counterAction';
+import {fetchProfile, logout} from '../../Redux/Counter/counterAction';
 import {useSelector} from 'react-redux';
 import EditComponent from '../../Components/EditComponent';
-
+import {ProfileEdit} from './ProfileEdit';
 const UserProfile = () => {
-  const [data, setData] = useState([]);
-  const [openEditComponent,setopenEditComponent] = useState('')
+  const data = useSelector(state => state.counter.profile);
+  const [Adharcard, setAdharcard] = useState(null);
+  const [License, setLicense] = useState(null);
+  const [openEditComponent, setopenEditComponent] = useState('');
   const currentYear = new Date().getFullYear();
   const navigation = useNavigation();
+  const editProfile = ProfileEdit();
   const phone = useSelector(state => state.counter.phone);
   const dispatch = useDispatch();
 
+  const options = {
+    mediaType: 'photo',
+    quality: 1,
+    cameraType: 'back',
+    storageOptions: {
+      skipBackup: true,
+    },
+  };
+
+  const ImagePicker = async item => {
+    try {
+      launchImageLibrary(options, response => {
+        console.log('Response = ', response);
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
+        } else if (item === 'adhar') {
+          const data = new FormData();
+
+          const AdharData = {
+            uri: response.assets[0].uri,
+            type: 'image/jpeg',
+            name: phone + '_Adhar_Card.jpg',
+          };
+
+          data.append('Adhar_Card', AdharData);
+
+          editProfile(data, 'multipart/form-data');
+        } else if (item === 'License') {
+          const data = new FormData();
+
+          const licenseData = {
+            uri: response.assets[0].uri,
+            type: 'image/jpeg',
+            name: phone + '_License.jpg',
+          };
+
+          data.append('license_id', licenseData);
+
+          editProfile(data, 'multipart/form-data');
+        } else if (item === 'pic') {
+          const data = new FormData();
+          const Pic = {
+            uri: response.assets[0].uri,
+            type: 'image/jpeg',
+            name: phone + '_Profile.jpg',
+          };
+
+          data.append('ProfilePic', Pic);
+
+
+          editProfile(data, 'multipart/form-data');
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleEdit = (screen, props) => {
     navigation.navigate(screen, {
@@ -37,21 +102,17 @@ const UserProfile = () => {
     });
   };
 
-  const handleProfilePic = () => {
-   
-  };
-  const handleEdit2 = (prop) => {
-   setopenEditComponent(prop)
+  const handleEdit2 = prop => {
+    setopenEditComponent(prop);
   };
 
   const getNameFontSize = () => {
-    if (data.name && data.name.includes(' ')) {
+    if (data && data.name && data.name.includes(' ')) {
       return 22;
     } else {
       return 30;
     }
   };
-
   const isFieldRequired = fieldValue => {
     return fieldValue === null ? 'Required' : fieldValue;
   };
@@ -64,45 +125,45 @@ const UserProfile = () => {
     dispatch(logout());
   };
 
-  const fetchData = async () => {
-    const result = await axios.get(`https://${DOMAIN}/User/Profile/${phone}/`);
-
-    setData(result.data.data);
-
-  };
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (phone) {
+      dispatch(fetchProfile(phone));
+    }
+  }, [dispatch, navigation]);
 
   return (
-  
     <View style={styles.container}>
-    {openEditComponent==='name' && <EditComponent initialValue={data.name} onCancel={()=>setopenEditComponent('')}/>}
+      {openEditComponent === 'name' && (
+        <EditComponent
+          initialValue={data ? data.name : 'Name'}
+          onCancel={() => setopenEditComponent('')}
+        />
+      )}
       <View style={styles.boxContainer}>
-        <TouchableOpacity onPress={()=>handleEdit2('name')} >
+        <TouchableOpacity onPress={() => handleEdit2('name')}>
           <Text
             style={{
               ...styles.name,
               fontSize: getNameFontSize(),
-              color: data.name ? 'white' : 'red',
+              color: data && data.name ? 'white' : 'red',
             }}>
-            {isFieldRequired(data.name)}
+            {isFieldRequired(data ? data.name : 'Required')}
           </Text>
           <Text style={styles.number}>{phone}</Text>
         </TouchableOpacity>
         {data && (
           <TouchableOpacity
-          onPress={() => {
-            handleProfilePic()
-          }}>
-          <View className="rounded-full overflow-hidden">
-            <Image
-              resizeMode="cover"
-              source={data.ProfilePic ? {uri: data.ProfilePic} : user}
-              className="w-20 h-20"
-            />
-          </View>
-        </TouchableOpacity>
+            onPress={() => {
+              ImagePicker('pic');
+            }}>
+            <View className="rounded-full overflow-hidden">
+              <Image
+                resizeMode="cover"
+                source={data.ProfilePic ? {uri: data.ProfilePic} : user}
+                className="w-20 h-20"
+              />
+            </View>
+          </TouchableOpacity>
         )}
       </View>
       <Text
@@ -129,23 +190,26 @@ const UserProfile = () => {
                 fontWeight: 'bold',
               }}>
               <Text
-              className={`${data.email?"":"ml-[102px]"}`}
-                style={{...styles.label, color: data.email ? '#000000c2' : 'red'}}>
-                {isFieldRequired(data.email)}
+                className={`${data && data.email ? '' : 'ml-[102px]'}`}
+                style={{
+                  ...styles.label,
+                  color: data && data.email ? '#121212' : 'red',
+                }}>
+                {isFieldRequired(data && data.email)}
               </Text>
             </View>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => handleEdit('EditGender')}>
-        <View style={styles.fieldContainer}>
+          <View style={styles.fieldContainer}>
             <MaterialCommunityIcons
               name="city"
               size={20}
               color="#8F00FF"
               style={styles.icon}
             />
-            <Text style={styles.labelText}>City{"  "}</Text>
+            <Text style={styles.labelText}>City{'  '}</Text>
             <View
               style={{
                 marginLeft: 30,
@@ -156,13 +220,15 @@ const UserProfile = () => {
                 fontWeight: 'bold',
               }}>
               <Text
-               className="ml-[131px]"
-                style={{...styles.label, color: data.Gender ? '#000000c2' : 'red'}}>
-                {isFieldRequired(data.City)}
+                className="ml-[131px]"
+                style={{
+                  ...styles.label,
+                  color: data && data.Gender ? '#121212' : 'red',
+                }}>
+                {isFieldRequired(data && data.City)}
               </Text>
             </View>
           </View>
-
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => handleEdit('EditGender')}>
@@ -184,9 +250,12 @@ const UserProfile = () => {
                 fontWeight: 'bold',
               }}>
               <Text
-               className="ml-[101px]"
-                style={{...styles.label, color: data.Gender ? '#000000c2' : 'red'}}>
-                {isFieldRequired(data.Gender)}
+                className="ml-[101px]"
+                style={{
+                  ...styles.label,
+                  color: data && data.Gender ? '#121212' : 'red',
+                }}>
+                {isFieldRequired(data && data.Gender)}
               </Text>
             </View>
           </View>
@@ -214,18 +283,23 @@ const UserProfile = () => {
                 style={{
                   ...styles.label,
                   color:
-                    data.Date_of_Birth === 'Invalid Date' ? 'red' : '#000000c2',
+                    data && data.Date_of_Birth === 'Invalid Date'
+                      ? 'red'
+                      : '#121212',
                 }}>
-                {new Date(data.Date_of_Birth).toLocaleDateString('en-IN', {
-                  day: 'numeric',
-                  month: 'long',
-                  year: 'numeric',
-                })}
+                {new Date(data && data.Date_of_Birth).toLocaleDateString(
+                  'en-IN',
+                  {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  },
+                )}
               </Text>
             </View>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleEdit('EditGender')}>
+        <TouchableOpacity onPress={() => ImagePicker('adhar')}>
           <View style={styles.fieldContainer}>
             <FontAwesome5
               name="address-card"
@@ -238,13 +312,13 @@ const UserProfile = () => {
               className="ml-28"
               style={{
                 ...styles.label,
-                color: data.Adhar_Card ? 'green' : 'red',
+                color: data && data.Adhar_Card ? 'green' : 'red',
               }}>
-              {isFieldRequired2(data.Adhar_Card)}
+              {isFieldRequired2(data && data.Adhar_Card)}
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleEdit('EditGender')}>
+        <TouchableOpacity onPress={() => ImagePicker('License')}>
           <View style={styles.fieldContainer}>
             <FontAwesome
               name="drivers-license-o"
@@ -257,9 +331,9 @@ const UserProfile = () => {
               className="ml-20"
               style={{
                 ...styles.label,
-                color: data.license_id ? 'green' : 'red',
+                color: data && data.license_id ? 'green' : 'red',
               }}>
-              {isFieldRequired2(data.license_id)}
+              {isFieldRequired2(data && data.license_id)}
             </Text>
           </View>
         </TouchableOpacity>
@@ -271,7 +345,7 @@ const UserProfile = () => {
           Logout
         </Text>
       </View>
-      <Text className="text-[#000000c2] mb-4">
+      <Text className="text-[#121212] mb-4">
         {' '}
         <Text className="text-yellow-500">&copy;</Text> {currentYear}{' '}
         Airyyrides.com

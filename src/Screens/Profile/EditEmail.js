@@ -26,7 +26,7 @@ const EditEmail = () => {
   const handleSave = async () => {
     setIsEditing(false);
     const data = {email: email};
-    await editProfile(data);
+    await editProfile(data, 'application/json');
   };
 
   return (
@@ -68,7 +68,7 @@ const EditEmail = () => {
             placeholder="Enter your new email"
             keyboardType="email-Gender"
             autoCapitalize="none"
-            placeholderTextColor={'#000000c2'}
+            placeholderTextColor={'#121212'}
           />
         ) : (
           <Text style={styles.emailText}>Current Email: {prop}</Text>
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     maxWidth: 100,
   },
   buttonText: {
-    color: '#000000c2',
+    color: '#121212',
     fontSize: 19,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -173,14 +173,14 @@ const styles = StyleSheet.create({
     height: 40,
     borderWidth: 1,
     borderColor: '#ccc',
-    color: '#000000c2',
+    color: '#121212',
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 20,
   },
   emailText: {
     fontSize: 16,
-    color: '#000000c2',
+    color: '#121212',
     marginBottom: 20,
   },
 });

@@ -1,13 +1,29 @@
 // EditComponent.js
 
-import React, { useState ,useEffect} from 'react';
-import { View, Text, TextInput, KeyboardAvoidingView,Animated,TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  KeyboardAvoidingView,
+  Animated,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+import { ProfileEdit } from '../Screens/Profile/ProfileEdit';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-const EditComponent = ({ initialValue, onSave, onCancel }) => {
+const EditComponent = ({initialValue, onCancel}) => {
   const [editedValue, setEditedValue] = useState(initialValue);
   const translateY = new Animated.Value(300);
-  const handleSave = () => {
-    onSave(editedValue);
+
+
+  const editProfile = ProfileEdit();
+  const handleSave = async () => {
+   
+    const data = { name: editedValue};
+    await editProfile(data, 'application/json');
+    handleCancel()
+   
   };
   const handleCancel = () => {
     Animated.timing(translateY, {
@@ -23,19 +39,20 @@ const EditComponent = ({ initialValue, onSave, onCancel }) => {
     }).start();
   }, []);
 
-
   return (
-    <View className=' border-x-[4px] z-[100] border-t-[4px] border-b-[1px] rounded-t-[40px] border-green-600' style={styles.editContainer} >
+    <View
+      className=" border-x-[4px] z-[100] border-t-[4px] border-b-[1px] rounded-t-[40px] border-green-600"
+      style={styles.editContainer}>
       <TouchableOpacity onPress={handleCancel} style={styles.cancelButton}>
         <MaterialIcons name="close" size={24} color="#000" />
       </TouchableOpacity>
-      <Text className='text-[#000000c2] mb-10 text-2xl '>EditName</Text>
+      <Text className="text-[#121212] mb-10 text-2xl ">EditName</Text>
       <TextInput
-      placeholderTextColor={'#000000c2'}
-        placeholder={initialValue?initialValue:"Name"}
-        style={styles.input}
+        placeholderTextColor={'black'}
+        placeholder={initialValue ? initialValue : 'Enter Full Name'}
+        style={styles.input }
         value={editedValue}
-        onChangeText={(text) => setEditedValue(text)}
+        onChangeText={text => setEditedValue(text)}
       />
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
@@ -53,11 +70,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     padding: 20,
-    
-   backgroundColor: '#fff',
+
+    backgroundColor: '#fff',
   },
   input: {
     height: 40,
+    color:'black',
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 10,
@@ -81,7 +99,7 @@ const styles = StyleSheet.create({
     right: 10,
     padding: 10,
     zIndex: 1,
-    color:'#000000c2'
+    color: '#121212',
   },
   buttonText: {
     color: '#fff',

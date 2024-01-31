@@ -49,11 +49,11 @@ export default function Home() {
 
         {/* Text */}
         <View className="px-5 w-screen  ">
-          <Text className="font-bold text-3xl text-[#000000c2] ">
+          <Text className="font-bold text-3xl text-[#121212] ">
             Find your favorite
           </Text>
-          <Text className="font-bold text-3xl mt-2 text-[#000000c2]">Biks !</Text>
-          <Text className="text-[#000000c2] mt-3">
+          <Text className="font-bold text-3xl mt-2 text-[#121212]">Biks !</Text>
+          <Text className="text-[#121212] mt-3">
             Have a very pleasant experience
           </Text>
         </View>
@@ -62,7 +62,7 @@ export default function Home() {
           <View style={styles.searchBar__unclicked}>
             <TextInput
               style={styles.inputForSearch}
-              placeholderTextColor={'#000000c2'}
+              placeholderTextColor={'#121212'}
               placeholder="Search"
               value={search}
               onChangeText={text => {
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   inputForSearch: {
     fontSize: 20,
     marginLeft: 10,
-    color: '#000000c2',
+    color: '#121212',
     flex: 1,
   },
   HomeHead2: {

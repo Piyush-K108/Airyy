@@ -15,8 +15,10 @@ import Rateus from '../Screens/Rateus';
 import LeftModel from '../Components/LeftModel';
 import History from '../Screens/History';
 import BikeDetails from '../Screens/BikeDetails';
-import Book from '../Screens/Book';
-import Bikes from '../Screens/Bikes';
+import Book from '../Screens/Booking/Book';
+import Bikes from '../Screens/Booking/Bikes';
+import Schedule from '../Screens/Schedule';
+import Offers from '../Screens/Offers';
 
 const Stack = createNativeStackNavigator();
 
@@ -50,7 +52,7 @@ const MainStack = () => {
           headerShown: true,
           headerTitle: 'Bill',
           headerStyle: {
-            backgroundColor: '#feb101', 
+            backgroundColor: '#fff', 
           },
         }} />
       <Stack.Screen name="UserProfile" component={UserProfile}  />
@@ -61,7 +63,7 @@ const MainStack = () => {
           headerShown: true,
           headerTitle: 'Rate US',
           headerStyle: {
-            backgroundColor: '#feb101', 
+            backgroundColor: '#fff', 
           },
         }}
       />
@@ -72,7 +74,7 @@ const MainStack = () => {
           headerShown: true,
           headerTitle: 'Menu',
           headerStyle: {
-            backgroundColor: '#feb101', 
+            backgroundColor: '#fff', 
           },
         }}
       />
@@ -83,13 +85,15 @@ const MainStack = () => {
           headerShown: true,
           headerTitle: 'Details',
           headerStyle: {
-            backgroundColor: '#feb101', 
+            backgroundColor: '#fff', 
           },
         }}
       />
       <Stack.Screen name="EditDateOfBirth" component={EditDateOfBirth} />
       <Stack.Screen name="History" component={History} />
       <Stack.Screen name="Bikes" component={Bikes} />
+      <Stack.Screen name="Offers" component={Offers} />
+      <Stack.Screen name="Schedule" component={Schedule} />
       <Stack.Screen name="EditEmail" component={EditEmail} />
       <Stack.Screen name="EditGender" component={EditGender} />
       <Stack.Screen name="EditName" component={EditName} />

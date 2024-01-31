@@ -3,33 +3,39 @@ import {Text, View, TouchableOpacity} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
-
+import { useDispatch } from 'react-redux';
+import { logout } from '../Redux/Counter/counterAction';
 const ButtonArrow = ({name, icon, screen, iconname}) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch()
+  const handelLogout = () => {
+    dispatch(logout());
+  };
+
   return (
-    <TouchableOpacity onPress={() => navigation.navigate(screen)}>
+    <TouchableOpacity onPress={() => {name ==='Logout'?  handelLogout():navigation.navigate(screen)}}>
       <View className="flex flex-row w-[100%] justify-between  px-4 ">
         <View className="flex-row ">
           {iconname === 'ion' ? (
             <Ionicons
-              style={{color: '#000000c2'}}
-              className="text-[#000000c2]"
+              style={{color: 'rgb(253 224 71)'}}
+              className="text-yellow-300"
               name={icon}
               size={20}
             />
           ) : (
             <MaterialIcons
-              style={{color: '#000000c2'}}
-              className="text-[#000000c2]"
+              style={{color: 'rgb(253 224 71)'}}
+              className="text-[#121212]"
               name={icon}
               size={20}
             />
           )}
-          <Text className="text-[#000000c2] px-2">{name}</Text>
+          <Text className="text-[#121212] px-2">{name}</Text>
         </View>
         <Ionicons
-          style={{color: '#000000c2', marginRight: 20}}
-          className="text-[#000000c2]"
+          style={{color: '#121212', marginRight: 20}}
+          className="text-[#121212]"
           name={'chevron-forward'}
           size={20}
         />

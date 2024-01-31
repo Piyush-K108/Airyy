@@ -11,7 +11,7 @@ const EditName = () => {
   const editProfile = ProfileEdit();
   const handleUpdateName = async () => {
     const data = { name: firstName + " " + lastName };
-    await editProfile(data);
+    await editProfile(data, 'application/json');
    
   };
 
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
 
   EditBtnText: {
-    color: '#000000c2',
+    color: '#121212',
     fontSize: 17,
     fontWeight: 'bold',
     textAlign: 'center',
