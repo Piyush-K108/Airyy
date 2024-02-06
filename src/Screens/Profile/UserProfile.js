@@ -17,6 +17,8 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {useNavigation} from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionican from 'react-native-vector-icons/Ionicons';
+
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch} from 'react-redux';
 import {fetchProfile, logout} from '../../Redux/Counter/counterAction';
@@ -138,14 +140,14 @@ const UserProfile = () => {
         />
       )}
       <View style={styles.boxContainer}>
-        
+        {/* <Text>We can show our offers</Text> */}
       </View>
       {data && (
         <>
           <TouchableOpacity
             onPress={() => {
               ImagePicker('pic');
-            }}>  
+            }}>
             <View className="rounded-full justify-end flex -mt-[18%] overflow-hidden">
               <Image
                 resizeMode="cover"
@@ -154,18 +156,20 @@ const UserProfile = () => {
               />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity className='w-screen flex justify-center items-center' onPress={() => handleEdit2('name')}>
-          <Text 
-            style={{
-              fontSize: getNameFontSize(),
-              color: data && data.name ? 'black' : 'red',
-            }}>
-            {isFieldRequired(data ? data.name : 'Required')}
-          </Text>
-          <Text className='text-black'>{phone}</Text>
-        </TouchableOpacity>
-          </>
-        )}
+          <TouchableOpacity
+            className="w-screen flex justify-center items-center"
+            onPress={() => handleEdit2('name')}>
+            <Text
+              style={{
+                fontSize: getNameFontSize(),
+                color: data && data.name ? 'black' : 'red',
+              }}>
+              {isFieldRequired(data ? data.name : 'Required')}
+            </Text>
+            <Text className="text-black">{phone}</Text>
+          </TouchableOpacity>
+        </>
+      )}
       <View style={styles.parentContainerForProfile}>
         <TouchableOpacity onPress={() => handleEdit('EditEmail', data.email)}>
           <View style={styles.fieldContainer}>
@@ -334,14 +338,19 @@ const UserProfile = () => {
           </View>
         </TouchableOpacity>
       </View>
-      <View className=" items-center mb-4 py-1  bg-yellow-500  rounded-full">
+      <View className="flex flex-row absolute top-[730px] px-24 py-2 justify-between shadow-xl   bg-yellow-200  rounded-full">
+        <Ionican
+          name="log-out-outline"
+          size={20}
+          color="#000"
+          style={styles.icon}
+        />
         <Text
           onPress={handelLogout}
-          className="text-white font-bold text-xl flex py-2 px-20  justify-center items-center">
+          className="text-black font-bold text-[16px] flex  justify-center items-center">
           Logout
         </Text>
       </View>
-      
     </View>
   );
 };
@@ -357,7 +366,7 @@ const styles = StyleSheet.create({
   boxContainer: {
     width: Dimensions.get('window').width * 1.0,
     height: 180,
-    backgroundColor: 'rgb(234, 179, 8)',
+    backgroundColor: '#fef08a',
     justifyContent: 'flex-end',
     flexDirection: 'col',
     alignItems: 'center',

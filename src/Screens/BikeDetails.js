@@ -21,47 +21,50 @@ const BikeDetails = () => {
   return (
     <>
       <View className="justify-center items-center bg-white h-[600px]">
-      <Image
+        <Image
           resizeMode="cover"
           source={{uri: selectedBike.Image}}
-          className="w-96 h-96 "
+          className="w-72 h-72 "
         />
         <Text className="text-black mb-40">Coming Soon the 3d Image</Text>
-        
       </View>
 
-      <View className="border-x-[4px] z-[100] border-t-[4px] border-b-[1px] rounded-t-[40px] h-screen bottom-40 w-screen  border-green-600">
-        <View className="w-screen flex-row justify-between">
+      <View className="border-x-[4px] z-[100] border-t-[4px] border-b-[1px] rounded-t-[40px] h-screen bottom-40 w-screen  border-yellow-200">
+        <View className="w-screen flex-row justify-between mb-2">
           <View>
             <Text className="text-black text-2xl px-8 py-2">
               {selectedBike.b_id}
             </Text>
-            <Text className="text-black font-extralight text-xl px-8 ">
+            <Text className="text-black font-extralight text-[18px] px-8 ">
               {selectedBike.license_plate}
             </Text>
           </View>
-          <TouchableOpacity onPress={()=>{navigation.navigate('Book',{bid:selectedBike.b_id})}} className="bg-blue-600 flex items-center justify-center w-20 h-10 mx-10 mt-6">
-          <Text className="text-white font-bold">Book</Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Book', {bid: selectedBike.b_id});
+            }}
+            className="bg-black flex items-center justify-center w-20 h-10 mx-10 mt-6 shadow-2xl rounded-lg ">
+            <Text className="text-yellow-400 font-bold">Book</Text>
           </TouchableOpacity>
         </View>
 
-        <View className=" flex  gap-4 pt-6 pr-10  flex-row">
-          <View className="bg-yellow-500 w-24 h-20 flex rounded-[20px] items-center justify-center">
-            <Text className="text-white font-bold">
+        <View className="flex justify-evenly  gap-4 p-4  flex-row">
+          <View className="bg-yellow-200 w-24 h-10 flex rounded-[15px] items-center justify-center shadow-md">
+            <Text className="text-black font-bold">
               {selectedBike.KM_Now}-KM
             </Text>
           </View>
 
-          <View className="bg-yellow-500 w-24 h-20 flex rounded-[20px] items-center justify-center">
-            <Text className="text-white font-bold">Model</Text>
+          <View className="bg-yellow-200 w-24 h-10 flex rounded-[15px] items-center justify-center">
+            <Text className="text-black font-bold">Model</Text>
           </View>
-          <View className="bg-yellow-500 w-24 h-20 flex rounded-[20px] items-center justify-center">
-            <Text className="text-white font-bold">Year</Text>
+          <View className="bg-yellow-200 w-24 h-10 flex rounded-[15px] items-center justify-center">
+            <Text className="text-black font-bold">Year</Text>
           </View>
         </View>
-        <View className="text-black  px-8 py-2">
-          <Text className="text-2xl text-black">Description</Text>
-          <Text className="text-[14px] text-justify text-black font-light">
+        <View className="text-black bg-white flex-1  px-8 py-2">
+          <Text className="text-xl text-black mb-2">Description</Text>
+          <Text className="text-[14px] text-justify leading-5 text-black font-light">
             Cillum dolor enim duis irure. Dolor anim ullamco nisi est non
             commodo quis irure aliquip consectetur voluptate sint et.
           </Text>

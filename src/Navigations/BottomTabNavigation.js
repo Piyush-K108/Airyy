@@ -14,33 +14,119 @@ const Tab = createBottomTabNavigator();
 function BottomTabNavigation() {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
+      screenOptions={{
+        tabBarActiveTintColor: '#000',
+        // tabBarInactiveTintColor: '#9695A5',
+        tabBarInactiveTintColor: '#7B7E7B',
 
-          if (route.name === 'Home') {
-            iconName = 'home';
-          } else if (route.name === 'Bikes') {
-            iconName = 'motorcycle';
-          } else if (route.name === 'Schedule') {
-            iconName = 'event-note';
-          } else if (route.name === 'History') {
-            iconName = 'history';
-          }
-
-          return <MaterialIcons name={iconName} size={size} color={color} />;
+        tabBarLabelStyle: {
+          fontSize: 9,
+          fontWeight: 'bold',
         },
-        tabBarActiveTintColor: '#fab319',
-        tabBarInactiveTintColor: 'gray',
-        headerShown: false,
-      })}
-    >
+        tabBarStyle: {
+          // backgroundColor: '#FDFEE7' light,
+          backgroundColor: '#FDFEE0',
+          // backgroundColor: '#FBFCB4',
+          position: 'absolute',
+          bottom: 10,
+          left: 20,
 
-      <Tab.Screen name="Home" component={Home} options={{ tabBarLabel: "Home" }} />
-      <Tab.Screen name="Bikes" component={Bikes} options={{ tabBarLabel: "Bikes" }} />
-      <Tab.Screen name="Schedule" component={Schedule} options={{ tabBarLabel: "Schedule" }} />
-      <Tab.Screen name="History" component={History} options={{ tabBarLabel: "History" }} />
+          right: 20,
+          elevation: 1,
+          borderRadius: 30,
+          height: 60,
+        },
+        tabBarShowLabel: false,
+      }}>
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={({route}) => ({
+          headerShown: false,
+          tabBarIcon: ({color, size}) => {
+            let iconName;
 
+            if (route.name === 'Home') {
+              iconName = 'home';
+            } else if (route.name === 'Bikes') {
+              iconName = 'motorcycle';
+            } else if (route.name === 'Schedule') {
+              iconName = 'event-note';
+            } else if (route.name === 'History') {
+              iconName = 'history';
+            }
+
+            return <MaterialIcons name={iconName} size={size} color={color} />;
+          },
+        })}
+      />
+      <Tab.Screen
+        name="Bikes"
+        component={Bikes}
+        options={({route}) => ({
+          headerShown: false,
+          tabBarIcon: ({color, size}) => {
+            let iconName;
+
+            if (route.name === 'Home') {
+              iconName = 'home';
+            } else if (route.name === 'Bikes') {
+              iconName = 'motorcycle';
+            } else if (route.name === 'Schedule') {
+              iconName = 'event-note';
+            } else if (route.name === 'History') {
+              iconName = 'history';
+            }
+
+            return <MaterialIcons name={iconName} size={size} color={color} />;
+          },
+        })}
+      />
+      <Tab.Screen
+        name="Schedule"
+        component={Schedule}
+        options={({route}) => ({
+          headerShown: false,
+          tabBarIcon: ({color, size}) => {
+            let iconName;
+
+            if (route.name === 'Home') {
+              iconName = 'home';
+            } else if (route.name === 'Bikes') {
+              iconName = 'motorcycle';
+            } else if (route.name === 'Schedule') {
+              iconName = 'event-note';
+            } else if (route.name === 'History') {
+              iconName = 'history';
+            }
+
+            return <MaterialIcons name={iconName} size={size} color={color} />;
+          },
+        })}
+      />
+      <Tab.Screen
+        name="History"
+        component={History}
+        options={({route}) => ({
+          headerShown: false,
+
+          tabBarIcon: ({color, size}) => {
+            let iconName;
+
+            if (route.name === 'Home') {
+              iconName = 'home';
+            } else if (route.name === 'Bikes') {
+              iconName = 'motorcycle';
+            } else if (route.name === 'Schedule') {
+              iconName = 'event-note';
+            } else if (route.name === 'History') {
+              iconName = 'history';
+            }
+
+            return <MaterialIcons name={iconName} size={size} color={color} />;
+          },
+        })}
+      />
     </Tab.Navigator>
   );
 }
