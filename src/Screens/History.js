@@ -3,48 +3,46 @@ import {
   Text,
   StyleSheet,
   Image,
-  FlatList,
+  RefreshControl,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import {useEffect, useState} from 'react';
 import axios from 'axios';
-import { phone } from '../Redux/Counter/counterAction';
 import {useNavigation} from '@react-navigation/native';
 import {DOMAIN} from '@env';
 const History = () => {
   const [data, setData] = useState([]);
   const navigation = useNavigation();
+  const [refreshing, setRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const phone2 = useSelector(state => state.counter.phone);
-  
-
-
-  // Define a state variable to keep track of which buttons have been clicked
-  const [clicked, setClicked] = useState(data.map(() => false));
-
-  const [requests, setRequests] = useState([]);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setIsLoading(true)
+    setTimeout(() => {
+      setRefreshing(false);
+      setIsLoading(false); 
+    }, 2000);
+  }, []);
 
   const fetchData = async () => {
-    const result = await axios.get(
-      `https://${DOMAIN}/User/history/${phone2}`,
-    );
-    
+    const result = await axios.get(`https://${DOMAIN}/User/history/${phone2}`);
+
     setData(result.data.Data);
-   
+    setIsLoading(false);
   };
   useEffect(() => {
     fetchData();
   }, []);
 
-
-  // const HomeImg = '../src/assets/homeforstudentImg.jpg'
   return (
-    <View style={{flex: 1, alignItems: 'center', backgroundColor: '#FFFFFF'}}>
+    <View  style={{flex: 1, alignItems: 'center', backgroundColor: '#FFFFFF'}}>
       <View style={{flex: 1, alignItems: 'center', marginTop: 40}}>
         <Text
-   
           style={{
             marginTop: 0,
             color: 'green',
@@ -52,49 +50,86 @@ const History = () => {
             fontWeight: '800',
           }}>
           {' '}
-        Ride History{' '}
+          Ride History{' '}
         </Text>
 
-        {/* FlatList */}
-        <ScrollView>
-          <View style={styles.container}>
-            {data.reverse().map((item, index) => (
-              <View key={index} style={styles.item}>
-                <Text style={styles.title}>{item.rental_date}{" "}{item.rental_time}</Text>
-                <Text style={styles.expertin}>{item.return_date}{" "}{item.return_time}</Text>
-                <Text style={styles.description}>{item.UPIMethod ? "Online":"Cash"}</Text>
-                <Text style={styles.description}>Rs{item.Amount}</Text>
-                <Image source={require('../assets/Bikes/IMG_9496.jpg')} style={styles.img} />
-                <TouchableOpacity
-             onPress={() => navigation.navigate('Bill', {
-              phoneNumber: phone2,
-              selectedDate: item.return_date,
-            })}
-                  style={{
-                    padding: 5,
-                    backgroundColor: '#0096FF',
-                    borderRadius: 10,
-                    width: 100,
-                    alignItems: 'center',
-                    marginTop: 10,
-                  }}
-                  >
-                  <Text
-                    style={{color: '#ffffff', fontSize: 15, fontWeight: '600'}}>
-                    Show
-                  </Text>
-                </TouchableOpacity>
-                
-              </View>
-            ))}
+        {isLoading ? (
+          <View style={styles.loader}>
+            <ActivityIndicator size="large" color="#000000" />
           </View>
-        </ScrollView>
+        ) : (
+          <ScrollView  refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
+            <View style={styles.container}>
+              {data.length > 0 ? (
+                data.reverse().map((item, index) => (
+                  <View key={index} style={styles.item}>
+                    <Text style={styles.title}>
+                      {item.rental_date} {item.rental_time}
+                    </Text>
+                    <Text style={styles.expertin}>
+                      {item.return_date} {item.return_time}
+                    </Text>
+                    <Text style={styles.description}>
+                      {item.UPIMethod ? 'Online' : 'Cash'}
+                    </Text>
+                    <Text style={styles.description}>Rs{item.Amount}</Text>
+                    <Image
+                      source={require('../assets/Bikes/IMG_9496.jpg')}
+                      style={styles.img}
+                    />
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('Bill', {
+                          phoneNumber: phone2,
+                          selectedDate: item.return_date,
+                        })
+                      }
+                      style={{
+                        padding: 5,
+                        backgroundColor: '#0096FF',
+                        borderRadius: 10,
+                        width: 100,
+                        alignItems: 'center',
+                        marginTop: 10,
+                      }}>
+                      <Text
+                        style={{
+                          color: '#ffffff',
+                          fontSize: 15,
+                          fontWeight: '600',
+                        }}>
+                        Show
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                ))
+              ) : (
+                <View className="justify-center items-center h-screen">
+                  <Text className="text-black">No Previous History</Text>
+                </View>
+              )}
+            </View>
+          </ScrollView>
+        )}
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  loader: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+  },
+
   studentHomeHead: {
     fontSize: 30,
     fontWeight: '400',
@@ -113,7 +148,7 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-    
+
     backgroundColor: '#F5FCFF',
     padding: 20,
   },
@@ -160,7 +195,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: '#fff',
     padding: 16,
-    
   },
   item: {
     alignItems: 'center',

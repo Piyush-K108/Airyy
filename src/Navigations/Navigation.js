@@ -19,6 +19,7 @@ import Book from '../Screens/Booking/Book';
 import Bikes from '../Screens/Booking/Bikes';
 import Schedule from '../Screens/Schedule';
 import Offers from '../Screens/Offers';
+import FutureBook from '../Screens/Booking/FutureBook';
 
 const Stack = createNativeStackNavigator();
 
@@ -90,6 +91,8 @@ const MainStack = () => {
         }}
       />
       <Stack.Screen name="EditDateOfBirth" component={EditDateOfBirth} />
+      <Stack.Screen name="FutureBook" component={FutureBook} />
+      <Stack.Screen name="Book" component={Book} />
       <Stack.Screen name="History" component={History} />
       <Stack.Screen name="Bikes" component={Bikes} />
       <Stack.Screen name="Offers" component={Offers} />

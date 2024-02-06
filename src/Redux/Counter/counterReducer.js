@@ -1,4 +1,4 @@
-import { LOGIN, PHONE, BIKES,PROFILE } from './counterActionTypes';
+import {LOGIN, PHONE, BIKES, PROFILE,LOGOUT} from './counterActionTypes';
 
 const initialState = {
   loggedIn: false,
@@ -13,6 +13,10 @@ const counterReducer = (state = initialState, action) => {
       return {
         ...state,
         loggedIn: action.payload,
+      };
+    case LOGOUT:
+      return {
+        ...initialState,
       };
     case PHONE:
       return {

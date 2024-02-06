@@ -25,8 +25,6 @@ import EditComponent from '../../Components/EditComponent';
 import {ProfileEdit} from './ProfileEdit';
 const UserProfile = () => {
   const data = useSelector(state => state.counter.profile);
-  const [Adharcard, setAdharcard] = useState(null);
-  const [License, setLicense] = useState(null);
   const [openEditComponent, setopenEditComponent] = useState('');
   const currentYear = new Date().getFullYear();
   const navigation = useNavigation();
@@ -140,36 +138,34 @@ const UserProfile = () => {
         />
       )}
       <View style={styles.boxContainer}>
-        <TouchableOpacity onPress={() => handleEdit2('name')}>
-          <Text
-            style={{
-              ...styles.name,
-              fontSize: getNameFontSize(),
-              color: data && data.name ? 'white' : 'red',
-            }}>
-            {isFieldRequired(data ? data.name : 'Required')}
-          </Text>
-          <Text style={styles.number}>{phone}</Text>
-        </TouchableOpacity>
-        {data && (
+        
+      </View>
+      {data && (
+        <>
           <TouchableOpacity
             onPress={() => {
               ImagePicker('pic');
-            }}>
-            <View className="rounded-full overflow-hidden">
+            }}>  
+            <View className="rounded-full justify-end flex -mt-[18%] overflow-hidden">
               <Image
                 resizeMode="cover"
                 source={data.ProfilePic ? {uri: data.ProfilePic} : user}
-                className="w-20 h-20"
+                className="w-24 h-24  "
               />
             </View>
           </TouchableOpacity>
+          <TouchableOpacity className='w-screen flex justify-center items-center' onPress={() => handleEdit2('name')}>
+          <Text 
+            style={{
+              fontSize: getNameFontSize(),
+              color: data && data.name ? 'black' : 'red',
+            }}>
+            {isFieldRequired(data ? data.name : 'Required')}
+          </Text>
+          <Text className='text-black'>{phone}</Text>
+        </TouchableOpacity>
+          </>
         )}
-      </View>
-      <Text
-        style={{fontSize: 25, color: '#000', marginLeft: -250, marginTop: 30}}>
-        Profile
-      </Text>
       <View style={styles.parentContainerForProfile}>
         <TouchableOpacity onPress={() => handleEdit('EditEmail', data.email)}>
           <View style={styles.fieldContainer}>
@@ -338,18 +334,14 @@ const UserProfile = () => {
           </View>
         </TouchableOpacity>
       </View>
-      <View className="w-screen  items-center mb-4 p-1 bg-yellow-500 ">
+      <View className=" items-center mb-4 py-1  bg-yellow-500  rounded-full">
         <Text
           onPress={handelLogout}
-          className="text-white font-bold text-xl flex justify-center items-center">
+          className="text-white font-bold text-xl flex py-2 px-20  justify-center items-center">
           Logout
         </Text>
       </View>
-      <Text className="text-[#121212] mb-4">
-        {' '}
-        <Text className="text-yellow-500">&copy;</Text> {currentYear}{' '}
-        Airyyrides.com
-      </Text>
+      
     </View>
   );
 };
@@ -366,8 +358,8 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 1.0,
     height: 180,
     backgroundColor: 'rgb(234, 179, 8)',
-    justifyContent: 'space-around',
-    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    flexDirection: 'col',
     alignItems: 'center',
   },
   name: {
@@ -376,12 +368,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 20,
   },
-  number: {
-    fontSize: 18,
-    color: '#FFF',
-    // marginBottom: 40,
-    marginLeft: 20,
-  },
+
   Editimage: {
     height: 100,
     width: 280,

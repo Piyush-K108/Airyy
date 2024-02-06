@@ -18,14 +18,14 @@ const ButtonArrow = ({name, icon, screen, iconname}) => {
         <View className="flex-row ">
           {iconname === 'ion' ? (
             <Ionicons
-              style={{color: 'rgb(253 224 71)'}}
+              style={{color: 'rgb(253 205 71)'}}
               className="text-yellow-300"
               name={icon}
               size={20}
             />
           ) : (
             <MaterialIcons
-              style={{color: 'rgb(253 224 71)'}}
+              style={{color: name!=='Logout'?'rgb(253 205 71)':"red"}}
               className="text-[#121212]"
               name={icon}
               size={20}

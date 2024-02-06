@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LOGIN, PHONE, BIKES,PROFILE } from './counterActionTypes';
+import { LOGIN, PHONE, BIKES,PROFILE,LOGOUT } from './counterActionTypes';
 import {DOMAIN} from '@env';
 
 export const login = () => {
@@ -11,8 +11,7 @@ export const login = () => {
 
 export const logout = () => {
   return {
-    type: LOGIN,
-    payload: false
+    type: LOGOUT
   };
 };
 

@@ -14,10 +14,11 @@ const Header = () => {
   return (
     <>
       
-      <View className="py-8 px-5  flex flex-row justify-between">
+      <View className="my-8 mx-3 bg-[#e1d689] rounded-full  flex flex-row justify-between">
+        
         <TouchableOpacity
           onPress={()=>navigation.navigate('LeftModel')}>
-          <View className="mt-3 flex-row   overflow-hidden rounded-full">
+          <View className="mt-3 flex-row  mx-2 overflow-hidden rounded-full">
             <MaterialIcons
               name='menu'
               size={32}

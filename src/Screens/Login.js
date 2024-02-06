@@ -13,7 +13,7 @@ import React from 'react';
 import {useState} from 'react';
 import {DOMAIN} from '@env';
 import {useDispatch} from 'react-redux';
-import {login,phone} from '../Redux/Counter/counterAction';
+import {fetchBikes, fetchProfile, login,phone} from '../Redux/Counter/counterAction';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {useSelector} from 'react-redux';
@@ -42,6 +42,8 @@ const Login = () => {
         console.log(number)
         dispatch(phone(number))
         dispatch(login());
+        dispatch(fetchProfile(number))
+        dispatch(fetchBikes())
 
      
       } else {

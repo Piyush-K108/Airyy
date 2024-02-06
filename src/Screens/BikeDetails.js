@@ -9,14 +9,15 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {useRoute} from '@react-navigation/core';
 
-const BikeDetails = ({route}) => {
+const BikeDetails = () => {
+  const route = useRoute();
   const {selectedBike} = route.params;
+  const navigation = useNavigation();
 
-  const handleBook = ()=>{
-    console.log(selectedBike.b_id)
-  }
+
   return (
     <>
       <View className="justify-center items-center bg-white h-[600px]">
@@ -39,22 +40,22 @@ const BikeDetails = ({route}) => {
               {selectedBike.license_plate}
             </Text>
           </View>
-          <TouchableOpacity onPress={handleBook} className="bg-blue-600 flex items-center justify-center w-20 h-10 mx-10 mt-6">
+          <TouchableOpacity onPress={()=>{navigation.navigate('Book',{bid:selectedBike.b_id})}} className="bg-blue-600 flex items-center justify-center w-20 h-10 mx-10 mt-6">
           <Text className="text-white font-bold">Book</Text>
           </TouchableOpacity>
         </View>
 
-        <View className="w-screen flex  gap-5 pt-6 px-8  flex-row">
-          <View className="bg-yellow-500 w-24 h-20 flex rounded-[24px] items-center justify-center">
+        <View className=" flex  gap-4 pt-6 pr-10  flex-row">
+          <View className="bg-yellow-500 w-24 h-20 flex rounded-[20px] items-center justify-center">
             <Text className="text-white font-bold">
               {selectedBike.KM_Now}-KM
             </Text>
           </View>
 
-          <View className="bg-yellow-500 w-24 h-20 flex rounded-[24px] items-center justify-center">
+          <View className="bg-yellow-500 w-24 h-20 flex rounded-[20px] items-center justify-center">
             <Text className="text-white font-bold">Model</Text>
           </View>
-          <View className="bg-yellow-500 w-24 h-20 flex rounded-[24px] items-center justify-center">
+          <View className="bg-yellow-500 w-24 h-20 flex rounded-[20px] items-center justify-center">
             <Text className="text-white font-bold">Year</Text>
           </View>
         </View>
@@ -62,9 +63,7 @@ const BikeDetails = ({route}) => {
           <Text className="text-2xl text-black">Description</Text>
           <Text className="text-[14px] text-justify text-black font-light">
             Cillum dolor enim duis irure. Dolor anim ullamco nisi est non
-            commodo quis irure aliquip consectetur voluptate sint et. Voluptate
-            incididunt tempor qui tempor eiusmod. Veniam exercitation est ut
-            proident sit magna non consequat officia.
+            commodo quis irure aliquip consectetur voluptate sint et.
           </Text>
         </View>
       </View>

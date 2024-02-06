@@ -22,11 +22,7 @@ const Bikes = () => {
     console.log(search);
   };
   
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchBikes());
-  }, [dispatch]);
 
   const renderItem = ({item}) => (
     <TouchableOpacity
@@ -55,7 +51,7 @@ const Bikes = () => {
           <Text className="font-bold text-3xl text-[#121212] ">
             Find your favorite
           </Text>
-          <Text className="font-bold text-3xl mt-2 text-[#121212]">Biks !</Text>
+          <Text className="font-bold text-3xl mt-2 text-[#121212]">Biks!</Text>
           <Text className="text-[#121212] mt-0">
             Have a very pleasant experience
           </Text>
@@ -65,7 +61,7 @@ const Bikes = () => {
         <View style={styles.searchBar__unclicked}>
           <TextInput
             style={styles.inputForSearch}
-            placeholderTextColor={'#121212'}
+            placeholderTextColor={'#818181'}
             placeholder="Find your Ride"
             value={search}
             onChangeText={text => {

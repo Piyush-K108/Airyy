@@ -22,7 +22,7 @@ export const ProfileEdit = () => {
           },
         };
       }
-
+      
       const response = await axios.put(
         `https://${DOMAIN}/User/Profile/${phone}/`,
         data,
