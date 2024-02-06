@@ -13,25 +13,18 @@ const Header = () => {
 
   return (
     <>
-      
-      <View className="my-8 mx-3 bg-[#e1d689] rounded-full  flex flex-row justify-between">
-        
-        <TouchableOpacity
-          onPress={()=>navigation.navigate('LeftModel')}>
+      <View className="my-8 mx-5 bg-yellow-100  rounded-full   flex flex-row justify-between">
+        <TouchableOpacity onPress={() => navigation.navigate('LeftModel')}>
           <View className="mt-3 flex-row  mx-2 overflow-hidden rounded-full">
-            <MaterialIcons
-              name='menu'
-              size={32}
-              color="#666"
-            />
+            <MaterialIcons name="menu" size={32} color="#666" />
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('UserProfile')}>
-          <View className="rounded-full overflow-hidden">
+          <View className="rounded-full overflow-hidden shadow-lg">
             <Image
               resizeMode="cover"
               source={data.ProfilePic ? {uri: data.ProfilePic} : user}
-              className="w-14 h-14"
+              className="w-14 h-14 shadow-lg"
             />
           </View>
         </TouchableOpacity>

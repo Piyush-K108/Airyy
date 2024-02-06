@@ -14,6 +14,8 @@ import {useEffect, useState} from 'react';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
 import {DOMAIN} from '@env';
+// import bikeOne from '../assets/Bikes/IMG_9496.JPG';
+
 const History = () => {
   const [data, setData] = useState([]);
   const navigation = useNavigation();
@@ -75,10 +77,10 @@ const History = () => {
                       {item.UPIMethod ? 'Online' : 'Cash'}
                     </Text>
                     <Text style={styles.description}>Rs{item.Amount}</Text>
-                    <Image
-                      source={require('../assets/Bikes/IMG_9496.jpg')}
+                    {/* <Image
+                      source={bikeOne}
                       style={styles.img}
-                    />
+                    /> */}
                     <TouchableOpacity
                       onPress={() =>
                         navigation.navigate('Bill', {

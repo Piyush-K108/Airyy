@@ -43,22 +43,22 @@ export default function Home() {
 
   return (
     <>
-      <View className="h-screen flex flex-col">
+      <View className="h-screen bg-yellow-200  flex flex-col">
         {/* Header */}
-       <Header/>
+        <Header />
 
         {/* Text */}
         <View className="px-5 w-screen  ">
           <Text className="font-bold text-3xl text-[#121212] ">
             Find your favorite
           </Text>
-          <Text className="font-bold text-3xl mt-2 text-[#121212]">Biks !</Text>
+          <Text className="font-bold text-3xl mt-2 text-[#121212]">Bikes !</Text>
           <Text className="text-[#121212] mt-3">
             Have a very pleasant experience
           </Text>
         </View>
 
-        <View className="justify-center px-5 pt-8 pb-2 ">
+        <View className="justify-center px-5 pt-8 pb-2 py-8 ">
           <View style={styles.searchBar__unclicked}>
             <TextInput
               style={styles.inputForSearch}
@@ -73,7 +73,7 @@ export default function Home() {
             />
             <MaterialIcons
               name="search"
-              size={20}
+              size={24}
               color="#666"
               style={{marginRight: 5}}
               onPress={() => {
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   inputForSearch: {
-    fontSize: 20,
+    fontSize: 16,
     marginLeft: 10,
     color: '#121212',
     flex: 1,

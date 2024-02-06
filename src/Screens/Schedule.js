@@ -75,10 +75,10 @@ const Scedule = () => {
                       {item.UPIMethod ? 'Online' : 'Cash'}
                     </Text>
                     <Text style={styles.description}>Rs{item.Amount}</Text>
-                    <Image
+                    {/* <Image
                       source={require('../assets/Bikes/IMG_9496.jpg')}
                       style={styles.img}
-                    />
+                    /> */}
                     <TouchableOpacity
                       onPress={() =>
                         navigation.navigate('Bill', {
