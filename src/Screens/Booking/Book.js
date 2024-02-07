@@ -9,7 +9,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import {useState} from 'react';
-import {Video} from 'react-native-video'
+// import {Video} from 'react-native-video'
 import 'react-native-gesture-handler';
 
 import {useNavigation} from '@react-navigation/native';
@@ -30,12 +30,12 @@ const Book = ({route}) => {
             </View>
 
             <View style={styles.Vcontainer}>
-              <Video
+              {/* <Video
                 source={require('../../assets/Airyy.mp4')}
                 style={styles.video}
                 resizeMode="cover"
                 repeat
-              />
+              /> */}
             </View>
 
             <View className='gap-x-20 px-2'
