@@ -14,30 +14,79 @@ import {useEffect, useState} from 'react';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
 import {DOMAIN} from '@env';
+import {Alert} from 'react-native';
 const Scedule = () => {
   const [data, setData] = useState([]);
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const phone2 = useSelector(state => state.counter.phone);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setIsLoading(true);
+    fetchData();
+
     setTimeout(() => {
       setRefreshing(false);
       setIsLoading(false);
     }, 2000);
   }, []);
 
-  // const fetchData = async () => {
-  //   const result = await axios.get(`https://${DOMAIN}/User/Scedule/${phone2}`);
+  const fetchData = async () => {
+    try {
+      const result = await axios.get(
+        `https://${DOMAIN}/User/Schedule/${phone2}/`,
+      );
+      setData(result.data.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching schedule data:', error);
 
-  //   setData(result.data.Data);
-  //   setIsLoading(false);
-  // };
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+      if (error.response) {
+        Alert.alert('Server Error', error.response.data.error);
+      } else if (error.request) {
+        Alert.alert('Error', 'No response from the server');
+      } else {
+        Alert.alert('Error', 'An unexpected error occurred');
+      }
+
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleCancel = async (id) => {
+    setIsLoading(true);
+
+    try {
+        const response = await fetch(`https://${DOMAIN}/User/Schedule/${phone2}/`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            },
+            body: JSON.stringify({ id: id }),
+        });
+
+        setIsLoading(false);
+        fetchData(r)
+
+        // Check if the response status indicates success (e.g., 204)
+        if (response.status === 204) {
+            console.log("Schedule deleted successfully");
+        } else {
+            console.error("Unexpected response:", response);
+        }
+    } catch (error) {
+      fetchData()
+        setIsLoading(false);
+        console.error("Error during fetch:", error);
+    }
+};
+
 
   return (
     <View style={{flex: 1, alignItems: 'center', backgroundColor: '#FFFFFF'}}>
@@ -66,29 +115,16 @@ const Scedule = () => {
                 data.reverse().map((item, index) => (
                   <View key={index} style={styles.item}>
                     <Text style={styles.title}>
-                      {item.rental_date} {item.rental_time}
+                      {item.Date} {item.Time}
                     </Text>
-                    <Text style={styles.expertin}>
-                      {item.return_date} {item.return_time}
-                    </Text>
-                    <Text style={styles.description}>
-                      {item.UPIMethod ? 'Online' : 'Cash'}
-                    </Text>
-                    <Text style={styles.description}>Rs{item.Amount}</Text>
-                    {/* <Image
-                      source={require('../assets/Bikes/IMG_9496.jpg')}
-                      style={styles.img}
-                    /> */}
+                    <Text style={styles.description}>{item.bike.b_id}</Text>
+                    <Text style={styles.description}>{item.bike.license_plate}</Text>
+                    <Image source={{uri: item.bike.Image}} style={styles.img} />
                     <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate('Bill', {
-                          phoneNumber: phone2,
-                          selectedDate: item.return_date,
-                        })
-                      }
+                      onPress={() =>handleCancel(item.id)}
                       style={{
                         padding: 5,
-                        backgroundColor: '#0096FF',
+                        backgroundColor: 'red',
                         borderRadius: 10,
                         width: 100,
                         alignItems: 'center',
@@ -100,7 +136,7 @@ const Scedule = () => {
                           fontSize: 15,
                           fontWeight: '600',
                         }}>
-                        Show
+                        Cancle
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -226,12 +262,12 @@ const styles = StyleSheet.create({
 
   img: {
     borderWidth: 3,
-    color: '#121212',
+    
     borderColor: '#121212',
     borderRadius: 20,
     height: 100,
     width: 100,
-    marginTop: -100,
+    marginTop: -75,
     marginRight: 200,
   },
 });

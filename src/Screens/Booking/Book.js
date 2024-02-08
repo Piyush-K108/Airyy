@@ -9,7 +9,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import {useState} from 'react';
-// import {Video} from 'react-native-video'
+import Video from 'react-native-video'
 import 'react-native-gesture-handler';
 
 import {useNavigation} from '@react-navigation/native';
@@ -26,16 +26,16 @@ const Book = ({route}) => {
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.headercontainer}>
-              <Text style={styles.title}>Renting Service</Text>
+              <Text style={styles.title}>Book Bike</Text>
             </View>
 
             <View style={styles.Vcontainer}>
-              {/* <Video
-                source={require('../../assets/Airyy.mp4')}
+              <Video
+                source={require("../../assets/Airyy.mp4")}
                 style={styles.video}
                 resizeMode="cover"
                 repeat
-              /> */}
+              />
             </View>
 
             <View className='gap-x-20 px-2'

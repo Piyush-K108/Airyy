@@ -20,7 +20,7 @@ const Bikes = () => {
   const navigation = useNavigation();
   const Bikes = useSelector((state) => state.counter.bikes);
   const handleSearch = () => {
-    console.log(search);
+    console.log(Bikes[0]);
   };
   
 
@@ -68,6 +68,7 @@ const Bikes = () => {
         </View>
 
         <View style={styles.searchContainer}>
+          {/* IS Assigned and ev , Earned */}
           <View style={styles.searchBar__unclicked}>
             <TextInput
               style={styles.inputForSearch}
