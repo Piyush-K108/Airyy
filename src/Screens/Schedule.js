@@ -89,7 +89,7 @@ const Scedule = () => {
 
 
   return (
-    <View style={{flex: 1, alignItems: 'center', backgroundColor: '#FFFFFF'}}>
+    <View style={{flex: 1, alignItems: 'center', backgroundColor: '#fef9c3'}}>
       <View style={{flex: 1, alignItems: 'center', marginTop: 40}}>
         <Text
           style={{
@@ -114,31 +114,43 @@ const Scedule = () => {
               {data.length > 0 ? (
                 data.reverse().map((item, index) => (
                   <View key={index} style={styles.item}>
-                    <Text style={styles.title}>
-                      {item.Date} {item.Time}
-                    </Text>
-                    <Text style={styles.description}>{item.bike.b_id}</Text>
-                    <Text style={styles.description}>{item.bike.license_plate}</Text>
-                    <Image source={{uri: item.bike.Image}} style={styles.img} />
-                    <TouchableOpacity
-                      onPress={() =>handleCancel(item.id)}
-                      style={{
-                        padding: 5,
-                        backgroundColor: 'red',
-                        borderRadius: 10,
-                        width: 100,
-                        alignItems: 'center',
-                        marginTop: 10,
-                      }}>
-                      <Text
-                        style={{
-                          color: '#ffffff',
-                          fontSize: 15,
-                          fontWeight: '600',
-                        }}>
-                        Cancle
-                      </Text>
-                    </TouchableOpacity>
+                    <View className="flex flex-row items-center justify-between">
+                      <View className="mr-8">
+                        <Image
+                          source={{uri: item.bike.Image}}
+                          style={styles.img}
+                        />
+                        <Text style={styles.description}>
+                          {item.bike.license_plate}
+                        </Text>
+                      </View>
+                      <View className="flex flex-col items-center ml-8 mt-3">
+                        <Text style={styles.title}>
+                          {item.Date} {item.Time}
+                        </Text>
+                        <TouchableOpacity
+                          onPress={() => handleCancel(item.id)}
+                          style={{
+                            padding: 5,
+                            backgroundColor: '#ef4444',
+                            borderRadius: 10,
+                            width: 100,
+                            alignItems: 'center',
+                            marginTop: 20,
+                          }}>
+                          <Text
+                            style={{
+                              color: '#ffffff',
+                              fontSize: 12,
+                              fontWeight: '600',
+                            }}>
+                            Cancle
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+
+                    {/* <Text style={styles.description}>{item.bike.b_id}</Text> */}
                   </View>
                 ))
               ) : (
@@ -166,92 +178,38 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.7)',
   },
 
-  studentHomeHead: {
-    fontSize: 30,
-    fontWeight: '400',
-    marginBottom: 10,
-    color: '#404040',
-    fontFamily: 'Poppins-Black',
-  },
-
-  studentHomeHead2: {
-    fontSize: 18,
-    color: '#888888',
-    fontWeight: '600',
-    fontFamily: 'Poppins-Light',
-    marginBottom: 10,
-  },
-
-  container: {
-    flex: 1,
-
-    backgroundColor: '#F5FCFF',
-    padding: 20,
-  },
-  card: {
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    elevation: 2,
-    backgroundColor: '#FFF',
-    marginBottom: 20,
-    borderRadius: 10,
-
-    overflow: 'hidden',
-    flexDirection: 'row',
-  },
-  cardImage: {
-    width: 100,
-    height: 100,
-  },
-  cardTextContainer: {
-    padding: 20,
-    color: '#121212',
-    flex: 1,
-  },
-  cardTitle: {
-    fontSize: 20,
-    color: '#121212',
-    fontWeight: 'bold',
-  },
-  cardDescription: {
-    fontSize: 16,
-    color: '#121212',
-    color: '#333',
-    marginTop: 10,
-  },
-
   container: {
     flex: 1,
     width: 350,
     borderRadius: 20,
-    backgroundColor: '#fff',
+
     padding: 16,
   },
   item: {
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 8,
+    elevation: 3,
     flexDirection: 'column',
     color: '#121212',
-    backgroundColor: '#ffffff',
+    // backgroundColor: '#ffffff',
+    // backgroundColor: '#F6FDBC',
+    backgroundColor: '#fef08a',
     borderRadius: 10,
     padding: 20,
     marginVertical: 8,
   },
   title: {
-    fontSize: 15,
+    fontSize: 14,
+    backgroundColor: '#fef9c3',
+    paddingHorizontal : 5 ,
+    paddingVertical:3 ,
+    borderRadius:10 ,
     fontWeight: '700',
     color: '#121212',
-    marginLeft: 120,
   },
   description: {
     fontSize: 16,
-    marginLeft: 120,
+    // marginLeft: 120,
     color: '#121212',
   },
 
@@ -261,14 +219,14 @@ const styles = StyleSheet.create({
   },
 
   img: {
-    borderWidth: 3,
-    
+    borderWidth: 1,
+
     borderColor: '#121212',
-    borderRadius: 20,
-    height: 100,
-    width: 100,
-    marginTop: -75,
-    marginRight: 200,
+    borderRadius: 50,
+    height: 60,
+    width: 60,
+
+    // marginRight: 200,
   },
 });
 

@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: '#FBFDE9',
+    paddingBottom:60
   },
   textContainer: {
     paddingHorizontal: 20,
