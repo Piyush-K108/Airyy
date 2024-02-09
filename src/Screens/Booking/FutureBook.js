@@ -54,10 +54,11 @@ const FutureBook = () => {
   
   
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#FFF', height: windowHeight }}>
-      <View style={styles.titleCotainer}></View>
+    // <ScrollView style={{ flex: 1, backgroundColor: '#FFF', height: windowHeight }}>
+      /* <View style={styles.titleCotainer}></View> */
+
       <View style={styles.container}>
-        <Text style={styles.title}>Select Date and Time</Text>
+        <Text style={styles.title}>"Begin your journey with us"</Text>
 
         <View className='w-[100%]'>
           <View style={styles.form}>
@@ -91,12 +92,20 @@ const FutureBook = () => {
           </View>
         </View>
       </View>
-    </ScrollView>
+    // </ScrollView>
   );
 };
 const styles = StyleSheet.create({
   DatePickerContainer: {
     marginBottom: windowWidth * 0.04,
+    backgroundColor: '#F6FDBC', 
+    // backgroundColor: '#FBFDE9',
+    borderRadius: 20,
+    elevation: 2,
+    width: 300,
+    height: 220,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   loader: {
     position: 'absolute',
@@ -110,20 +119,11 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
+
+    backgroundColor: '#F9FDDE',
+    width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    // height: windowHeight,
-    // padding:10 ,
-    paddingVertical: 0,
-    marginHorizontal:10,
-    // borderWidth: 1,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    borderRadius: 5,
   },
 
   titleCotainer: {
@@ -138,23 +138,25 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: windowWidth * 0.04,
-    backgroundColor: '#333',
+    // backgroundColor: '#333',
     fontWeight: '400',
     textAlign: 'center',
     marginBottom: windowWidth * 0.07,
     // color: '#feb101',
-    color: '#FFF',
+    color: '#000',
 
-    paddingVertical: 15,
-    paddingHorizontal: 45,
-    borderRadius: 14,
-    fontSize: 15,
+    // paddingVertical: 1,
+    // paddingHorizontal: 45,
+    // borderRadius: 14,
+    // fontSize: 15,
     // borderTopLeftRadius: 50,
     // borderBottomRightRadius: 50,
   },
 
   form: {
     marginTop: windowWidth * 0.04,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   inputContainer: {
     marginBottom: windowWidth * 0.04,
@@ -163,6 +165,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: windowWidth * 0.02,
     color: '#333',
+    textAlign: 'center',
   },
   errorText: {
     color: 'red',
@@ -171,10 +174,12 @@ const styles = StyleSheet.create({
   },
 
   submitButton: {
-    backgroundColor: '#333',
+    backgroundColor: '#000',
     padding: windowWidth * 0.03,
+    elevation: 5,
     borderRadius: windowWidth * 0.04,
     alignItems: 'center',
+    width: 250,
     marginTop: windowWidth * 0.1,
   },
   submitButtonText: {
