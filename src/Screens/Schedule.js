@@ -94,11 +94,14 @@ const Scedule = () => {
         <Text
           style={{
             marginTop: 0,
-            color: 'green',
+            color: '#000',
+            letterSpacing:1 ,
+            fontSize:15 ,
+            
             fontFamily: 'Poppins-Medium',
-            fontWeight: '800',
+            fontWeight: '900',
           }}>
-          Scedules
+          SCHEDULES
         </Text>
 
         {isLoading ? (
