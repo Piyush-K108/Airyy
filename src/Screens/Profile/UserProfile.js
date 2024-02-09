@@ -345,11 +345,11 @@ const UserProfile = () => {
           color="#000"
           style={styles.icon}
         />
-        <Text
-          onPress={handelLogout}
-          className="text-black font-bold text-[16px] flex  justify-center items-center">
-          Logout
-        </Text>
+        <TouchableOpacity onPress={handelLogout}>
+          <Text className="text-black font-bold text-[16px] flex  justify-center items-center">
+            Logout
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
