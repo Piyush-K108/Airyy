@@ -14,12 +14,12 @@ const ButtonArrow = ({name, icon, screen, iconname}) => {
 
   return (
     <TouchableOpacity onPress={() => {name ==='Logout'?  handelLogout():navigation.navigate(screen)}}>
-      <View className="flex flex-row w-[100%] justify-between  px-4 ">
+      <View className="flex flex-row w-[100%] justify-between py-1 px-4 ">
         <View className="flex-row ">
           {iconname === 'ion' ? (
             <Ionicons
               style={{color: 'rgb(253 205 71)'}}
-              className="text-yellow-300"
+              className="text-yellow-600"
               name={icon}
               size={20}
             />
@@ -40,7 +40,7 @@ const ButtonArrow = ({name, icon, screen, iconname}) => {
           size={20}
         />
       </View>
-      <View className="mb-4 border-[0.2px] mt-2" />
+      <View className="mb-4 mt-2" />
     </TouchableOpacity>
   );
 };

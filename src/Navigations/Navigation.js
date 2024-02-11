@@ -1,4 +1,5 @@
 import React from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
 import {useSelector} from 'react-redux';
 import BottomTabNavigation from './BottomTabNavigation';
 import {NavigationContainer} from '@react-navigation/native';
@@ -23,9 +24,21 @@ import FutureBook from '../Screens/Booking/FutureBook';
 import Home from '../Screens/Home';
 
 const Stack = createNativeStackNavigator();
+  const CustomHeader = ({navigation}) => (
+    <View className="bg-yellow-50">
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        className="items-left ml-9 mt-8 w-20 rounded-full  bg-gray-100 w- py-3   px-2"
+        style={{elevation: 3}}>
+        <Text className="text-center text-black font-extrabold">Back</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
 const Navigation = () => {
   const loggedIn = useSelector(state => state.counter.loggedIn);
+
+
 
   return (
     <NavigationContainer>
@@ -50,14 +63,18 @@ const MainStack = () => {
         component={Home}
       />
       <Stack.Screen name="OtpScreen" component={OtpScreen} />
-      <Stack.Screen name="Bill" component={Bill}  options={{
+      <Stack.Screen
+        name="Bill"
+        component={Bill}
+        options={{
           headerShown: true,
           headerTitle: 'Bill',
           headerStyle: {
-            backgroundColor: '#fff', 
+            backgroundColor: '#fff',
           },
-        }} />
-      <Stack.Screen name="UserProfile" component={UserProfile}  />
+        }}
+      />
+      <Stack.Screen name="UserProfile" component={UserProfile} />
       <Stack.Screen
         name="Rateus"
         component={Rateus}
@@ -65,20 +82,17 @@ const MainStack = () => {
           headerShown: true,
           headerTitle: 'Rate US',
           headerStyle: {
-            backgroundColor: '#fff', 
+            backgroundColor: '#fff',
           },
         }}
       />
       <Stack.Screen
         name="LeftModel"
         component={LeftModel}
-        options={{
+        options={({navigation}) => ({
           headerShown: true,
-          headerTitle: 'Menu',
-          headerStyle: {
-            backgroundColor: '#fff', 
-          },
-        }}
+          header: () => <CustomHeader navigation={navigation} />,
+        })}
       />
       <Stack.Screen
         name="BikeDetails"
@@ -87,7 +101,7 @@ const MainStack = () => {
           headerShown: true,
           headerTitle: 'Details',
           headerStyle: {
-            backgroundColor: '#fff', 
+            backgroundColor: '#fff',
           },
         }}
       />
