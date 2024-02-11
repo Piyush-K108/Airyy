@@ -90,14 +90,14 @@ const Scedule = () => {
 
   return (
     <View style={{flex: 1, alignItems: 'center', backgroundColor: '#fef9c3'}}>
-      <View style={{flex: 1, alignItems: 'center', marginTop: 40}}>
+      <View style={{ alignItems: 'center', marginTop: 40}}>
         <Text
           style={{
             marginTop: 0,
             color: '#000',
-            letterSpacing:1 ,
-            fontSize:15 ,
-            
+            letterSpacing: 1,
+            fontSize: 15,
+
             fontFamily: 'Poppins-Medium',
             fontWeight: '900',
           }}>
@@ -172,7 +172,7 @@ const Scedule = () => {
 const styles = StyleSheet.create({
   loader: {
     position: 'absolute',
-    top: 0,
+    top: 350,
     left: 0,
     right: 0,
     bottom: 0,
