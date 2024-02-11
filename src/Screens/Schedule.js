@@ -90,7 +90,7 @@ const Scedule = () => {
 
 
   return (
-    <View style={{flex: 1, alignItems: 'center', backgroundColor: '#fef9c3'}}>
+    <View style={{flex: 1, alignItems: 'center', backgroundColor: '#fef9c3'}} className="">
       <View style={{ alignItems: 'center', marginTop: 40}}>
         <Text
           style={{

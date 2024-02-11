@@ -31,7 +31,7 @@ const ButtonArrow = ({name, icon, screen, iconname}) => {
               size={20}
             />
           )}
-          <Text className="text-[#121212] px-2">{name}</Text>
+          <Text className="text-[#121212] font-medium px-2">{name}</Text>
         </View>
         <Ionicons
           style={{color: '#121212', marginRight: 20}}
