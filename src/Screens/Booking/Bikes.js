@@ -10,20 +10,23 @@ import {
   Image,
 } from 'react-native';
 import Header from '../../Components/Header';
-import { useSelector } from 'react-redux';
-import { fetchBikes } from '../../Redux/Counter/counterAction';
+import {useSelector} from 'react-redux';
+import {fetchBikes} from '../../Redux/Counter/counterAction';
 import {useDispatch} from 'react-redux';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/core';
 const Bikes = () => {
   const [search, setSearch] = useState('');
   const navigation = useNavigation();
-  const Bikes = useSelector((state) => state.counter.bikes);
+  const dispatch = useDispatch();
+  const Bikes = useSelector(state => state.counter.bikes);
   const handleSearch = () => {
     console.log(Bikes[0]);
   };
-  
 
+  useEffect(() => {
+    dispatch(fetchBikes());
+  }, [dispatch]);
 
   const renderItem = ({item}) => (
     // <View className="bg-red-100 ">
@@ -32,23 +35,23 @@ const Bikes = () => {
     //   start={{x: 0, y: 0}}
     //   end={{x: 0, y: 1}}
     //   style={{flex: 1}}>
-      <TouchableOpacity
-        style={styles.bikeCard}
-        onPress={() => {
-          const selectedBike = Bikes.find(bike => bike.b_id === item.b_id);
-          if (selectedBike) {
-            navigation.navigate('BikeDetails', {selectedBike});
-          }
-        }}>
-        <View>
-          <Text style={styles.bikeName}>{item.b_id}</Text>
-          <Image
-            resizeMode="cover"
-            source={{uri: item.Image}}
-            className="w-32 h-32 ml-2"
-          />
-        </View>
-      </TouchableOpacity>
+    <TouchableOpacity
+      style={styles.bikeCard}
+      onPress={() => {
+        const selectedBike = Bikes.find(bike => bike.b_id === item.b_id);
+        if (selectedBike) {
+          navigation.navigate('BikeDetails', {selectedBike});
+        }
+      }}>
+      <View>
+        <Text style={styles.bikeName}>{item.b_id}</Text>
+        <Image
+          resizeMode="cover"
+          source={{uri: item.Image}}
+          className="w-32 h-32 ml-2"
+        />
+      </View>
+    </TouchableOpacity>
     // </LinearGradient>
   );
 
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: '#FBFDE9',
-    paddingBottom:60
+    paddingBottom: 60,
   },
   textContainer: {
     paddingHorizontal: 20,

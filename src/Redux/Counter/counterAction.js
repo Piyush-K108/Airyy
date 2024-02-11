@@ -26,6 +26,7 @@ export const fetchBikes = () => {
   return async (dispatch) => {
     try {
       const result = await axios.get(`https://${DOMAIN}/Admin/bike-data/`);
+      console.log(result.data)
       dispatch({
         type: BIKES,
         payload: result.data,

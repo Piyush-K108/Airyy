@@ -38,6 +38,7 @@ const Scedule = () => {
         `https://${DOMAIN}/User/Schedule/${phone2}/`,
       );
       setData(result.data.data);
+      console.log(result.data.data)
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching schedule data:', error);
@@ -89,7 +90,7 @@ const Scedule = () => {
 
 
   return (
-    <View style={{flex: 1, alignItems: 'center', backgroundColor: '#fef9c3'}}>
+    <View style={{flex: 1, alignItems: 'center', backgroundColor: '#fff'}}>
       <View style={{flex: 1, alignItems: 'center', marginTop: 40}}>
         <Text
           style={{

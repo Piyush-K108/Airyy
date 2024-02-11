@@ -56,10 +56,10 @@ const BikeDetails = () => {
           </View>
 
           <View className="bg-yellow-200 w-24 h-10 flex rounded-[15px] items-center justify-center">
-            <Text className="text-black font-bold">Model</Text>
+            <Text className="text-black font-bold">BLDC Model</Text>
           </View>
           <View className="bg-yellow-200 w-24 h-10 flex rounded-[15px] items-center justify-center">
-            <Text className="text-black font-bold">Year</Text>
+            <Text className="text-black font-bold">65km range</Text>
           </View>
         </View>
         <View className="text-black bg-white flex-1  px-8 py-2">

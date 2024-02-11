@@ -6,7 +6,7 @@ import mapTemplate from '../Components/mapTemplate';
 import Header from '../Components/Header';
 import { WebView } from 'react-native-webview';
 
-export default function Home({ navigation }) {
+export default function Home2({ navigation }) {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
   const bottomSheetRef = useRef(null);
