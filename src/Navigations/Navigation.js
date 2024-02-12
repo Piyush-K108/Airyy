@@ -22,14 +22,15 @@ import Schedule from '../Screens/Schedule';
 import Offers from '../Screens/Offers';
 import FutureBook from '../Screens/Booking/FutureBook';
 import Home from '../Screens/Home';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 const Stack = createNativeStackNavigator();
   const CustomHeader = ({navigation}) => (
     <View className="bg-yellow-50">
       <TouchableOpacity
         onPress={() => navigation.goBack()}
-        className="items-left ml-9 mt-8 w-20 rounded-full  bg-gray-100 w- py-3   px-2"
+        className="flex flex-row justify-evenly items-left ml-9 mt-8 w-20 rounded-full  bg-gray-100 w- py-2   px-2"
         style={{elevation: 3}}>
+        <Ionicons name='arrow-back-outline' size={20} className="font-bold"/>
         <Text className="text-center text-black font-extrabold">Back</Text>
       </TouchableOpacity>
     </View>
