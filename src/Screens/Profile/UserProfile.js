@@ -340,14 +340,14 @@ const UserProfile = () => {
       </View>
       <View className="flex flex-row absolute top-[730px] px-24 py-2 justify-between shadow-xl   bg-yellow-200  rounded-full">
         <Ionican
-          name="log-out-outline"
+          name="power"
           size={20}
           color="#000"
           style={styles.icon}
         />
         <TouchableOpacity onPress={handelLogout}>
           <Text className="text-black font-bold text-[16px] flex  justify-center items-center">
-            Logout
+            Delete
           </Text>
         </TouchableOpacity>
       </View>

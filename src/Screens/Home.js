@@ -10,7 +10,7 @@ export default function Home({ navigation }) {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
   const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ['25%', '50%'], []);
+  const snapPoints = useMemo(() => ['25%', '50%','80%'], []);
   const handleSheetChanges = useCallback((index) => {
     console.log('handleSheetChanges', index);
   }, []);
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   bottomSheetContent: {
     backgroundColor: 'white',
     padding: 16,
-    
+
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
