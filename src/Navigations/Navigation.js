@@ -30,7 +30,7 @@ const Stack = createNativeStackNavigator();
         onPress={() => navigation.goBack()}
         className="flex flex-row justify-evenly items-left ml-9 mt-8 w-20 rounded-full  bg-gray-100 w- py-2   px-2"
         style={{elevation: 3}}>
-        <Ionicons name='arrow-back-outline' size={20} className="font-bold"/>
+        <Ionicons name="arrow-back-outline" size={20} className="font-bold" />
         <Text className="text-center text-black font-extrabold">Back</Text>
       </TouchableOpacity>
     </View>
