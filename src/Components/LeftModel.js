@@ -66,7 +66,7 @@ const LeftModel = () => {
           <View className="items-center mt-10 bg-black py-2 px-4 rounded-lg w-80 ">
             <Text className="text-yellow-500">
               <Text className="text-yellow-500">&copy;</Text> {currentYear}{' '}
-              AiRYYrides.com
+              Airyyrides.com
             </Text>
           </View>
         </View>
