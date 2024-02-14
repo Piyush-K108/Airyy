@@ -5,12 +5,13 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import mapTemplate from '../Components/mapTemplate';
 import Header from '../Components/Header';
 import { WebView } from 'react-native-webview';
-
-export default function Home2({ navigation }) {
+import axios from 'axios';
+import {API_KEY} from "@env"
+export default function Home({ navigation }) {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
   const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ['25%', '50%'], []);
+  const snapPoints = useMemo(() => ['25%', '50%','80%'], []);
   const handleSheetChanges = useCallback((index) => {
     console.log('handleSheetChanges', index);
   }, []);
@@ -20,9 +21,27 @@ export default function Home2({ navigation }) {
   let webRef;
 
   const onButtonClick = () => {
-    const [lng, lat] = mapCenter.split(',');
-
-    webRef.injectJavaScript(`map.setCenter([${parseFloat(lng)}, ${parseFloat(lat)}])`);
+    if (search.trim() !== '') {
+      axios
+        .get(`https://api.tomtom.com/search/2/search/${search}.json`, {
+          params: {
+            key: API_KEY,
+            limit: 1, 
+          },
+        })
+        .then((response) => {
+          const result = response.data.results[0];
+          if (result) {
+            const { position } = result;
+            setMapCenter(${position.lng},${position.lat});
+            console.log(map.setCenter([${position.lng}, ${position.lat}]))
+            // webRef.injectJavaScript(map.setCenter([${position.lng}, ${position.lat}]));
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching search results:', error);
+        });
+    }
   };
 
   const handleMapEvent = event => {
@@ -38,7 +57,9 @@ export default function Home2({ navigation }) {
         onChange={handleSheetChanges}
       >
         <View style={styles.bottomSheetContent}>
-          <Text className='text-black'>Awesome 🎉</Text>
+          <Text className='text-red'> Awesome 🎉</Text>
+          <Text className='text-black'>  Awesome 🎉</Text>
+          <Text className='text-black'> Awesome 🎉</Text>
         </View>
       </BottomSheet>
       <View style={styles.mapContainer}>
@@ -66,7 +87,6 @@ export default function Home2({ navigation }) {
               onChangeText={text => {
                 setSearch(text);
                 setResults([]);
-                setMapCenter(text);
               }}
             />
             <MaterialIcons
@@ -94,7 +114,6 @@ const styles = StyleSheet.create({
   bottomSheetContent: {
     backgroundColor: 'white',
     padding: 16,
-    
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
