@@ -21,7 +21,7 @@ const LeftModel = () => {
 
         <View className="h-screen flex flex-col  items-center  bg-yellow-50">
           <View
-            className="mt-14 w-80  bg-yellow-100  rounded-lg  mb-10"
+            className="mt-14 w-80  bg-white border bo  rounded-lg  mb-10"
             style={styles.cardContainer}>
             <View className="mt-6">
               <ButtonArrow
@@ -38,8 +38,8 @@ const LeftModel = () => {
             </View>
           </View>
           <View
-            className="bg-yellow-100 ml-4 mr-4 w-80 py-6 rounded-lg"
-            style={styles.cardContainer}>
+            className="bg-yellow-50 ml-4 mr-4 w-80 py-6 rounded-lg"
+            style={styles.cardContainertwo}>
             <ButtonArrow
               name={'Ride History'}
               icon="history"
@@ -77,9 +77,9 @@ const LeftModel = () => {
 
 const styles = StyleSheet.create({
   
-  cardContainer: {
+  cardContainertwo: {
  
-    elevation: 4,
+    elevation: 1,
      // Add elevation for shadow
    
   }

@@ -1,4 +1,4 @@
-import React, {useState, useMemo, useRef, useCallback} from 'react';
+import React, {useState, useMemo, useRef, useCallback, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -6,8 +6,13 @@ import {
   TextInput,
   Keyboard,
   TouchableOpacity,
-  FlatList,
+  // FlatList,
+  Image,
+  Animated,
+  // ScrollView,
 } from 'react-native';
+import {ScrollView, FlatList} from 'react-native-gesture-handler';
+import LinearGradient from 'react-native-linear-gradient';
 import BottomSheet from '@gorhom/bottom-sheet';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import mapTemplate from '../Components/mapTemplate';
@@ -16,22 +21,67 @@ import axios from 'axios';
 import {API_KEY} from '@env';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import debounce from 'lodash.debounce';
+import Checkbox from '../Components/Checkbox';
+import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import {fetchBikes} from '../Redux/Counter/counterAction';
+import {useNavigation} from '@react-navigation/core';
+import ScooterSelectionModal from '../Modals/ScooterSelectionModal';
 
 export default function Home({navigation}) {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
   const bottomSheetRef = useRef(null);
+  const [isChecked, setIsChecked] = useState(false);
+  const [IsPatrol, setIsPatrol] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedScooter, setSelectedScooter] = useState(null);
+  // for fetching bikes
+  // const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const Bikes = useSelector(state => state.counter.bikes);
+
+  // bike fetching useEffec
+  useEffect(() => {
+    dispatch(fetchBikes());
+  }, [dispatch]);
+  // UseEffect ends here
+
+  // Render Item function for flatlist for showing bikes
+  const renderItem = ({item}) => (
+    <TouchableOpacity
+      style={styles.bikeCard}
+      onPress={() => {
+        const selectedBike = Bikes.find(bike => bike.b_id === item.b_id);
+        if (selectedBike) {
+          navigation.navigate('BikeDetails', {selectedBike});
+        }
+      }}>
+      <View>
+        <Text style={styles.bikeName}>{item.b_id}</Text>
+        <Image
+          resizeMode="cover"
+          source={{uri: item.Image}}
+          className="w-[80px] h-[80px]"
+        />
+      </View>
+    </TouchableOpacity>
+  );
+
+  const handleCheckboxPress = () => {
+    setIsChecked(!isChecked);
+  };
 
   const webRef = useRef(null);
-  const [isChecked, setIsChecked] = useState(false);
+
   const toggleCheckbox = () => {
     setIsChecked(!isChecked);
   };
 
-  const snapPoints = useMemo(() => ['2%','25%', '50%', '80%'], []);
+  const snapPoints = useMemo(() => ['25%', '50%', '80%'], []);
 
   const handleSheetChanges = useCallback(index => {
-    
+    console.log('handleSheetChanges', index);
   }, []);
 
   const [mapCenter, setMapCenter] = useState('22.6881149,75.8630678');
@@ -41,7 +91,7 @@ export default function Home({navigation}) {
       debounce(text => {
         handleSearchSuggestion(text);
       }, 500),
-    [], 
+    [], // Empty dependency array ensures the debounce function is created only once
   );
 
   const onSearchChange = useCallback(
@@ -74,7 +124,7 @@ export default function Home({navigation}) {
             setMapCenter(`${position.lng},${position.lat}`);
             console.log(position);
             webRef.current.injectJavaScript(
-              `map.setCenter([${position.lng}, ${position.lat}])`,
+              map.setCenter([`${position.lng}, ${position.lat}`]),
             );
           } else {
             console.error('Invalid coordinates in search result:', result);
@@ -124,6 +174,10 @@ export default function Home({navigation}) {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity className="absolute top-[350px] px-4 py-3 left-[280px] flex-row items-center   m-auto flex rounded-xl  bg-black">
+        <Text className="text-[#feb101] font-bold">Book now</Text>
+        {/* <MaterialIcons name="bike_scooter" size={22} color="#666" /> */}
+      </TouchableOpacity>
       <View style={styles.mapContainer}>
         <WebView
           ref={webRef}
@@ -133,49 +187,69 @@ export default function Home({navigation}) {
           allowsInlineMediaPlayback={true}
         />
       </View>
+
       <BottomSheet
         ref={bottomSheetRef}
         index={1}
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
-        style={styles.bottomSheet}>
-        <View style={styles.bottomSheetContent}>
-          <View className="flex flex-row justify-between gap-10 mt-2">
-            <Text className="text-black">Select Your Ride!</Text>
-            <View style={styles.checkboxContainer}>
-              <TouchableOpacity
-                style={[styles.checkbox, isChecked && styles.checked]}
-                onPress={toggleCheckbox}>
-                {isChecked && <Icon name="check" color="#000" size={18} />}
-              </TouchableOpacity>
-              <Text style={styles.checkboxText}>EV</Text>
-            </View>
-            <View style={styles.checkboxContainer}>
-              <View className="flex-col">
-                <TouchableOpacity
-                  style={[styles.checkbox, isChecked && styles.checked]}
-                  onPress={toggleCheckbox}>
-                  {isChecked && <Icon name="check" color="#000" size={18} />}
-                </TouchableOpacity>
-                <Text style={styles.checkboxText}>Petrol</Text>
-                <View className="flex-row">
-                  <TouchableOpacity
-                    style={[styles.checkbox, isChecked && styles.checked]}
-                    onPress={toggleCheckbox}>
-                    {isChecked && <Icon name="check" color="#000" size={18} />}
-                  </TouchableOpacity>
-                  <Text style={styles.checkboxText}>5G Activa's</Text>
-                  <TouchableOpacity
-                    style={[styles.checkbox, isChecked && styles.checked]}
-                    onPress={toggleCheckbox}>
-                    {isChecked && <Icon name="check" color="#000" size={18} />}
-                  </TouchableOpacity>
-                  <Text style={styles.checkboxText}>6G Activa's</Text>
-                </View>
-              </View>
+        style={styles.bottomSheet}
+        gestureEnabled={true}>
+        <LinearGradient
+          colors={['white', '#e5e7eb']} // You can change these colors as per your gradient
+          style={styles.bottomSheetContent}>
+          <View className="flex flex-row justify-between px-2 ">
+            <Text className="text-black font-semibold">Filter Vehicle</Text>
+            <Checkbox
+              label="EV"
+              value={isChecked}
+              onPress={handleCheckboxPress}
+            />
+
+            <View className="flex flex-col ">
+              <Checkbox
+                label="Patrol"
+                value={IsPatrol}
+                onPress={() => {
+                  setIsPatrol(!IsPatrol);
+                  setModalVisible(true);
+                }}
+              />
+       
+              <ScooterSelectionModal
+                isVisible={modalVisible}
+                onClose={() => setModalVisible(false)}
+                onSelect={scooterType => setSelectedScooter(scooterType)}
+              />
+              {/* <View className="flex flex-row bg-yellow-100 rounded-2xl py-2 px-3">
+                <Checkbox
+                  label="5g"
+                  value={isChecked}
+                  onPress={handleCheckboxPress}
+                  style={{paddingHorizontal: 0}}
+                />
+                <Checkbox
+                  label="6g"
+                  value={IsPatrol}
+                  onPress={() => {
+                    setIsPatrol(!IsPatrol);
+                  }}
+                  style={{paddingHorizontal: 0}}
+                />
+              </View> */}
             </View>
           </View>
-        </View>
+        </LinearGradient>
+
+        <FlatList
+          data={Bikes}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+          numColumns={2}
+          contentContainerStyle={styles.bikeList}
+          style={{height: '100%'}}
+          // nestedScrollEnabled={true}
+        />
       </BottomSheet>
       <View style={styles.overlay}>
         <TouchableOpacity onPress={() => navigation.navigate('LeftModel')}>
@@ -227,17 +301,42 @@ export default function Home({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'grey',
+    backgroundColor: 'gray',
+    flexDirection: 'column',
+  },
+  bottomSheet: {
+    // flex: 2,
+    // flexDirection: 'column',
+    // position: 'absolute',
+    justifyContent: 'center',
+    // width: '100%',
+
+    alignItems: 'center',
+  },
+  bottomSheet: {
+    // flex: 2,
+    // flexDirection: 'column',
+    // position: 'absolute',
+    justifyContent: 'center',
+    // width: '100%',
+
+    alignItems: 'center',
   },
   bottomSheet: {
     position: 'absolute',
     width: '100%',
   },
   bottomSheetContent: {
-    backgroundColor: 'white',
-    padding: 16,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 8,
+    marginLeft: 18,
+    marginRight: 18,
+    elevation: 1,
+    height: 80,
+    marginBottom: 20,
+
+    borderRadius: 20,
   },
   mapContainer: {
     flex: 1,
@@ -283,25 +382,35 @@ const styles = StyleSheet.create({
     color: '#121212',
     flex: 1,
   },
-  checkboxContainer: {
-    flexDirection: 'row',
+
+  bikeList: {
+    paddingHorizontal: 0,
+    paddingBottom: 4,
+  },
+  bikeCard: {
+    backgroundColor: '#ffff',
+
+    borderRadius: 10,
+    padding: 10,
+    margin: 5,
+    height: 120,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
-  },
-  checkbox: {
-    width: 20,
-    height: 20,
+    flex: 1,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 0,
     borderWidth: 1,
-    borderColor: '#ffdd4b',
-    marginRight: 10,
+    borderColor: '#d6d3d1',
   },
-  checked: {
-    backgroundColor: '#ffdd4b',
-    borderColor: '#ffdd4b',
-  },
-  checkboxText: {
+  bikeName: {
     fontSize: 14,
-    color: '#000',
-    fontWeight: '700',
+    paddingVertical: 4,
+    color: 'black',
   },
 });
