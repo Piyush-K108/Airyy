@@ -9,6 +9,8 @@ import {
   // FlatList,
   Image,
   Animated,
+  PanResponder,
+
   // ScrollView,
 } from 'react-native';
 import {ScrollView, FlatList} from 'react-native-gesture-handler';
@@ -40,6 +42,18 @@ export default function Home({navigation}) {
   // const navigation = useNavigation();
   const dispatch = useDispatch();
   const Bikes = useSelector(state => state.counter.bikes);
+
+ const pan = useRef(new Animated.ValueXY()).current;
+
+ const panResponder = useRef(
+   PanResponder.create({
+     onMoveShouldSetPanResponder: () => true,
+     onPanResponderMove: Animated.event([null, {dx: pan.x, dy: pan.y}]),
+     onPanResponderRelease: () => {
+       pan.extractOffset();
+     },
+   }),
+ ).current;
 
   // bike fetching useEffec
   useEffect(() => {
@@ -174,10 +188,6 @@ export default function Home({navigation}) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity className="absolute top-[350px] px-4 py-3 left-[280px] flex-row items-center   m-auto flex rounded-xl  bg-black">
-        <Text className="text-[#feb101] font-bold">Book now</Text>
-        {/* <MaterialIcons name="bike_scooter" size={22} color="#666" /> */}
-      </TouchableOpacity>
       <View style={styles.mapContainer}>
         <WebView
           ref={webRef}
@@ -186,6 +196,16 @@ export default function Home({navigation}) {
           source={{html: mapTemplate}}
           allowsInlineMediaPlayback={true}
         />
+        <Animated.View
+          style={{
+            transform: [{translateX: pan.x}, {translateY: pan.y}],
+          }}
+          {...panResponder.panHandlers}>
+          <TouchableOpacity className="absolute top-[-453px] px-4 py-3 left-[280px] flex-row items-center   m-auto flex rounded-xl  bg-black">
+            <Text className="text-[#feb101] font-bold">Book now</Text>
+            {/* <MaterialIcons name="bike_scooter" size={22} color="#666" /> */}
+          </TouchableOpacity>
+        </Animated.View>
       </View>
 
       <BottomSheet
@@ -215,7 +235,7 @@ export default function Home({navigation}) {
                   setModalVisible(true);
                 }}
               />
-       
+
               <ScooterSelectionModal
                 isVisible={modalVisible}
                 onClose={() => setModalVisible(false)}

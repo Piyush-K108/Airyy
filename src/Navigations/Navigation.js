@@ -25,7 +25,7 @@ import Home from '../Screens/Home';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const Stack = createNativeStackNavigator();
   const CustomHeader = ({navigation}) => (
-    <View className="bg-yellow-50">
+    <View className="bg-gray-50">
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         className="flex flex-row justify-evenly items-left ml-4 mt-4 -mb-8 w-20 rounded-full  bg-gray-100  py-2  "
