@@ -23,6 +23,7 @@ import Offers from '../Screens/Offers';
 import FutureBook from '../Screens/Booking/FutureBook';
 import Home from '../Screens/Home';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Home2 from '../Screens/Home2';
 const Stack = createNativeStackNavigator();
   const CustomHeader = ({navigation}) => (
     <View className="bg-yellow-50">

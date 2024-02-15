@@ -28,7 +28,7 @@ import {fetchBikes} from '../Redux/Counter/counterAction';
 import {useNavigation} from '@react-navigation/core';
 import ScooterSelectionModal from '../Modals/ScooterSelectionModal';
 
-export default function Home({navigation}) {
+export default function Home2({navigation}) {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
   const bottomSheetRef = useRef(null);
@@ -36,18 +36,10 @@ export default function Home({navigation}) {
   const [IsPatrol, setIsPatrol] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedScooter, setSelectedScooter] = useState(null);
-  // for fetching bikes
-  // const navigation = useNavigation();
+
   const dispatch = useDispatch();
   const Bikes = useSelector(state => state.counter.bikes);
 
-  // bike fetching useEffec
-  useEffect(() => {
-    dispatch(fetchBikes());
-  }, [dispatch]);
-  // UseEffect ends here
-
-  // Render Item function for flatlist for showing bikes
   const renderItem = ({item}) => (
     <TouchableOpacity
       style={styles.bikeCard}
@@ -91,7 +83,7 @@ export default function Home({navigation}) {
       debounce(text => {
         handleSearchSuggestion(text);
       }, 500),
-    [], // Empty dependency array ensures the debounce function is created only once
+    [],
   );
 
   const onSearchChange = useCallback(
@@ -114,17 +106,16 @@ export default function Home({navigation}) {
         })
         .then(response => {
           const result = response.data.results[0];
-          if (
-            result &&
-            result.position &&
-            result.position.lng !== undefined &&
-            result.position.lat !== undefined
-          ) {
+
+          if (result && result.position) {
             const {position} = result;
-            setMapCenter(`${position.lng},${position.lat}`);
-            console.log(position);
+
+            setMapCenter(`${position.lon},${position.lat}`);
+
             webRef.current.injectJavaScript(
-              map.setCenter([`${position.lng}, ${position.lat}`]),
+              `map.setCenter([${parseFloat(position.lon)}, ${parseFloat(
+                position.lat,
+              )}])`,
             );
           } else {
             console.error('Invalid coordinates in search result:', result);
@@ -134,6 +125,8 @@ export default function Home({navigation}) {
           console.error('Error fetching search results:', error);
         });
     }
+    
+    setResults([]);
   };
 
   const handleMapEvent = useCallback(event => {
@@ -141,12 +134,16 @@ export default function Home({navigation}) {
   }, []);
 
   const handleSearchSuggestion = useCallback(query => {
+    if(query===null || query===undefined || query===''){
+      return
+    }
+    
     axios
       .get(`https://api.tomtom.com/search/2/autocomplete/${query}.json`, {
         params: {
           key: API_KEY,
           language: 'en-US',
-          limit: 5,
+          limit: 10,
         },
       })
       .then(response => {
@@ -156,12 +153,14 @@ export default function Home({navigation}) {
             segment => segment.type === 'brand' && segment.value,
           );
 
-          if (brandSegment) {
-            return brandSegment.value;
-          } else {
-            console.error('Invalid coordinates in search result:', result);
-            return null; // Return null for invalid results
-          }
+          // Check for other types of segments or use a fallback
+          const suggestion = brandSegment
+            ? brandSegment.value
+            : result.displayString || null;
+          console.log(suggestion);
+
+
+          return suggestion;
         });
 
         // Filter out null values (invalid results)
@@ -174,11 +173,11 @@ export default function Home({navigation}) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity className="absolute top-[350px] px-4 py-3 left-[280px] flex-row items-center   m-auto flex rounded-xl  bg-black">
+  <TouchableOpacity className="absolute top-[350px] px-4 py-3 left-[280px] flex-row items-center   m-auto flex rounded-xl  bg-black">
         <Text className="text-[#feb101] font-bold">Book now</Text>
         {/* <MaterialIcons name="bike_scooter" size={22} color="#666" /> */}
-      </TouchableOpacity>
-      <View style={styles.mapContainer}>
+      </TouchableOpacity>    
+        <View style={styles.mapContainer}>
         <WebView
           ref={webRef}
           onMessage={handleMapEvent}
@@ -187,7 +186,6 @@ export default function Home({navigation}) {
           allowsInlineMediaPlayback={true}
         />
       </View>
-
       <BottomSheet
         ref={bottomSheetRef}
         index={1}
@@ -250,49 +248,57 @@ export default function Home({navigation}) {
           style={{height: '100%'}}
           // nestedScrollEnabled={true}
         />
-      </BottomSheet>
-      <View style={styles.overlay}>
-        <TouchableOpacity onPress={() => navigation.navigate('LeftModel')}>
-          <View style={styles.menuButton}>
-            <MaterialIcons name="menu" size={32} color="#666" />
+      </BottomSheet>   
+
+        <View style={styles.overlay}>
+        <View className="flex flex-row justify-between">
+          <TouchableOpacity onPress={() => navigation.navigate('LeftModel')}>
+            <View style={styles.menuButton}>
+              <MaterialIcons name="menu" size={32} color="#666" />
+            </View>
+          </TouchableOpacity>
+          <View style={styles.searchBarContainer}>
+            <View style={styles.searchBar}>
+              <TextInput
+                style={styles.inputForSearch}
+                placeholderTextColor={'#818181'}
+                placeholder="You Current Location"
+                value={search}
+                onChangeText={onSearchChange}
+              />
+              <MaterialIcons
+                name="search"
+                size={24}
+                color="#666"
+                style={{marginRight: 5}}
+                onPress={() => {
+                  Keyboard.dismiss();
+                  onButtonClick();
+                }}
+              />
+            </View>
           </View>
-        </TouchableOpacity>
-        <View style={styles.searchBarContainer}>
-          <View style={styles.searchBar}>
-            <TextInput
-              style={styles.inputForSearch}
-              placeholderTextColor={'#818181'}
-              placeholder="You Current Location"
-              value={search}
-              onChangeText={onSearchChange}
-            />
-            <MaterialIcons
-              name="search"
-              size={24}
-              color="#666"
-              style={{marginRight: 5}}
-              onPress={() => {
-                Keyboard.dismiss();
-                onButtonClick();
-              }}
-            />
-          </View>
-          {results.length > 0 && (
+        </View>
+        {results.length > 0 && (
+          <View className="mt-5 w-screen">
             <FlatList
               data={results}
               keyExtractor={(item, index) => index.toString()}
               renderItem={({item}) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    setSearch(item);
-                    handleSearchSuggestion(item);
-                  }}>
-                  <Text>{item}</Text>
-                </TouchableOpacity>
+                <View className="items-center w-screen border-black ">
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSearch(item);
+                      
+                      handleSearchSuggestion(item);
+                    }}>
+                    <Text className="text-black   border-b-2">{item}</Text>
+                  </TouchableOpacity>
+                </View>
               )}
             />
-          )}
-        </View>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -346,8 +352,8 @@ const styles = StyleSheet.create({
   overlay: {
     paddingHorizontal: 16,
     paddingTop: 38,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: 'col',
+    color: 'black',
     alignItems: 'center',
     position: 'absolute',
     top: 0,

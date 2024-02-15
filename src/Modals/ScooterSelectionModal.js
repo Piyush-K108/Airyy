@@ -49,17 +49,20 @@ const styles = StyleSheet.create({
     width: 300,
   },
   modalTitle: {
+    color:'black',
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
   },
   optionButton: {
     paddingVertical: 10,
+    color:'black',
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
   optionText: {
     fontSize: 16,
+    color:'black',
   },
   cancelButton: {
     marginTop: 10,
