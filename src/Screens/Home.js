@@ -201,7 +201,7 @@ export default function Home2({navigation}) {
             transform: [{translateX: pan.x}, {translateY: pan.y}],
           }}
           {...panResponder.panHandlers}>
-          <TouchableOpacity className="absolute top-[-453px] px-4 py-3 left-[280px] flex-row items-center   m-auto flex rounded-xl  bg-black">
+          <TouchableOpacity className="absolute top-[-453px] px-4 py-3 left-[280px] flex-row items-center   m-auto flex rounded-xl   bg-black">
             <Text className="text-[#feb101] font-bold">Book now</Text>
             {/* <MaterialIcons name="bike_scooter" size={22} color="#666" /> */}
           </TouchableOpacity>
