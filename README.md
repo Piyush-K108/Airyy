@@ -4,6 +4,10 @@ For Development
 
 c:\Airyy\android\app\build\outputs\apk\release\app-release.apk && npm start
 
+For App
+
+cd android && .\gradlew clean &&  gradlew assembleRelease && cd..
+
 # Getting Started
 
 >**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.

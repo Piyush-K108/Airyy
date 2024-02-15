@@ -1,18 +1,34 @@
-import React, {useState,useRef} from 'react';
+import React, {useState, useMemo, useRef, useCallback, useEffect} from 'react';
 import {
   StyleSheet,
   View,
-  TextInput,
   Text,
+  TextInput,
   Keyboard,
+  TouchableOpacity,
+  // FlatList,
+  Image,
+  Animated,
+  // ScrollView,
 } from 'react-native';
-import {WebView} from 'react-native-webview';
-
-
+import {ScrollView, FlatList} from 'react-native-gesture-handler';
+import LinearGradient from 'react-native-linear-gradient';
+import BottomSheet from '@gorhom/bottom-sheet';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import mapTemplate from '../Components/mapTemplate';
-import Header from '../Components/Header';
+import {WebView} from 'react-native-webview';
+import axios from 'axios';
+import {API_KEY} from '@env';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import debounce from 'lodash.debounce';
+import Checkbox from '../Components/Checkbox';
+import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import {fetchBikes} from '../Redux/Counter/counterAction';
+import {useNavigation} from '@react-navigation/core';
+import ScooterSelectionModal from '../Modals/ScooterSelectionModal';
 
+import Header from '../Components/Header';
 
 export default function Home2() {
   const [search, setSearch] = useState('');
@@ -20,26 +36,99 @@ export default function Home2() {
 
   const [mapCenter, setMapCenter] = useState('22.6881149,75.8630678');
 
-  let webRef;
+  const webRef = useRef(null);
+
+  const delayedSearch = useMemo(
+    () =>
+      debounce(text => {
+        handleSearchSuggestion(text);
+      }, 500),
+    [],
+  );
+
+  const onSearchChange = useCallback(
+    text => {
+      setSearch(text);
+      setResults([]);
+      delayedSearch(text);
+    },
+    [delayedSearch],
+  );
 
   const onButtonClick = () => {
-    const [lng, lat] = mapCenter.split(',');
+    if (search.trim() !== '') {
+      axios
+        .get(`https://api.tomtom.com/search/2/search/${search}.json`, {
+          params: {
+            key: API_KEY,
+            limit: 1,
+          },
+        })
+        .then(response => {
+          const result = response.data.results[0];
 
-    console.log(lng, lat);
-    // const markerCode = `
-    //   var marker = L.marker([${parseFloat(lat)}, ${parseFloat(lng)}]).addTo(map);`;
-    // console.log(markerCode)
-    // webRef.injectJavaScript(markerCode);
-    webRef.injectJavaScript(
-      `map.setCenter([${parseFloat(lng)}, ${parseFloat(lat)}])`,
-    );
+          if (result && result.position) {
+            const {position} = result;
+
+            setMapCenter(`${position.lon},${position.lat}`);
+
+            webRef.current.injectJavaScript(
+              `map.setCenter([${parseFloat(position.lon)}, ${parseFloat(
+                position.lat,
+              )}])`,
+            );
+          } else {
+            console.error('Invalid coordinates in search result:', result);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching search results:', error);
+        });
+    }
+
+    setResults([]);
   };
 
   const handleMapEvent = event => {
     setMapCenter(event.nativeEvent.data);
   };
 
+  const handleSearchSuggestion = useCallback(query => {
+    if (query === null || query === undefined || query === '') {
+      return;
+    }
 
+    axios
+      .get(`https://api.tomtom.com/search/2/autocomplete/${query}.json`, {
+        params: {
+          key: API_KEY,
+          language: 'en-US',
+          limit: 10,
+        },
+      })
+      .then(response => {
+        const suggestions = response.data.results.map(result => {
+          // Check for segments with type "brand" and value
+          const brandSegment = result.segments.find(
+            segment => segment.type === 'brand' && segment.value,
+          );
+
+          // Check for other types of segments or use a fallback
+          const suggestion = brandSegment
+            ? brandSegment.value
+            : result.displayString || null;
+          console.log(suggestion);
+
+          return suggestion;
+        });
+
+        // Filter out null values (invalid results)
+        setResults(suggestions.filter(result => result !== null));
+      })
+      .catch(error => {
+        console.error('Error fetching search suggestions:', error);
+      });
+  }, []);
 
   return (
     <>
@@ -57,31 +146,48 @@ export default function Home2() {
             Have a very pleasant experience
           </Text>
         </View>
-
-        <View className="justify-center px-5 pt-8 pb-2 py-8 ">
-          <View style={styles.searchBar__unclicked}>
-            <TextInput
-              style={styles.inputForSearch}
-              placeholderTextColor={'#818181'}
-              placeholder="Search"
-              value={search}
-              onChangeText={text => {
-                setSearch(text);
-                setResults([]);
-                setMapCenter(text);
-              }}
-            />
-            <MaterialIcons
-              name="search"
-              size={24}
-              color="#666"
-              style={{marginRight: 5}}
-              onPress={() => {
-                Keyboard.dismiss();
-                onButtonClick();
-              }}
+        <View className="flex flex-col">
+          <View className="justify-center px-5 pt-8  pb-4 ">
+            <View style={styles.searchBar__unclicked}>
+              <TextInput
+                style={styles.inputForSearch}
+                placeholderTextColor={'#818181'}
+                placeholder="Search"
+                value={search}
+                onChangeText={onSearchChange}
+              />
+              <MaterialIcons
+                name="search"
+                size={24}
+                color="#666"
+                style={{marginRight: 5}}
+                onPress={() => {
+                  Keyboard.dismiss();
+                  onButtonClick();
+                }}
+              />
+            </View>
+          </View>
+          {results.length > 0 && (
+          <View className="mt-5 w-screen absolute top-20  z-10">
+            <FlatList
+              data={results}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({item}) => (
+                <View className="items-center w-screen border-black ">
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSearch(item);
+                      
+                      handleSearchSuggestion(item);
+                    }}>
+                    <Text className="text-black   border-b-2">{item}</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
             />
           </View>
+        )}
         </View>
 
         {/* Map */}
