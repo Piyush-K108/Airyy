@@ -1,37 +1,60 @@
 import React from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity , Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
-import { logout } from '../Redux/Counter/counterAction';
-const ButtonArrow = ({name, icon, screen, iconname}) => {
+// import {useDispatch} from 'react-redux';
+import {logout} from '../Redux/Counter/counterAction';
+import {useDispatch} from 'react-redux';
+import {fetchProfile} from '../../Redux/Counter/counterAction';
+import {useSelector} from 'react-redux';
+const ButtonArrow = ({name, icon, screen, iconname, showProfilePic = false}) => {
   const navigation = useNavigation();
-  const dispatch = useDispatch()
-  const handelLogout = () => {
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
     dispatch(logout());
   };
 
+   const data = useSelector(state => state.counter.profile);
+  //  const dispatch = useDispatch();
+
   return (
-    <TouchableOpacity onPress={() => {name ==='Logout'?  handelLogout():navigation.navigate(screen)}}>
+    <TouchableOpacity
+      onPress={() => {
+        name === 'Logout' ? handleLogout() : navigation.navigate(screen);
+      }}>
       <View className="flex flex-row w-[100%] justify-between py-1 px-4 ">
         <View className="flex-row ">
-          {iconname === 'ion' ? (
-            <Ionicons
-              style={{color: 'rgb(253 205 71)'}}
-              className="text-yellow-600"
-              name={icon}
-              size={20}
-            />
+          {showProfilePic ? (
+            <>
+              <Image
+                resizeMode="cover"
+                source={data.ProfilePic ? {uri: data.ProfilePic} : user}
+                className="w-6 h-6 rounded-full border"
+                style={{elevation:2 }}
+              />
+            </>
           ) : (
-            <MaterialIcons
-              style={{color: name!=='Logout'?'rgb(253 205 71)':"red"}}
-              className="text-[#121212]"
-              name={icon}
-              size={20}
-            />
+            <>
+              {iconname === 'ion' ? (
+                <Ionicons
+                  style={{color: '#facc15'}}
+                  className="text-yellow-600"
+                  name={icon}
+                  size={20}
+                />
+              ) : (
+                <MaterialIcons
+                  style={{color: name !== 'Logout' ? '#facc15' : 'red'}}
+                  className="text-[#121212]"
+                  name={icon}
+                  size={20}
+                />
+              )}
+            </>
           )}
-          <Text className="text-[#121212] font-medium px-2">{name}</Text>
+          <Text className="text-[#121212] font-bold px-2">{name}</Text>
         </View>
         <Ionicons
           style={{color: '#121212', marginRight: 20}}

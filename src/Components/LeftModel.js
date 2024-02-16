@@ -8,37 +8,51 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
-  ScrollView ,
+  ScrollView,
+  
 } from 'react-native';
 import ButtonArrow from './ButtonArrow';
-
+import LinearGradient from 'react-native-linear-gradient';
+// import {useDispatch} from 'react-redux';
+// import {fetchProfile, logout} from '../../Redux/Counter/counterAction';
+// import {useSelector} from 'react-redux';
 const LeftModel = () => {
   const currentYear = new Date().getFullYear();
+ 
   return (
     <ScrollView>
       <View className="h-screen flex flex-col">
         {/* <View className="h-52 w-screen bg-slate-600 rounded-b-[50px] absolute z-[100]"></View> */}
 
         <View className="h-screen flex flex-col  items-center  bg-gray-50">
-          <View
-            className="mt-14 w-80  bg-white   rounded-lg  mb-10"
-            style={styles.cardContainer}>
-            <View className="mt-6">
-              <ButtonArrow
-                name={'Profile'}
-                icon="person"
-                iconname={'ion'}
-                screen={'UserProfile'}
-              />
-              <ButtonArrow
-                name={'Rate Us'}
-                icon="star-rate"
-                screen={'Home2'}
-              />
+          <LinearGradient
+            colors={['#fef08a', '#f9fafb']}
+            className="flex justify-center items-center " // You can change these colors as per your gradient
+          >
+            <View
+              className="mt-14 w-[100%] px-4    rounded-lg  mb-10"
+              style={styles.cardContainer}>
+              <View className="mt-6">
+                
+                  <ButtonArrow
+                    name={'Profile'}
+                    icon="person"
+                    iconname={'ion'}
+                    screen={'UserProfile'}
+                    showProfilePic={true}
+                  />
+              
+             
+                <ButtonArrow
+                  name={'Rate Us'}
+                  icon="star-rate"
+                  screen={'Home2'}
+                />
+              </View>
             </View>
-          </View>
+          </LinearGradient>
           <View
-            className="bg-white  border-x-[1px] border-gray-500 ml-4 mr-4 w-80 py-6 rounded-lg"
+            className="bg-white mt-4  ml-4 mr-4 w-[90%] py-8 rounded-lg"
             style={styles.cardContainertwo}>
             <ButtonArrow
               name={'Ride History'}
@@ -80,9 +94,9 @@ const styles = StyleSheet.create({
     elevation: 0,
     // Add elevation for shadow
   },
-  cardContainer:{
-    elevation:2 ,
-  }
+  // cardContainer:{
+  //   elevation:2 ,
+  // }
 });
 
 export default LeftModel;

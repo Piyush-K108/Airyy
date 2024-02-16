@@ -26,10 +26,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Home2 from '../Screens/Home2';
 const Stack = createNativeStackNavigator();
   const CustomHeader = ({navigation}) => (
-    <View className="bg-gray-50">
+    <View className="bg-yellow-200">
       <TouchableOpacity
         onPress={() => navigation.goBack()}
-        className="flex flex-row justify-evenly items-left ml-4 mt-4 -mb-8 w-20 rounded-full  bg-gray-100  py-2  "
+        className="flex flex-row justify-evenly items-left ml-4 mt-4 -mb-8 w-20 rounded-full  bg-gray-50  py-2  "
         style={{elevation: 2}}>
         <Ionicons
           name="arrow-back-outline"

@@ -152,7 +152,7 @@ const UserProfile = () => {
               <Image
                 resizeMode="cover"
                 source={data.ProfilePic ? {uri: data.ProfilePic} : user}
-                className="w-24 h-24  "
+                className="w-24 h-24"
               />
             </View>
           </TouchableOpacity>
@@ -342,7 +342,7 @@ const UserProfile = () => {
         <Ionican
           name="power"
           size={20}
-          color="#000"
+          color="red"
           style={styles.icon}
         />
         <TouchableOpacity onPress={handelLogout}>
