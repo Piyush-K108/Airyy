@@ -75,9 +75,13 @@ export default function Home2({navigation}) {
     </TouchableOpacity>
   );
 
-  const handleCheckboxPress = () => {
-    setIsChecked(!isChecked);
-  };
+   const handleCheckboxPress = () => {
+     setIsChecked(!isChecked);
+  console.log("handle check box ev");
+     // Filter bikes based on the EV checkbox
+     const filteredBikes = Bikes.filter(bike => bike.Electrical === isChecked);
+     dispatch(fetchBikes(filteredBikes));
+   };
 
   const webRef = useRef(null);
 
@@ -331,27 +335,28 @@ const styles = StyleSheet.create({
     backgroundColor: 'gray',
     flexDirection: 'column',
   },
-  bottomSheet: {
-    // flex: 2,
-    // flexDirection: 'column',
-    // position: 'absolute',
-    justifyContent: 'center',
-    // width: '100%',
+  // bottomSheet: {
+  //   // flex: 2,
+  //   // flexDirection: 'column',
+  //   // position: 'absolute',
+  //   justifyContent: 'center',
+  //   // width: '100%',
 
-    alignItems: 'center',
-  },
-  bottomSheet: {
-    // flex: 2,
-    // flexDirection: 'column',
-    // position: 'absolute',
-    justifyContent: 'center',
-    // width: '100%',
-
-    alignItems: 'center',
-  },
+  //   alignItems: 'center',
+  // },
+  // bottomSheet: {
+  //   // flex: 2,
+  //   // flexDirection: 'column',
+  //   // position: 'absolute',
+  //   justifyContent: 'center',
+  //   // width: '100%',
+ 
+  //   alignItems: 'center',
+  // },
   bottomSheet: {
     position: 'absolute',
     width: '100%',
+    padding:9,
   },
   bottomSheetContent: {
     justifyContent: 'center',
@@ -419,7 +424,8 @@ const styles = StyleSheet.create({
 
     borderRadius: 10,
     padding: 10,
-    margin: 5,
+    margin: 6,
+   
     height: 120,
     justifyContent: 'center',
     alignItems: 'center',

@@ -27,22 +27,20 @@ const LeftModel = () => {
         <View className="h-screen flex flex-col  items-center  bg-gray-50">
           <LinearGradient
             colors={['#fef08a', '#f9fafb']}
-            className="flex justify-center items-center " // You can change these colors as per your gradient
+            className="flex justify-center items-center w-[100%]" // You can change these colors as per your gradient
           >
             <View
-              className="mt-14 w-[100%] px-4    rounded-lg  mb-10"
+              className="mt-14 w-[90%] px-4  bg-white  rounded-lg  mb-10"
               style={styles.cardContainer}>
               <View className="mt-6">
-                
-                  <ButtonArrow
-                    name={'Profile'}
-                    icon="person"
-                    iconname={'ion'}
-                    screen={'UserProfile'}
-                    showProfilePic={true}
-                  />
-              
-             
+                <ButtonArrow
+                  name={'Profile'}
+                  icon="person"
+                  iconname={'ion'}
+                  screen={'UserProfile'}
+                  showProfilePic={true}
+                />
+
                 <ButtonArrow
                   name={'Rate Us'}
                   icon="star-rate"
@@ -52,7 +50,7 @@ const LeftModel = () => {
             </View>
           </LinearGradient>
           <View
-            className="bg-white mt-4  ml-4 mr-4 w-[90%] py-8 rounded-lg"
+            className="bg-gray-50 mt-4  ml-4 mr-4 w-[90%] py-8 rounded-lg"
             style={styles.cardContainertwo}>
             <ButtonArrow
               name={'Ride History'}
@@ -94,9 +92,9 @@ const styles = StyleSheet.create({
     elevation: 0,
     // Add elevation for shadow
   },
-  // cardContainer:{
-  //   elevation:2 ,
-  // }
+  cardContainer:{
+    elevation:0 ,
+  }
 });
 
 export default LeftModel;
