@@ -17,7 +17,7 @@ const ScooterSelectionModal = ({isVisible, onClose, onSelect}) => {
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Select Scooter Type</Text>
           <TouchableOpacity
-            style={styles.optionButton}
+            style={styles.optionButtonTwo}
             onPress={() => handleSelect('5G')}>
             <Text style={styles.optionText}>5G Scooter</Text>
           </TouchableOpacity>
@@ -49,24 +49,46 @@ const styles = StyleSheet.create({
     width: 300,
   },
   modalTitle: {
-    color:'black',
+    color: 'black',
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+    textAlign: 'center',
   },
   optionButton: {
     paddingVertical: 10,
-    color:'black',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+
+    color: 'black',
+    // borderBottomWidth: 1,
+    padding: 10,
+    backgroundColor: '#dbeafe',
+    borderRadius: 10,
+    marginTop: 8,
+    elevation: 1,
+    // borderWidth: 1,
+    // borderBottomColor: '#ccc',
+  },
+  optionButtonTwo: {
+    paddingVertical: 10,
+    color: 'black',
+
+    // borderBottomWidth: 1,
+    padding: 10,
+    backgroundColor: '#f0f9ff',
+    borderRadius: 10,
+    marginTop: 8,
+    elevation: 1,
+    // borderWidth: 1,
+    // borderBottomColor: '#ccc',
   },
   optionText: {
     fontSize: 16,
-    color:'black',
+    color: 'black',
+    textAlign: 'center',
   },
   cancelButton: {
     marginTop: 10,
-    backgroundColor: '#e74c3c',
+    backgroundColor: '#dc2626',
     paddingVertical: 10,
     borderRadius: 5,
     alignItems: 'center',
