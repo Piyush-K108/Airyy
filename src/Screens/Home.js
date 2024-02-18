@@ -41,18 +41,21 @@ export default function Home2({navigation}) {
 
   const dispatch = useDispatch();
   const Bikes = useSelector(state => state.counter.bikes);
+  useEffect(() => {
+    dispatch(fetchBikes())
+  }, [])
+  
+  //  const pan = useRef(new Animated.ValueXY()).current;
 
- const pan = useRef(new Animated.ValueXY()).current;
-
- const panResponder = useRef(
-   PanResponder.create({
-     onMoveShouldSetPanResponder: () => true,
-     onPanResponderMove: Animated.event([null, {dx: pan.x, dy: pan.y}]),
-     onPanResponderRelease: () => {
-       pan.extractOffset();
-     },
-   }),
- ).current;
+  //  const panResponder = useRef(
+  //    PanResponder.create({
+  //      onMoveShouldSetPanResponder: () => true,
+  //      onPanResponderMove: Animated.event([null, {dx: pan.x, dy: pan.y}]),
+  //      onPanResponderRelease: () => {
+  //        pan.extractOffset();
+  //      },
+  //    }),
+  //  ).current;
 
   // Render Item function for flatlist for showing bikes
   const renderItem = ({item}) => (
@@ -76,6 +79,9 @@ export default function Home2({navigation}) {
   );
 
   const handleCheckboxPress = () => {
+    if (isChecked) {
+    } else {
+    }
     setIsChecked(!isChecked);
   };
 
@@ -140,7 +146,7 @@ export default function Home2({navigation}) {
           console.error('Error fetching search results:', error);
         });
     }
-    
+
     setResults([]);
   };
 
@@ -149,10 +155,10 @@ export default function Home2({navigation}) {
   }, []);
 
   const handleSearchSuggestion = useCallback(query => {
-    if(query===null || query===undefined || query===''){
-      return
+    if (query === null || query === undefined || query === '') {
+      return;
     }
-    
+
     axios
       .get(`https://api.tomtom.com/search/2/autocomplete/${query}.json`, {
         params: {
@@ -174,7 +180,6 @@ export default function Home2({navigation}) {
             : result.displayString || null;
           console.log(suggestion);
 
-
           return suggestion;
         });
 
@@ -186,6 +191,10 @@ export default function Home2({navigation}) {
       });
   }, []);
 
+  const handleBook = () => {
+    console.log(Bikes);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.mapContainer}>
@@ -196,16 +205,14 @@ export default function Home2({navigation}) {
           source={{html: mapTemplate}}
           allowsInlineMediaPlayback={true}
         />
-        <Animated.View
-          style={{
-            transform: [{translateX: pan.x}, {translateY: pan.y}],
-          }}
-          {...panResponder.panHandlers}>
-          <TouchableOpacity className="absolute top-[-453px] px-4 py-3 left-[280px] flex-row items-center   m-auto flex rounded-xl   bg-black">
+        <View>
+          <TouchableOpacity
+            onPress={handleBook}
+            className="absolute top-[-453px] px-4 py-3 left-[280px] flex-row items-center   m-auto flex rounded-xl   bg-black">
             <Text className="text-[#feb101] font-bold">Book now</Text>
             {/* <MaterialIcons name="bike_scooter" size={22} color="#666" /> */}
           </TouchableOpacity>
-        </Animated.View>
+        </View>
       </View>
       <BottomSheet
         ref={bottomSheetRef}
@@ -269,9 +276,9 @@ export default function Home2({navigation}) {
           style={{height: '100%'}}
           // nestedScrollEnabled={true}
         />
-      </BottomSheet>   
+      </BottomSheet>
 
-        <View style={styles.overlay}>
+      <View style={styles.overlay}>
         <View className="flex flex-row justify-between">
           <TouchableOpacity onPress={() => navigation.navigate('LeftModel')}>
             <View style={styles.menuButton}>
@@ -310,7 +317,7 @@ export default function Home2({navigation}) {
                   <TouchableOpacity
                     onPress={() => {
                       setSearch(item);
-                      
+
                       handleSearchSuggestion(item);
                     }}>
                     <Text className="text-black   border-b-2">{item}</Text>
