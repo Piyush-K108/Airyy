@@ -51,9 +51,9 @@ export default function Home({navigation}) {
       )}])`,
     );
     webRef.current.injectJavaScript(
-      `map.MYCoordinates([${parseFloat(location.coords.longitude)}, ${parseFloat(
+      `MyLocationMarker.setLngLat([${parseFloat(location.coords.longitude)}, ${parseFloat(
         location.coords.latitude,
-      )}])`,
+      )}]).addTo(map)`,
     );
     setMapCenter(`${location.coords.latitude},${location.coords.longitude}`);  
     dispatch(fetchBikes())
