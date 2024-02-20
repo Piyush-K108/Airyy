@@ -31,7 +31,8 @@ const mapTemplate = `
 
       <script>
       var RentalCoordinates = [75.86304748375873, 22.688274356847113];
-      var MYCoordinates = [75.86304748375873, 22.688274356847113];
+      
+      var MYCoordinates = [75.86418864732487, 22.703035];
       let map = tt.map({
         key: "${API_KEY}",
         container: 'map',

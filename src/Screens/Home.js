@@ -50,6 +50,11 @@ export default function Home({navigation}) {
         location.coords.latitude,
       )}])`,
     );
+    webRef.current.injectJavaScript(
+      `map.MYCoordinates([${parseFloat(location.coords.longitude)}, ${parseFloat(
+        location.coords.latitude,
+      )}])`,
+    );
     setMapCenter(`${location.coords.latitude},${location.coords.longitude}`);  
     dispatch(fetchBikes())
   }, [])
