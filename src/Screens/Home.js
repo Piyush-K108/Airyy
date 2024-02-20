@@ -26,11 +26,12 @@ import debounce from 'lodash.debounce';
 import Checkbox from '../Components/Checkbox';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
-import {fetchBikes} from '../Redux/Counter/counterAction';
+import {fetchBikes,fetchLocation} from '../Redux/Counter/counterAction';
 import {useNavigation} from '@react-navigation/core';
+
 import ScooterSelectionModal from '../Modals/ScooterSelectionModal';
 
-export default function Home2({navigation}) {
+export default function Home({navigation}) {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
   const bottomSheetRef = useRef(null);
@@ -38,26 +39,21 @@ export default function Home2({navigation}) {
   const [IsPatrol, setIsPatrol] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedScooter, setSelectedScooter] = useState(null);
-
+  
+  const [mapCenter, setMapCenter] = useState('22.6881149,75.8630678');
   const dispatch = useDispatch();
   const Bikes = useSelector(state => state.counter.bikes);
+  const location = useSelector(state => state.counter.location);
   useEffect(() => {
+    webRef.current.injectJavaScript(
+      `map.setCenter([${parseFloat(location.coords.longitude)}, ${parseFloat(
+        location.coords.latitude,
+      )}])`,
+    );
+    setMapCenter(`${location.coords.latitude},${location.coords.longitude}`);  
     dispatch(fetchBikes())
   }, [])
-  
-  //  const pan = useRef(new Animated.ValueXY()).current;
 
-  //  const panResponder = useRef(
-  //    PanResponder.create({
-  //      onMoveShouldSetPanResponder: () => true,
-  //      onPanResponderMove: Animated.event([null, {dx: pan.x, dy: pan.y}]),
-  //      onPanResponderRelease: () => {
-  //        pan.extractOffset();
-  //      },
-  //    }),
-  //  ).current;
-
-  // Render Item function for flatlist for showing bikes
   const renderItem = ({item}) => (
     <TouchableOpacity
       style={styles.bikeCard}
@@ -97,7 +93,6 @@ export default function Home2({navigation}) {
     console.log('handleSheetChanges', index);
   }, []);
 
-  const [mapCenter, setMapCenter] = useState('22.6881149,75.8630678');
 
   const delayedSearch = useMemo(
     () =>
@@ -192,7 +187,7 @@ export default function Home2({navigation}) {
   }, []);
 
   const handleBook = () => {
-    console.log(Bikes);
+    console.log(location.coords.latitude,location.coords.longitude,"ads",mapCenter);
   };
 
   return (

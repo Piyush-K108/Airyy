@@ -27,12 +27,12 @@ const LeftModel = () => {
         <View className="h-screen flex flex-col  items-center  bg-gray-50">
           <LinearGradient
             colors={['#fef08a', '#f9fafb']}
-            className="flex justify-center items-center w-[100%]" // You can change these colors as per your gradient
+            className="flex justify-center items-center  w-[100%]" // You can change these colors as per your gradient
           >
             <View
-              className="mt-14 w-[90%] px-4  bg-white  rounded-lg  mb-10"
+              className="mt-16 w-[90%] px-4  bg-white  rounded-lg  mb-10"
               style={styles.cardContainer}>
-              <View className="mt-6">
+              <View className="mt-6 ">
                 <ButtonArrow
                   name={'Profile'}
                   icon="person"

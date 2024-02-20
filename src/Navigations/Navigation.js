@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity,PermissionsAndroid} from 'react-native';
 import {useSelector} from 'react-redux';
 import BottomTabNavigation from './BottomTabNavigation';
 import {NavigationContainer} from '@react-navigation/native';
@@ -24,6 +24,9 @@ import FutureBook from '../Screens/Booking/FutureBook';
 import Home from '../Screens/Home';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Home2 from '../Screens/Home2';
+import { useDispatch } from 'react-redux';
+import { fetchLocation } from '../Redux/Counter/counterAction';
+
 const Stack = createNativeStackNavigator();
   const CustomHeader = ({navigation}) => (
     <View className="bg-yellow-200">
@@ -43,8 +46,10 @@ const Stack = createNativeStackNavigator();
   );
 
 const Navigation = () => {
+  const dispatch = useDispatch()
+  dispatch(fetchLocation())
   const loggedIn = useSelector(state => state.counter.loggedIn);
-
+  
 
 
   return (
@@ -131,3 +136,5 @@ const MainStack = () => {
 };
 
 export default Navigation;
+
+

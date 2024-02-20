@@ -31,6 +31,7 @@ const mapTemplate = `
 
       <script>
       var RentalCoordinates = [75.86304748375873, 22.688274356847113];
+      var MYCoordinates = [75.86304748375873, 22.688274356847113];
       let map = tt.map({
         key: "${API_KEY}",
         container: 'map',
@@ -40,6 +41,8 @@ const mapTemplate = `
 
       var element = document.getElementById("marker");
       var customMarkerIcon = new tt.Marker().setLngLat(RentalCoordinates).addTo(map);
+
+      var MyLocationMarker = new tt.Marker().setLngLat(MYCoordinates).addTo(map);
       
       var popupOffsets = {
         top: [0, 0],
@@ -53,7 +56,10 @@ const mapTemplate = `
       var popupContent = "<b>AiRYY Rides</b><br/>160/4, Bholaram Ustad Marg, Indrapuri Colony, Bhanwar Kuwa, Indore, Madhya Pradesh 452001";
 
       var popup = new tt.Popup({ offset: popupOffsets }).setHTML(popupContent);
+
+      var mypopup = new tt.Popup({ offset: popupOffsets });
       customMarkerIcon.setPopup(popup).togglePopup();
+      MyLocationMarker.setPopup(mypopup).togglePopup();
 
       map.on('dragend', function() {
         let center = map.getCenter();

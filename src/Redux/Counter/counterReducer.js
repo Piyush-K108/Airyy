@@ -1,10 +1,11 @@
-import {LOGIN, PHONE, BIKES, PROFILE,LOGOUT} from './counterActionTypes';
+import {LOGIN, PHONE, BIKES, PROFILE,LOGOUT,LOCATION} from './counterActionTypes';
 
 const initialState = {
   loggedIn: false,
   phone: '',
   bikes: [],
   profile: [],
+  location:[]
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -33,6 +34,11 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         bikes: action.payload,
       };
+      case LOCATION:
+        return {
+          ...state,
+          location: action.payload,
+        };
     default:
       return state;
   }
