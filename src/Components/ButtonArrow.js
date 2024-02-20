@@ -3,7 +3,7 @@ import {Text, View, TouchableOpacity , Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
-// import {useDispatch} from 'react-redux';
+import user from "../images/userProfile.png"
 import {logout} from '../Redux/Counter/counterAction';
 import {useDispatch} from 'react-redux';
 import {fetchProfile} from '../../Redux/Counter/counterAction';

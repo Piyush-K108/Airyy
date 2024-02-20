@@ -25,7 +25,7 @@ import Home from '../Screens/Home';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Home2 from '../Screens/Home2';
 import { useDispatch } from 'react-redux';
-import { fetchLocation } from '../Redux/Counter/counterAction';
+import { fetchLocation, fetchProfile } from '../Redux/Counter/counterAction';
 
 const Stack = createNativeStackNavigator();
   const CustomHeader = ({navigation}) => (
@@ -49,7 +49,11 @@ const Navigation = () => {
   const dispatch = useDispatch()
   dispatch(fetchLocation())
   const loggedIn = useSelector(state => state.counter.loggedIn);
-  
+  const phone = useSelector(state => state.counter.phone);
+  const profile = useSelector(state => state.counter.profile);
+  if(!profile){
+    dispatch(fetchProfile(phone))
+  }
 
 
   return (

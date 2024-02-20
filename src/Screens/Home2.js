@@ -35,6 +35,28 @@ export default function Home2() {
   const [results, setResults] = useState([]);
 
   const [mapCenter, setMapCenter] = useState('22.6881149,75.8630678');
+  const location = useSelector(state => state.counter.location);
+
+
+
+  useEffect(() => {
+    webRef.current.injectJavaScript(
+      `map.setCenter([${parseFloat(location.coords.longitude)}, ${parseFloat(
+        location.coords.latitude,
+      )}])`,
+    );
+    setMapCenter(`${location.coords.latitude},${location.coords.longitude}`); 
+  }, []);
+
+  useEffect(() => {
+    const [latitude, longitude] = mapCenter.split(',');
+    webRef.current.injectJavaScript(
+      `MyLocationMarker.setLngLat([${parseFloat(longitude)}, ${parseFloat(
+        latitude,
+      )}]).addTo(map)`,
+    );
+  }, [mapCenter]);
+
 
   const webRef = useRef(null);
 

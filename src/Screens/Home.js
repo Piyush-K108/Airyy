@@ -26,7 +26,7 @@ import debounce from 'lodash.debounce';
 import Checkbox from '../Components/Checkbox';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
-import {fetchBikes,fetchLocation} from '../Redux/Counter/counterAction';
+import {fetchBikes, fetchLocation} from '../Redux/Counter/counterAction';
 import {useNavigation} from '@react-navigation/core';
 
 import ScooterSelectionModal from '../Modals/ScooterSelectionModal';
@@ -39,7 +39,7 @@ export default function Home({navigation}) {
   const [IsPatrol, setIsPatrol] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedScooter, setSelectedScooter] = useState(null);
-  
+
   const [mapCenter, setMapCenter] = useState('22.6881149,75.8630678');
   const dispatch = useDispatch();
   const Bikes = useSelector(state => state.counter.bikes);
@@ -50,14 +50,21 @@ export default function Home({navigation}) {
         location.coords.latitude,
       )}])`,
     );
+    setMapCenter(`${location.coords.latitude},${location.coords.longitude}`); 
+  }, []);
+
+  useEffect(() => {
+    const [latitude, longitude] = mapCenter.split(',');
     webRef.current.injectJavaScript(
-      `MyLocationMarker.setLngLat([${parseFloat(location.coords.longitude)}, ${parseFloat(
-        location.coords.latitude,
+      `MyLocationMarker.setLngLat([${parseFloat(longitude)}, ${parseFloat(
+        latitude,
       )}]).addTo(map)`,
     );
-    setMapCenter(`${location.coords.latitude},${location.coords.longitude}`);  
-    dispatch(fetchBikes())
-  }, [])
+  }, [mapCenter]);
+
+  useEffect(() => {
+    dispatch(fetchBikes());
+  }, []);
 
   const renderItem = ({item}) => (
     <TouchableOpacity
@@ -97,7 +104,6 @@ export default function Home({navigation}) {
   const handleSheetChanges = useCallback(index => {
     console.log('handleSheetChanges', index);
   }, []);
-
 
   const delayedSearch = useMemo(
     () =>
@@ -150,9 +156,7 @@ export default function Home({navigation}) {
     setResults([]);
   };
 
-  const handleMapEvent = useCallback(event => {
-    setMapCenter(event.nativeEvent.data);
-  }, []);
+
 
   const handleSearchSuggestion = useCallback(query => {
     if (query === null || query === undefined || query === '') {
@@ -192,11 +196,21 @@ export default function Home({navigation}) {
   }, []);
 
   const handleBook = () => {
-    console.log(location.coords.latitude,location.coords.longitude,"ads",mapCenter);
+    console.log(
+      location.coords.latitude,
+      location.coords.longitude,
+      'ads',
+      mapCenter,
+    );
   };
+  const handleMapEvent = useCallback(event => {
+    console.log(mapCenter)
+    setMapCenter(event.nativeEvent.data);
+  }, []);
 
   return (
     <View style={styles.container}>
+
       <View style={styles.mapContainer}>
         <WebView
           ref={webRef}
@@ -214,6 +228,7 @@ export default function Home({navigation}) {
           </TouchableOpacity>
         </View>
       </View>
+
       <BottomSheet
         ref={bottomSheetRef}
         index={1}
@@ -353,13 +368,13 @@ const styles = StyleSheet.create({
   //   // position: 'absolute',
   //   justifyContent: 'center',
   //   // width: '100%',
- 
+
   //   alignItems: 'center',
   // },
   bottomSheet: {
     position: 'absolute',
     width: '100%',
-    padding:9,
+    padding: 9,
   },
   bottomSheetContent: {
     justifyContent: 'center',
@@ -428,7 +443,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     margin: 6,
-   
+
     height: 120,
     justifyContent: 'center',
     alignItems: 'center',
