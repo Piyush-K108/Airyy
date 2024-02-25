@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {View, Text, TouchableOpacity,PermissionsAndroid} from 'react-native';
 import {useSelector} from 'react-redux';
 import BottomTabNavigation from './BottomTabNavigation';
@@ -21,11 +21,13 @@ import Bikes from '../Screens/Booking/Bikes';
 import Schedule from '../Screens/Schedule';
 import Offers from '../Screens/Offers';
 import FutureBook from '../Screens/Booking/FutureBook';
-import Home from '../Screens/Home';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Home2 from '../Screens/Home2';
+
 import { useDispatch } from 'react-redux';
 import { fetchLocation, fetchProfile } from '../Redux/Counter/counterAction';
+import Home from '../Screens/Home';
+import Home2 from '../Screens/Home2';
 
 const Stack = createNativeStackNavigator();
   const CustomHeader = ({navigation}) => (
@@ -47,13 +49,18 @@ const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
   const dispatch = useDispatch()
-  dispatch(fetchLocation())
+  
   const loggedIn = useSelector(state => state.counter.loggedIn);
   const phone = useSelector(state => state.counter.phone);
   const profile = useSelector(state => state.counter.profile);
+  const location = useSelector(state => state.counter.location);
   if(!profile){
     dispatch(fetchProfile(phone))
   }
+  useEffect(() => {
+    dispatch(fetchLocation())
+    console.log(location)
+  }, [])
 
 
   return (

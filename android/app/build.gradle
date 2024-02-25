@@ -70,6 +70,9 @@ def enableProguardInReleaseBuilds = true
 def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
+    // packaging {
+    //     jniLibs.pickFirsts.add("lib/**/libc++_shared.so")
+    // }
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
@@ -103,13 +106,28 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    // kotlinOptions {
+    //     allWarningsAsErrors = true
+    //     jvmTarget = "1.8"
+    // }
+    // buildFeatures {
+    //     viewBinding = true
+    //     buildConfig = true
+    // }
 }
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
-    
+    // implementation("com.tomtom.sdk.location:provider-android:$rootProject.ext.tomtom_sdk")
+    // implementation("com.tomtom.sdk.location:provider-simulation:$rootProject.ext.tomtom_sdk")
+    // implementation("com.tomtom.sdk.location:provider-map-matched:$rootProject.ext.tomtom_sdk")
+    // implementation("com.tomtom.sdk.maps:map-display:$rootProject.ext.tomtom_sdk")
+    // implementation("com.tomtom.sdk.navigation:ui:$rootProject.ext.tomtom_sdk")
+    // implementation("com.tomtom.sdk.navigation:navigation-online:$rootProject.ext.tomtom_sdk")
+    // implementation("com.tomtom.sdk.routing:route-planner-online:$rootProject.ext.tomtom_sdk")
+    // implementation("com.tomtom.sdk.routing:route-replanner-online:$rootProject.ext.tomtom_sdk")
 
 // debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
 //     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {

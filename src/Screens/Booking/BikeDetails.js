@@ -41,7 +41,7 @@ const BikeDetails = () => {
           </View>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('Book', {bid: selectedBike.b_id});
+              navigation.navigate('FutureBook', {bid: selectedBike.b_id});
             }}
             className="bg-black flex items-center justify-center w-20 h-10 mx-10 mt-6 shadow-2xl rounded-lg ">
             <Text className="text-yellow-400 font-bold">Book</Text>

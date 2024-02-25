@@ -1,3 +1,23 @@
+// pluginManagement {
+//     repositories {
+//         gradlePluginPortal()
+//         google()
+//         mavenCentral()
+//     }
+// }
+// dependencyResolutionManagement {
+//     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+//     repositories {
+        
+//         google()
+//         mavenCentral() 
+//           maven {
+//             url = uri("https://repositories.tomtom.com/artifactory/maven/")  
+//             content { includeGroupByRegex("com\\.tomtom\\..+") }
+//           }
+//     }
+// }
+
 rootProject.name = 'airyy'
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 include ':app'

@@ -6,14 +6,9 @@ import {
   TextInput,
   Keyboard,
   TouchableOpacity,
-  // FlatList,
   Image,
-  Animated,
-  PanResponder,
-
-  // ScrollView,
 } from 'react-native';
-import {ScrollView, FlatList} from 'react-native-gesture-handler';
+import {FlatList} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import BottomSheet from '@gorhom/bottom-sheet';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -21,13 +16,10 @@ import mapTemplate from '../Components/mapTemplate';
 import {WebView} from 'react-native-webview';
 import axios from 'axios';
 import {API_KEY} from '@env';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import debounce from 'lodash.debounce';
 import Checkbox from '../Components/Checkbox';
-import {useSelector} from 'react-redux';
-import {useDispatch} from 'react-redux';
-import {fetchBikes, fetchLocation} from '../Redux/Counter/counterAction';
-import {useNavigation} from '@react-navigation/core';
+import {useSelector,useDispatch} from 'react-redux';
+import {fetchBikes} from '../Redux/Counter/counterAction';
 
 import ScooterSelectionModal from '../Modals/ScooterSelectionModal';
 
@@ -35,32 +27,16 @@ export default function Home({navigation}) {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
   const bottomSheetRef = useRef(null);
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
+  const [isChecked2, setIsChecked2] = useState(true);
   const [IsPatrol, setIsPatrol] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedScooter, setSelectedScooter] = useState(null);
-
-  const [mapCenter, setMapCenter] = useState('22.6881149,75.8630678');
-  const dispatch = useDispatch();
   const Bikes = useSelector(state => state.counter.bikes);
+  const [ShowBikes, setShowBikes] = useState(Bikes);
+  const [mapCenter, setMapCenter] = useState('');
+  const dispatch = useDispatch();
   const location = useSelector(state => state.counter.location);
-  useEffect(() => {
-    webRef.current.injectJavaScript(
-      `map.setCenter([${parseFloat(location.coords.longitude)}, ${parseFloat(
-        location.coords.latitude,
-      )}])`,
-    );
-    setMapCenter(`${location.coords.latitude},${location.coords.longitude}`); 
-  }, []);
-
-  useEffect(() => {
-    const [latitude, longitude] = mapCenter.split(',');
-    webRef.current.injectJavaScript(
-      `MyLocationMarker.setLngLat([${parseFloat(longitude)}, ${parseFloat(
-        latitude,
-      )}]).addTo(map)`,
-    );
-  }, [mapCenter]);
 
   useEffect(() => {
     dispatch(fetchBikes());
@@ -86,20 +62,36 @@ export default function Home({navigation}) {
     </TouchableOpacity>
   );
 
-  const handleCheckboxPress = () => {
-    if (isChecked) {
+  const handleCheckboxPress = value => {
+    let filteredBikes = ShowBikes;
+    if (value) {
+      filteredBikes = Bikes.filter(bike => bike.Electrical === false);
+      setShowBikes(filteredBikes);
     } else {
+      setShowBikes(Bikes);
     }
-    setIsChecked(!isChecked);
+    if (!isChecked2) {
+      setShowBikes(Bikes);
+    }
   };
-
-  const webRef = useRef(null);
+  const handleCheckboxPress2 = value => {
+    let filteredBikes2 = ShowBikes;
+    if (value) {
+      filteredBikes2 = Bikes.filter(bike => bike.Electrical === true);
+      setShowBikes(filteredBikes2);
+    } else {
+      setShowBikes(Bikes);
+    }
+    if (!isChecked) {
+      setShowBikes(Bikes);
+    }
+  };
 
   const toggleCheckbox = () => {
     setIsChecked(!isChecked);
   };
 
-  const snapPoints = useMemo(() => ['25%', '50%', '80%'], []);
+  const snapPoints = useMemo(() => ['10%', '25%', '50%', '80%'], []);
 
   const handleSheetChanges = useCallback(index => {
     console.log('handleSheetChanges', index);
@@ -108,7 +100,8 @@ export default function Home({navigation}) {
   const delayedSearch = useMemo(
     () =>
       debounce(text => {
-        handleSearchSuggestion(text);
+        handleAutoComplete(text);
+        
       }, 500),
     [],
   );
@@ -129,6 +122,7 @@ export default function Home({navigation}) {
           params: {
             key: API_KEY,
             limit: 1,
+            countrySet: 'IND',
           },
         })
         .then(response => {
@@ -139,6 +133,11 @@ export default function Home({navigation}) {
 
             setMapCenter(`${position.lon},${position.lat}`);
 
+            webRef.current.injectJavaScript(
+              `LocationMarker.setLngLat([${parseFloat(
+                position.lon,
+              )}, ${parseFloat(position.lat)}]).addTo(map)`,
+            );
             webRef.current.injectJavaScript(
               `map.setCenter([${parseFloat(position.lon)}, ${parseFloat(
                 position.lat,
@@ -156,9 +155,11 @@ export default function Home({navigation}) {
     setResults([]);
   };
 
-
-
-  const handleSearchSuggestion = useCallback(query => {
+ 
+      
+       
+  
+  const handleAutoComplete = useCallback(query => {
     if (query === null || query === undefined || query === '') {
       return;
     }
@@ -172,45 +173,85 @@ export default function Home({navigation}) {
         },
       })
       .then(response => {
-        const suggestions = response.data.results.map(result => {
-          // Check for segments with type "brand" and value
+        const results = response.data.results || [];
+        const newSuggestions = results.map(result => {
           const brandSegment = result.segments.find(
             segment => segment.type === 'brand' && segment.value,
           );
-
-          // Check for other types of segments or use a fallback
-          const suggestion = brandSegment
-            ? brandSegment.value
-            : result.displayString || null;
-          console.log(suggestion);
-
-          return suggestion;
+          return brandSegment ? brandSegment.value : result.displayString || null;
         });
-
-        // Filter out null values (invalid results)
-        setResults(suggestions.filter(result => result !== null));
+        setResults(newSuggestions);
       })
       .catch(error => {
-        console.error('Error fetching search suggestions:', error);
+        console.error('Error fetching autocomplete suggestions:', error);
       });
   }, []);
 
+  const handleSearchSuggetions = useCallback(
+    async query => {
+      if (query === null || query === undefined || query === '') {
+        return;
+      }
+  
+      try {
+        // You can adjust the radius and other parameters based on your requirements
+        const response = await axios.get(
+          `https://api.tomtom.com/search/2/search/${encodeURIComponent(
+            query,
+          )}.json?key=${TOMTOM_API_KEY}&language=en-US&limit=5&lat=${mapCenter.lat}&lon=${mapCenter.lng}&radius=5000`,
+        );
+  
+        const suggestions = response.data.results.map(result => ({
+          id: result.id,
+          text: result.address.freeformAddress,
+        }));
+  
+        // Use 'suggestions' for UI or any other logic
+        console.log('Search Suggestions:', suggestions);
+  
+        // Assuming you have a function to handle the selection of a suggestion
+        // Update the selected suggestion in the state
+        setResults(suggestions);
+      } catch (error) {
+        console.error('Error fetching search suggestions:', error);
+      }
+    },
+    [],
+  );
+  
+
   const handleBook = () => {
-    console.log(
-      location.coords.latitude,
-      location.coords.longitude,
-      'ads',
-      mapCenter,
-    );
+    console.log(mapCenter);
   };
-  const handleMapEvent = useCallback(event => {
-    console.log(mapCenter)
+  const webRef = useRef(null);
+  useEffect(() => {
+    if (location) {
+      const [latitude, longitude] = [
+        location.coords.latitude,
+        location.coords.longitude,
+      ];
+      webRef.current.injectJavaScript(
+        `map.setCenter([${parseFloat(longitude)}, ${parseFloat(latitude)}])`,
+      );
+      webRef.current.injectJavaScript(
+        `MyLocationMarker.setLngLat([${parseFloat(longitude)}, ${parseFloat(
+          latitude,
+        )}]).addTo(map)`,
+      );
+      webRef.current.injectJavaScript(
+        `LocationMarker.setLngLat([${parseFloat(longitude)}, ${parseFloat(
+          latitude,
+        )}]).addTo(map)`,
+      );
+    }
+  }, [location]);
+
+  const handleMapEvent = event => {
     setMapCenter(event.nativeEvent.data);
-  }, []);
+  };
 
   return (
     <View style={styles.container}>
-
       <View style={styles.mapContainer}>
         <WebView
           ref={webRef}
@@ -244,46 +285,32 @@ export default function Home({navigation}) {
             <Checkbox
               label="EV"
               value={isChecked}
-              onPress={handleCheckboxPress}
+              onPress={() => {
+                setIsChecked(!isChecked);
+                handleCheckboxPress(isChecked);
+              }}
             />
 
-            <View className="flex flex-col ">
+            <View className="flex flex-col">
               <Checkbox
                 label="Patrol"
-                value={IsPatrol}
+                value={isChecked2}
                 onPress={() => {
-                  setIsPatrol(!IsPatrol);
-                  setModalVisible(true);
+                  setIsChecked2(!isChecked2);
+                  handleCheckboxPress2(isChecked2);
                 }}
               />
-
               <ScooterSelectionModal
                 isVisible={modalVisible}
                 onClose={() => setModalVisible(false)}
                 onSelect={scooterType => setSelectedScooter(scooterType)}
               />
-              {/* <View className="flex flex-row bg-yellow-100 rounded-2xl py-2 px-3">
-                <Checkbox
-                  label="5g"
-                  value={isChecked}
-                  onPress={handleCheckboxPress}
-                  style={{paddingHorizontal: 0}}
-                />
-                <Checkbox
-                  label="6g"
-                  value={IsPatrol}
-                  onPress={() => {
-                    setIsPatrol(!IsPatrol);
-                  }}
-                  style={{paddingHorizontal: 0}}
-                />
-              </View> */}
             </View>
           </View>
         </LinearGradient>
 
         <FlatList
-          data={Bikes}
+          data={ShowBikes}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
           numColumns={2}
@@ -333,7 +360,7 @@ export default function Home({navigation}) {
                     onPress={() => {
                       setSearch(item);
 
-                      handleSearchSuggestion(item);
+                      handleAutoComplete(item);
                     }}>
                     <Text className="text-black   border-b-2">{item}</Text>
                   </TouchableOpacity>

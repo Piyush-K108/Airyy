@@ -115,42 +115,48 @@ export default function Home2() {
     setMapCenter(event.nativeEvent.data);
   };
 
-  const handleSearchSuggestion = useCallback(query => {
-    if (query === null || query === undefined || query === '') {
-      return;
-    }
+  const handleSearchSuggestion = useCallback(
+    query => {
+      if (query === null || query === undefined || query === '') {
+        return;
+      }
 
-    axios
-      .get(`https://api.tomtom.com/search/2/autocomplete/${query}.json`, {
-        params: {
-          key: API_KEY,
-          language: 'en-US',
-          limit: 10,
-        },
-      })
-      .then(response => {
-        const suggestions = response.data.results.map(result => {
-          // Check for segments with type "brand" and value
-          const brandSegment = result.segments.find(
-            segment => segment.type === 'brand' && segment.value,
-          );
+      const [latitude, longitude] = mapCenter.split(',');
 
-          // Check for other types of segments or use a fallback
-          const suggestion = brandSegment
-            ? brandSegment.value
-            : result.displayString || null;
-          console.log(suggestion);
+      axios
+        .get(`https://api.tomtom.com/search/2/autocomplete/${query}.json`, {
+          params: {
+            key: API_KEY,
+            language: 'en-US',
+            limit: 10,
+            lat: `${latitude}`,
+            lon: `${longitude}`,
+            radius: 10000,
+            countrySet: 'IND',
+          },
+        })
+        .then(response => {
+          console.log(JSON.stringify(response.data.results, null, 2));
+          const suggestions = response.data.results.map(result => {
+            // Get all segments
+            const segments = result.segments.map(segment => {
+              const {type, value, matches} = segment;
+              return {type, value, matches};
+            });
 
-          return suggestion;
+            // Filter out null values (invalid results)
+            return segments.filter(segment => segment !== null);
+          });
+
+          console.log("das",suggestions);
+          setResults(suggestions);
+        })
+        .catch(error => {
+          console.error('Error fetching search suggestions:', error);
         });
-
-        // Filter out null values (invalid results)
-        setResults(suggestions.filter(result => result !== null));
-      })
-      .catch(error => {
-        console.error('Error fetching search suggestions:', error);
-      });
-  }, []);
+    },
+    [mapCenter],
+  );
 
   return (
     <>
