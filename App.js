@@ -19,16 +19,16 @@ function App() {
     const unsubscribe = NetInfo.addEventListener(state => {
       setIsConnected(state.isConnected);
       setConnectionType(state.type);
-      
+
       if (state.isConnected) {
         SplashScreen.hide();
       }
     });
-  
+
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [isConnected]);
   
   return (
     <Provider store={store}>
