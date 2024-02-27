@@ -7,11 +7,13 @@ import {
   Keyboard,
   TouchableOpacity,
   Image,
+  Animated
 } from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import BottomSheet from '@gorhom/bottom-sheet';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicans from 'react-native-vector-icons/Ionicons';
 import mapTemplate from '../Components/mapTemplate';
 import {WebView} from 'react-native-webview';
 import axios from 'axios';
@@ -78,6 +80,7 @@ export default function Home({navigation}) {
     let filteredBikes2 = ShowBikes;
     if (value) {
       filteredBikes2 = Bikes.filter(bike => bike.Electrical === true);
+      console.log(filteredBikes2);
       setShowBikes(filteredBikes2);
     } else {
       setShowBikes(Bikes);
@@ -250,6 +253,26 @@ export default function Home({navigation}) {
     setMapCenter(event.nativeEvent.data);
   };
 
+
+    const animatedBorderRadius = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+      const animateBorder = Animated.loop(
+        Animated.timing(animatedBorderRadius, {
+          toValue: 1,
+          duration: 1000, // You can adjust the duration as needed
+          useNativeDriver: false, // Add this line for non-native animation
+        }),
+      );
+
+      animateBorder.start();
+
+      return () => {
+        animateBorder.stop();
+      };
+    }, [animatedBorderRadius]);
+   
+
   return (
     <View style={styles.container}>
       <View style={styles.mapContainer}>
@@ -261,18 +284,34 @@ export default function Home({navigation}) {
           allowsInlineMediaPlayback={true}
         />
         <View>
-          <TouchableOpacity
-            onPress={handleBook}
-            className="absolute top-[-453px] px-4 py-3 left-[280px] flex-row items-center   m-auto flex rounded-xl   bg-black">
-            <Text className="text-[#feb101] font-bold">Book now</Text>
-            {/* <MaterialIcons name="bike_scooter" size={22} color="#666" /> */}
-          </TouchableOpacity>
+          <Animated.View
+            style={{
+              position: 'absolute',
+              top: -473,
+              left: 280,
+              margin: 'auto',
+              flexDirection: 'row',
+              alignItems: 'center',
+              padding: 15,
+              borderRadius: animatedBorderRadius.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 25], // Adjust the border radius as needed
+              }),
+              backgroundColor: 'black',
+            }}>
+            <TouchableOpacity onPress={handleBook}>
+              <Text style={{color: '#feb101', fontWeight: 'bold'}}>
+                Book now
+              </Text>
+              {/* Add your icon or additional components here */}
+            </TouchableOpacity>
+          </Animated.View>
         </View>
       </View>
 
       <BottomSheet
         ref={bottomSheetRef}
-        index={1}
+        index={2}
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
         style={styles.bottomSheet}
@@ -349,21 +388,26 @@ export default function Home({navigation}) {
             </View>
           </View>
         </View>
+
         {results.length > 0 && (
-          <View className="mt-5 w-screen">
+          <View
+            className="mt-2 ml-12 h-[120px]  w-[300px] flex items-center bg-white rounded-lg "
+            style={{elevation: 1}}>
             <FlatList
               data={results}
               keyExtractor={(item, index) => index.toString()}
               renderItem={({item}) => (
-                <View className="items-center w-screen border-black ">
+                <View className="flex flex-row justify-between items-center gap-24 py-2">
                   <TouchableOpacity
                     onPress={() => {
                       setSearch(item);
 
                       handleAutoComplete(item);
-                    }}>
-                    <Text className="text-black   border-b-2">{item}</Text>
+                    }}
+                    className="flex flex-col border-black ">
+                    <Text className="text-black">{item}</Text>
                   </TouchableOpacity>
+                  <Ionicans name="arrow-undo-outline" size={22} color="#000" />
                 </View>
               )}
             />
