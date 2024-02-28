@@ -16,9 +16,11 @@ import DatePicker from 'react-native-date-picker';
 import {ProfileEdit} from './ProfileEdit';
 const EditDateOfBirth = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [loading, setLoading] = useState(false);
   const editProfile = ProfileEdit();
 
   const handleSave = async () => {
+    setLoading(true)
     const year = selectedDate.getFullYear();
     const month = selectedDate.getMonth() + 1;
     const day = selectedDate.getDate();
@@ -30,9 +32,11 @@ const EditDateOfBirth = () => {
 
     try {
       await editProfile(data, 'application/json');
+      setLoading(false)
       // Handle success or navigate to another screen
     } catch (error) {
       console.error('Error saving Date of Birth:', error);
+      setLoading(false)
       // Handle error, show alert, etc.
     }
   };
@@ -56,10 +60,15 @@ const EditDateOfBirth = () => {
                 textColor="#000"
               />
             </View>
-
-            <TouchableOpacity style={styles.submitButton} onPress={handleSave}>
-              <Text style={styles.submitButtonText}>Save</Text>
-            </TouchableOpacity>
+            {loading ? (
+              <ActivityIndicator size="large" color="#fbbf24" />
+            ) : (
+              <TouchableOpacity
+                style={styles.submitButton}
+                onPress={handleSave}>
+                <Text style={styles.submitButtonText}>Save</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>
