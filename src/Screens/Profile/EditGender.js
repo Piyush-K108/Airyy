@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
@@ -34,13 +35,13 @@ const EditGender = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.boxContainer}>
+      <LinearGradient colors={['#fde047', 'white']} style={styles.boxContainer}>
         <Image
           source={require('../../assets/images/edit.png')}
           style={styles.Editimage}
         />
         <Text style={styles.name}>Edit Gender</Text>
-      </View>
+     </LinearGradient>
       <TouchableOpacity
         style={styles.dropdownContainer}
         onPress={toggleDropdown}>
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 25,
     fontWeight: '500',
-    color: '#FFF',
+    color: '#000',
     marginBottom: 40,
     marginLeft: 40,
   },
@@ -118,6 +119,7 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     marginBottom: 20,
+    
   },
   selectOptionContainer: {
     flexDirection: 'row',
@@ -139,10 +141,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   dropdownOptions: {
-    marginTop: 10,
+    marginTop: 0,
     borderWidth: 1,
     borderColor: '#888',
     borderRadius: 5,
+    width:'90%'
   },
   option: {
     paddingHorizontal: 10,

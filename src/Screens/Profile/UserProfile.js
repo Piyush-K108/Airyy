@@ -18,7 +18,7 @@ import {useNavigation} from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionican from 'react-native-vector-icons/Ionicons';
-
+import LinearGradient from 'react-native-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch} from 'react-redux';
 import {fetchProfile, logout} from '../../Redux/Counter/counterAction';
@@ -139,9 +139,13 @@ const UserProfile = () => {
           onCancel={() => setopenEditComponent('')}
         />
       )}
-      <View style={styles.boxContainer}>
+      {/* <View style={styles.boxContainer}> */}
         {/* <Text>We can show our offers</Text> */}
-      </View>
+      {/* </View> */}
+        <LinearGradient
+        colors={['#fde047', 'white']} style={styles.boxContainer}>
+
+        </LinearGradient>
       {data && (
         <>
           <TouchableOpacity

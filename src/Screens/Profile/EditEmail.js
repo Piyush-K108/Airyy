@@ -8,6 +8,8 @@ import {
   Dimensions,
   Image,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
@@ -22,6 +24,10 @@ const EditEmail = () => {
   const handleEdit = () => {
     setIsEditing(true);
   };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+  };
   const editProfile = ProfileEdit();
   const handleSave = async () => {
     setIsEditing(false);
@@ -31,7 +37,8 @@ const EditEmail = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.boxContainer}>
+      <LinearGradient colors={['#fde047', 'white']} style={styles.boxContainer}>
+        {/* <View> */}
         <FontAwesome
           name="envelope"
           size={60}
@@ -42,50 +49,42 @@ const EditEmail = () => {
           source={require('../../assets/images/edit.png')}
           style={styles.Editimage}
         />
+
         <Text style={styles.name}>Edit Email</Text>
-      </View>
-      <View style={styles.inputContainer}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <FontAwesome
-            name="envelope"
-            size={20}
-            color="#5D8AA8"
-            style={styles.icon}
-          />
-          <Text style={styles.title}>Edit Email</Text>
-        </View>
-
+        {/* </View> */}
+      </LinearGradient>
+      <LinearGradient colors={['white', 'white']} style={styles.inputContainer}>
         {isEditing ? (
-          <TextInput
-            style={styles.input}
-            value={email}
-            onChangeText={setEmail}
-            placeholder="Enter your new email"
-            keyboardType="email-Gender"
-            autoCapitalize="none"
-            placeholderTextColor={'#121212'}
-          />
+          <>
+            <TextInput
+              style={styles.input}
+              value={email}
+              onChangeText={setEmail}
+              placeholder="Enter your new email"
+              keyboardType="email-Gender"
+              autoCapitalize="none"
+              placeholderTextColor={'#121212'}
+            />
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity onPress={handleCancel}>
+                <Ionicons name="arrow-back-circle" size={30} color="#4b5563" />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleSave}>
+                <Ionicons name="bookmark" size={30} color="#4b5563" />
+              </TouchableOpacity>
+            </View>
+          </>
         ) : (
-          <Text style={styles.emailText}>Current Email: {prop}</Text>
+          <View className="flex flex-row items-center gap-4">
+            <Text style={styles.emailText}>
+              <Text style={{fontWeight: '700', color: 'black'}}>{prop}</Text>{' '}
+            </Text>
+            <TouchableOpacity onPress={handleEdit}>
+              <Ionicons name="create" size={30} color="#4b5563" />
+            </TouchableOpacity>
+          </View>
         )}
-
-        <TouchableOpacity
-          style={styles.buttonforEditEmail}
-          onPress={isEditing ? handleSave : handleEdit}>
-          <Text style={styles.buttonText}>{isEditing ? 'Save' : 'Edit'}</Text>
-        </TouchableOpacity>
-        {/* <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-        /> */}
-      </View>
+      </LinearGradient>
       {/* <TouchableOpacity
         style={styles.EditBtnContainer}
         onPress={handleUpdateEmail}>
@@ -107,7 +106,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 1.0,
     maxWidth: 550,
     height: 200,
-    backgroundColor: '#ff553e',
+    // backgroundColor: '#fef9c3',
     justifyContent: 'flex-end',
     alignItems: 'flex-start',
     marginBottom: 40,
@@ -115,7 +114,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 25,
     fontWeight: '500',
-    color: '#FFF',
+    color: '#000',
     marginBottom: 40,
     marginLeft: 40,
   },
@@ -126,11 +125,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   inputContainer: {
+    backgroundColor: 'white',
+    elevation: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
     width: '100%',
+    height: 100,
   },
   icon: {
     marginRight: 10,
@@ -143,24 +145,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
   },
-  buttonforEditEmail: {
-    backgroundColor: '#ffdd4b',
-    borderRadius: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    marginTop: 40,
-    width: '100%',
-    maxWidth: 100,
-  },
-  buttonText: {
-    color: '#121212',
-    fontSize: 19,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    letterSpacing: 2,
-  },
 
-  //for new edit
+  
 
   title: {
     fontSize: 19,
@@ -169,7 +155,7 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   input: {
-    width: '100%',
+    width: '80%',
     height: 40,
     borderWidth: 1,
     borderColor: '#ccc',
@@ -180,9 +166,21 @@ const styles = StyleSheet.create({
   },
   emailText: {
     fontSize: 16,
-    color: '#121212',
-    marginBottom: 20,
+    color: 'black',
+    fontWeight: 'bold',
+  
   },
+
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 2,
+    width: '100%',
+    maxWidth: 220,
+  },
+  
+  
+ 
 });
 
 export default EditEmail;
