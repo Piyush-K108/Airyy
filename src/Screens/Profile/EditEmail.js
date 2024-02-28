@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -18,6 +19,7 @@ import {useRoute} from '@react-navigation/core';
 const EditEmail = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
+   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const route = useRoute();
   const {prop} = route.params;
@@ -30,9 +32,11 @@ const EditEmail = () => {
   };
   const editProfile = ProfileEdit();
   const handleSave = async () => {
+    setLoading(true)
     setIsEditing(false);
     const data = {email: email};
     await editProfile(data, 'application/json');
+     setLoading(false);
   };
 
   return (
@@ -85,6 +89,7 @@ const EditEmail = () => {
           </View>
         )}
       </LinearGradient>
+      {loading && <ActivityIndicator size="large" color="#fbbf24" />}
       {/* <TouchableOpacity
         style={styles.EditBtnContainer}
         onPress={handleUpdateEmail}>

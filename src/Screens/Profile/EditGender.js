@@ -7,6 +7,7 @@ import {
   Button,
   Dimensions,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -18,10 +19,13 @@ const EditGender = () => {
   const editProfile = ProfileEdit();
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const navigation = useNavigation();
+   const [loading, setLoading] = useState(false);
 
   const handleUpdateGender = async () => {
-    const data = { Gender: gender};
+    setLoading(true); // Show loading animation
+    const data = {Gender: gender};
     await editProfile(data, 'application/json');
+    setLoading(false); // Hide loading animation
   };
 
   const toggleDropdown = () => {
@@ -41,7 +45,7 @@ const EditGender = () => {
           style={styles.Editimage}
         />
         <Text style={styles.name}>Edit Gender</Text>
-     </LinearGradient>
+      </LinearGradient>
       <TouchableOpacity
         style={styles.dropdownContainer}
         onPress={toggleDropdown}>
@@ -79,11 +83,15 @@ const EditGender = () => {
           </TouchableOpacity>
         </View>
       )}
-      <TouchableOpacity
-        style={styles.EditBtnContainer}
-        onPress={handleUpdateGender}>
-        <Text style={styles.EditBtnText}>Save</Text>
-      </TouchableOpacity>
+      {loading ? (
+        <ActivityIndicator size="large" color="#fbbf24" />
+      ) : (
+        <TouchableOpacity
+          style={styles.EditBtnContainer}
+          onPress={handleUpdateGender}>
+          <Text style={styles.EditBtnText}>Save</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

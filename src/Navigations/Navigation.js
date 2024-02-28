@@ -28,6 +28,7 @@ import { useDispatch } from 'react-redux';
 import { fetchLocation, fetchProfile } from '../Redux/Counter/counterAction';
 import Home from '../Screens/Home';
 import Home2 from '../Screens/Home2';
+import EditCity from '../Screens/Profile/EditCity';
 
 const Stack = createNativeStackNavigator();
   const CustomHeader = ({navigation}) => (
@@ -142,6 +143,7 @@ const MainStack = () => {
       <Stack.Screen name="EditEmail" component={EditEmail} />
       <Stack.Screen name="EditGender" component={EditGender} />
       <Stack.Screen name="EditName" component={EditName} />
+      <Stack.Screen name="EditCity" component={EditCity} />
     </Stack.Navigator>
   );
 };
