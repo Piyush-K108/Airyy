@@ -1,3 +1,4 @@
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -8,19 +9,21 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import React from 'react';
 import {useSelector} from 'react-redux';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import axios from 'axios';
 import LottieView from 'lottie-react-native';
 import {useNavigation} from '@react-navigation/native';
 import {DOMAIN} from '@env';
 import {Alert} from 'react-native';
+import ConfirmCancelModal from '../Modals/CancelBookingModal';
+
 const Scedule = () => {
   const [data, setData] = useState([]);
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null); // Track the selected booking
   const phone2 = useSelector(state => state.counter.phone);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -34,13 +37,12 @@ const Scedule = () => {
   }, []);
 
   const fetchData = async () => {
-       setIsLoading(true);
+    setIsLoading(true);
     try {
       const result = await axios.get(
         `https://${DOMAIN}/User/Schedule/${phone2}/`,
       );
       setData(result.data.data);
-      // console.log(result.data.data)
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching schedule data:', error);
@@ -58,14 +60,16 @@ const Scedule = () => {
   };
 
   useEffect(() => {
-   
     fetchData();
-   
   }, []);
 
-  const handleCancel = async id => {
-    setIsLoading(true);
+  const handleCancel = id => {
+    // Set the selected booking when cancel is pressed
+    setSelectedBooking(id);
+  };
 
+  const confirmCancel = async () => {
+    setIsLoading(true);
     try {
       const response = await fetch(
         `https://${DOMAIN}/User/Schedule/${phone2}/`,
@@ -75,18 +79,17 @@ const Scedule = () => {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
           },
-          body: JSON.stringify({id: id}),
+          body: JSON.stringify({id: selectedBooking}),
         },
       );
 
-      // Check if the response status indicates success (e.g., 204)
       if (response.status === 204) {
         console.log('Schedule deleted successfully');
-        setIsLoading(true)
+        setIsLoading(true);
         // Wait for a short time before fetching the updated data
         setTimeout(() => {
           fetchData();
-          setIsLoading(false)
+          setIsLoading(false);
         }, 2000);
       } else {
         console.error('Unexpected response:', response);
@@ -96,7 +99,15 @@ const Scedule = () => {
       fetchData();
       setIsLoading(false);
       console.error('Error during fetch:', error);
+    } finally {
+      // Reset selectedBooking after cancel is confirmed
+      setSelectedBooking(null);
     }
+  };
+
+  const closeModal = () => {
+    // Reset selectedBooking when modal is closed without confirming
+    setSelectedBooking(null);
   };
 
   return (
@@ -209,6 +220,12 @@ const Scedule = () => {
             </View>
           </ScrollView>
         )}
+
+        <ConfirmCancelModal
+          isVisible={!!selectedBooking}
+          onCancel={closeModal}
+          onConfirm={confirmCancel}
+        />
       </View>
     </View>
   );
@@ -239,8 +256,6 @@ const styles = StyleSheet.create({
     elevation: 3,
     flexDirection: 'column',
     color: '#121212',
-    // backgroundColor: '#ffffff',
-    // backgroundColor: '#F6FDBC',
     backgroundColor: '#fef08a',
     borderRadius: 10,
     padding: 20,
@@ -257,12 +272,6 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 16,
-    // marginLeft: 120,
-    color: '#121212',
-  },
-
-  expertin: {
-    marginLeft: 120,
     color: '#121212',
   },
 
@@ -273,8 +282,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     height: 60,
     width: 60,
-
-    // marginRight: 200,
   },
 });
 
