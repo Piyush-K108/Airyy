@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,99 +6,137 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
+  ActivityIndicator,
+  Modal,
 } from 'react-native';
 import axios from 'axios';
-import { useRoute } from '@react-navigation/core';
+import ModalComponent from '../../Modals/BookingModal';
+import {useRoute} from '@react-navigation/core';
 import {useNavigation} from '@react-navigation/native';
 import DatePicker from 'react-native-date-picker';
-import { useSelector } from 'react-redux';
-import {DOMAIN} from "@env" 
+import {useSelector} from 'react-redux';
+import {DOMAIN} from '@env';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+
+
 const FutureBook = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState(new Date()); 
+  const [selectedTime, setSelectedTime] = useState(new Date());
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
   const route = useRoute();
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const phone = useSelector(state => state.counter.phone);
-  const { bid } = route.params;
+  const {bid} = route.params;
+
   const handleSave = async () => {
-    const formattedDate = formatDate(selectedDate);
-    const formattedTime = formatTime(selectedTime);
-  
-    const data = { DateAndTime: `${formattedDate} ${formattedTime}`,bid:bid };
-    console.log(data);
-  
-    const response = await axios.post(
-      `https://${DOMAIN}/User/Schedule/${phone}/`,
-      data,
-    );
-    console.log(response.data);
-    navigation.navigate("Schedule")
+    try {
+      setIsLoading(true);
+
+      const formattedDate = formatDate(selectedDate);
+      const formattedTime = formatTime(selectedTime);
+
+      const data = {DateAndTime: `${formattedDate} ${formattedTime}`, bid: bid};
+      console.log(data);
+
+      const response = await axios.post(
+        `https://${DOMAIN}/User/Schedule/${phone}/`,
+        data,
+      );
+
+      console.log(response.data);
+      setIsLoading(false);
+      setModalVisible(true);
+    } catch (error) {
+      console.error('Error during save:', error);
+      setIsLoading(false);
+      // Handle error, show a message, or redirect to an error page if necessary
+    }
   };
-  
-  const formatDate = (date) => {
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const closeModalAndNavigate = () => {
+    toggleModal();
+    navigation.navigate('Home');
+  };
+
+  const formatDate = date => {
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
-    return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
+    return `${year}-${month < 10 ? '0' + month : month}-${
+      day < 10 ? '0' + day : day
+    }`;
   };
-  
-  const formatTime = (time) => {
+
+  const formatTime = time => {
     const hours = time.getHours();
     const minutes = time.getMinutes();
-    return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+    return `${hours < 10 ? '0' + hours : hours}:${
+      minutes < 10 ? '0' + minutes : minutes
+    }`;
   };
-  
-  
+
   return (
-    // <ScrollView style={{ flex: 1, backgroundColor: '#FFF', height: windowHeight }}>
-      /* <View style={styles.titleCotainer}></View> */
+    <View style={styles.container}>
+      <Text style={styles.title}>"Begin your journey with us"</Text>
 
-      <View style={styles.container}>
-        <Text style={styles.title}>"Begin your journey with us"</Text>
-
-        <View className='w-[100%]'>
-          <View style={styles.form}>
-            <View style={styles.DatePickerContainer}>
-              <Text style={styles.label}>Select Date</Text>
-              <DatePicker
-               className='flex w-screen items-start'
-                mode="date"
-                date={selectedDate}
-                onDateChange={setSelectedDate}
-                androidVariant="nativeAndroid"
-                textColor="#000"
-              />
-            </View>
-
-            <View style={styles.DatePickerContainer}>
-              <Text style={styles.label}>Select Time</Text>
-              <DatePicker
-              className='flex w-screen items-start'
-                mode="time"
-                date={selectedTime}
-                onDateChange={setSelectedTime}
-                androidVariant="nativeAndroid"
-                textColor="#000"
-              />
-            </View>
-
-            <TouchableOpacity style={styles.submitButton} onPress={handleSave}>
-              <Text style={styles.submitButtonText}>Book</Text>
-            </TouchableOpacity>
+      <View className="w-[100%]">
+        <View style={styles.form}>
+          <View style={styles.DatePickerContainer}>
+            <Text style={styles.label}>Select Date</Text>
+            <DatePicker
+              className="flex w-screen items-start"
+              mode="date"
+              date={selectedDate}
+              onDateChange={setSelectedDate}
+              androidVariant="nativeAndroid"
+              textColor="#000"
+            />
           </View>
+
+          <View style={styles.DatePickerContainer}>
+            <Text style={styles.label}>Select Time</Text>
+            <DatePicker
+              className="flex w-screen items-start"
+              mode="time"
+              date={selectedTime}
+              onDateChange={setSelectedTime}
+              androidVariant="nativeAndroid"
+              textColor="#000"
+            />
+          </View>
+
+          <TouchableOpacity style={styles.submitButton} onPress={handleSave}>
+            <Text style={styles.submitButtonText}>Book</Text>
+          </TouchableOpacity>
         </View>
       </View>
-    // </ScrollView>
+
+      {isLoading && (
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color="#feb101" />
+          <Text style={styles.loaderText}>Booking in progress...</Text>
+        </View>
+      )}
+
+      <ModalComponent
+        isVisible={isModalVisible}
+        onClose={closeModalAndNavigate}
+      />
+    </View>
   );
 };
 const styles = StyleSheet.create({
   DatePickerContainer: {
     marginBottom: windowWidth * 0.04,
-    backgroundColor: '#F6FDBC', 
+    backgroundColor: '#F6FDBC',
     // backgroundColor: '#FBFDE9',
     borderRadius: 20,
     elevation: 2,
@@ -116,6 +154,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.7)',
+  },
+  loaderText: {
+    color: '#000',
+    fontWeight: '500',
   },
   container: {
     flex: 1,

@@ -34,6 +34,7 @@ const Scedule = () => {
   }, []);
 
   const fetchData = async () => {
+       setIsLoading(true);
     try {
       const result = await axios.get(
         `https://${DOMAIN}/User/Schedule/${phone2}/`,
@@ -56,9 +57,11 @@ const Scedule = () => {
     }
   };
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+   
+    fetchData();
+   
+  }, []);
 
   const handleCancel = async id => {
     setIsLoading(true);
@@ -76,14 +79,18 @@ const Scedule = () => {
         },
       );
 
-      setIsLoading(false);
-      fetchData(r);
-
       // Check if the response status indicates success (e.g., 204)
       if (response.status === 204) {
         console.log('Schedule deleted successfully');
+        setIsLoading(true)
+        // Wait for a short time before fetching the updated data
+        setTimeout(() => {
+          fetchData();
+          setIsLoading(false)
+        }, 2000);
       } else {
         console.error('Unexpected response:', response);
+        setIsLoading(false);
       }
     } catch (error) {
       fetchData();
@@ -93,9 +100,7 @@ const Scedule = () => {
   };
 
   return (
-    <View
-      style={{flex: 1, alignItems: 'center', backgroundColor: '#fef9c3'}}
-      className="">
+    <View style={{flex: 1, alignItems: 'center', backgroundColor: '#fef9c3'}}>
       <View style={{alignItems: 'center', marginTop: 40}}>
         <Text
           style={{
@@ -103,7 +108,6 @@ const Scedule = () => {
             color: '#000',
             letterSpacing: 1,
             fontSize: 15,
-
             fontFamily: 'Poppins-Medium',
             fontWeight: '900',
           }}>
@@ -120,49 +124,49 @@ const Scedule = () => {
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
             <View style={styles.container}>
-              {data.length > 0 ? (
-                data.reverse().map((item, index) => (
-                  <View key={index} style={styles.item}>
-                    <View className="flex flex-row items-center justify-between">
-                      <View className="mr-8">
-                        <Image
-                          source={{uri: item.bike.Image}}
-                          style={styles.img}
-                        />
-                        <Text style={styles.description}>
-                          {item.bike.license_plate}
-                        </Text>
-                      </View>
-                      <View className="flex flex-col items-center ml-8 mt-3">
-                        <Text style={styles.title}>
-                          {item.Date} {item.Time}
-                        </Text>
-                        <TouchableOpacity
-                          onPress={() => handleCancel(item.id)}
-                          style={{
-                            padding: 5,
-                            backgroundColor: '#ef4444',
-                            borderRadius: 10,
-                            width: 100,
-                            alignItems: 'center',
-                            marginTop: 20,
-                          }}>
-                          <Text
-                            style={{
-                              color: '#ffffff',
-                              fontSize: 12,
-                              fontWeight: '600',
-                            }}>
-                            Cancle
+              {data.length > 0
+                ? data.reverse().map((item, index) => (
+                    <View key={index} style={styles.item}>
+                      <View className="flex flex-row items-center justify-between">
+                        <View className="mr-8">
+                          <Image
+                            source={{uri: item.bike.Image}}
+                            style={styles.img}
+                          />
+                          <Text style={styles.description}>
+                            {item.bike.license_plate}
                           </Text>
-                        </TouchableOpacity>
+                        </View>
+                        <View className="flex flex-col items-center ml-8 mt-3">
+                          <Text style={styles.title}>
+                            {item.Date} {item.Time}
+                          </Text>
+                          <TouchableOpacity
+                            onPress={() => handleCancel(item.id)}
+                            style={{
+                              padding: 5,
+                              backgroundColor: '#ef4444',
+                              borderRadius: 10,
+                              width: 100,
+                              alignItems: 'center',
+                              marginTop: 20,
+                            }}>
+                            <Text
+                              style={{
+                                color: '#ffffff',
+                                fontSize: 12,
+                                fontWeight: '600',
+                              }}>
+                              Cancel
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     </View>
+                  ))
+                : null}
 
-                    {/* <Text style={styles.description}>{item.bike.b_id}</Text> */}
-                  </View>
-                ))
-              ) : (
+              {data.length === 0 && (
                 <ScrollView
                   refreshControl={
                     <RefreshControl
@@ -189,11 +193,14 @@ const Scedule = () => {
 
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={{color: 'black', fontWeight: 'bold'}}>
-                      No Bike is Scheduled Yep,
+                      No Bike is Scheduled Yet,
                     </Text>
-                    <TouchableOpacity onPress={()=>navigation.navigate('Bikes')} style={{paddingBottom: -20}}>
-                      <Text style={{color:"blue", fontWeight: 'bold'}}>
-                         {" "} Book Now
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('Bikes')}
+                      style={{paddingBottom: -20}}>
+                      <Text style={{color: 'blue', fontWeight: 'bold'}}>
+                        {' '}
+                        Book Now
                       </Text>
                     </TouchableOpacity>
                   </View>
