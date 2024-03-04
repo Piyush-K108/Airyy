@@ -11,8 +11,6 @@ import {
 } from 'react-native';
 
 import user from '../../images/userProfile.png';
-import axios from 'axios';
-import {DOMAIN} from '@env';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {useNavigation} from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -204,7 +202,7 @@ const UserProfile = () => {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => handleEdit('EditCity')}>
+        <TouchableOpacity onPress={() => handleEdit('EditCity',data.City)}>
           <View style={styles.fieldContainer}>
             <MaterialCommunityIcons
               name="city"
@@ -358,7 +356,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
     paddingHorizontal: 10,
-    paddingTop: 0,
+    marginTop: -20,
     alignItems: 'center',
   },
   boxContainer: {

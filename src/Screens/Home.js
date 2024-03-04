@@ -76,11 +76,12 @@ export default function Home({navigation}) {
       setShowBikes(Bikes);
     }
   };
+
   const handleCheckboxPress2 = value => {
     let filteredBikes2 = ShowBikes;
     if (value) {
       filteredBikes2 = Bikes.filter(bike => bike.Electrical === true);
-      console.log(filteredBikes2);
+      
       setShowBikes(filteredBikes2);
     } else {
       setShowBikes(Bikes);
@@ -90,9 +91,6 @@ export default function Home({navigation}) {
     }
   };
 
-  const toggleCheckbox = () => {
-    setIsChecked(!isChecked);
-  };
 
   const snapPoints = useMemo(() => ['10%', '25%', '50%', '80%'], []);
 
@@ -197,23 +195,20 @@ export default function Home({navigation}) {
       }
   
       try {
-        // You can adjust the radius and other parameters based on your requirements
+        
         const response = await axios.get(
           `https://api.tomtom.com/search/2/search/${encodeURIComponent(
             query,
-          )}.json?key=${TOMTOM_API_KEY}&language=en-US&limit=5&lat=${mapCenter.lat}&lon=${mapCenter.lng}&radius=5000`,
+          )}.json?key=${API_KEY}&language=en-US&limit=5&lat=${mapCenter.lat}&lon=${mapCenter.lng}&radius=5000`,
         );
   
         const suggestions = response.data.results.map(result => ({
           id: result.id,
           text: result.address.freeformAddress,
         }));
-  
-        // Use 'suggestions' for UI or any other logic
+        
         console.log('Search Suggestions:', suggestions);
   
-        // Assuming you have a function to handle the selection of a suggestion
-        // Update the selected suggestion in the state
         setResults(suggestions);
       } catch (error) {
         console.error('Error fetching search suggestions:', error);
@@ -226,7 +221,9 @@ export default function Home({navigation}) {
   const handleBook = () => {
     console.log(mapCenter);
   };
+
   const webRef = useRef(null);
+
   useEffect(() => {
     if (location) {
       const [latitude, longitude] = [
@@ -253,15 +250,14 @@ export default function Home({navigation}) {
     setMapCenter(event.nativeEvent.data);
   };
 
-
     const animatedBorderRadius = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
       const animateBorder = Animated.loop(
         Animated.timing(animatedBorderRadius, {
           toValue: 1,
-          duration: 1000, // You can adjust the duration as needed
-          useNativeDriver: false, // Add this line for non-native animation
+          duration: 1000, 
+          useNativeDriver: false, 
         }),
       );
 
@@ -295,7 +291,7 @@ export default function Home({navigation}) {
               padding: 15,
               borderRadius: animatedBorderRadius.interpolate({
                 inputRange: [0, 1],
-                outputRange: [0, 25], // Adjust the border radius as needed
+                outputRange: [0, 25], 
               }),
               backgroundColor: 'black',
             }}>
@@ -303,7 +299,6 @@ export default function Home({navigation}) {
               <Text style={{color: '#feb101', fontWeight: 'bold'}}>
                 Book now
               </Text>
-              {/* Add your icon or additional components here */}
             </TouchableOpacity>
           </Animated.View>
         </View>
@@ -317,7 +312,7 @@ export default function Home({navigation}) {
         style={styles.bottomSheet}
         gestureEnabled={true}>
         <LinearGradient
-          colors={['white', '#e5e7eb']} // You can change these colors as per your gradient
+          colors={['white', '#e5e7eb']} 
           style={styles.bottomSheetContent}>
           <View className="flex flex-row justify-between px-2 ">
             <Text className="text-black font-semibold">Filter Vehicle</Text>

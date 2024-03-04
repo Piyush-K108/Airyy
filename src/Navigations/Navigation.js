@@ -25,7 +25,7 @@ import FutureBook from '../Screens/Booking/FutureBook';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { useDispatch } from 'react-redux';
-import { fetchLocation, fetchProfile } from '../Redux/Counter/counterAction';
+import { fetchBikes, fetchLocation, fetchProfile } from '../Redux/Counter/counterAction';
 import Home from '../Screens/Home';
 import Home2 from '../Screens/Home2';
 import EditCity from '../Screens/Profile/EditCity';
@@ -60,6 +60,7 @@ const Navigation = () => {
   }
   useEffect(() => {
     dispatch(fetchLocation())
+    dispatch(fetchBikes())
     console.log(location)
   }, [])
 

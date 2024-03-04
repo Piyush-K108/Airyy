@@ -12,6 +12,7 @@ import React from 'react';
 import {useSelector} from 'react-redux';
 import {useEffect, useState} from 'react';
 import axios from 'axios';
+import LottieView from 'lottie-react-native';
 import {useNavigation} from '@react-navigation/native';
 import {DOMAIN} from '@env';
 import {Alert} from 'react-native';
@@ -19,7 +20,7 @@ const Scedule = () => {
   const [data, setData] = useState([]);
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const phone2 = useSelector(state => state.counter.phone);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -38,7 +39,7 @@ const Scedule = () => {
         `https://${DOMAIN}/User/Schedule/${phone2}/`,
       );
       setData(result.data.data);
-      console.log(result.data.data)
+      // console.log(result.data.data)
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching schedule data:', error);
@@ -55,43 +56,47 @@ const Scedule = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
-  const handleCancel = async (id) => {
+  const handleCancel = async id => {
     setIsLoading(true);
 
     try {
-        const response = await fetch(`https://${DOMAIN}/User/Schedule/${phone2}/`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-            },
-            body: JSON.stringify({ id: id }),
-        });
+      const response = await fetch(
+        `https://${DOMAIN}/User/Schedule/${phone2}/`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
+          body: JSON.stringify({id: id}),
+        },
+      );
 
-        setIsLoading(false);
-        fetchData(r)
+      setIsLoading(false);
+      fetchData(r);
 
-        // Check if the response status indicates success (e.g., 204)
-        if (response.status === 204) {
-            console.log("Schedule deleted successfully");
-        } else {
-            console.error("Unexpected response:", response);
-        }
+      // Check if the response status indicates success (e.g., 204)
+      if (response.status === 204) {
+        console.log('Schedule deleted successfully');
+      } else {
+        console.error('Unexpected response:', response);
+      }
     } catch (error) {
-      fetchData()
-        setIsLoading(false);
-        console.error("Error during fetch:", error);
+      fetchData();
+      setIsLoading(false);
+      console.error('Error during fetch:', error);
     }
-};
-
+  };
 
   return (
-    <View style={{flex: 1, alignItems: 'center', backgroundColor: '#fef9c3'}} className="">
-      <View style={{ alignItems: 'center', marginTop: 40}}>
+    <View
+      style={{flex: 1, alignItems: 'center', backgroundColor: '#fef9c3'}}
+      className="">
+      <View style={{alignItems: 'center', marginTop: 40}}>
         <Text
           style={{
             marginTop: 0,
@@ -158,9 +163,41 @@ const Scedule = () => {
                   </View>
                 ))
               ) : (
-                <View className="justify-center items-center h-screen">
-                  <Text className="text-black">No Scedule Yet Book First </Text>
-                </View>
+                <ScrollView
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={onRefresh}
+                    />
+                  }
+                  contentContainerStyle={{
+                    marginTop: 50,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <LottieView
+                    style={{
+                      width: 350,
+                      marginBottom: -20,
+                      marginLeft: 18,
+                      height: 350,
+                    }}
+                    source={require('../assets/noschedule.json')}
+                    autoPlay
+                    loop
+                  />
+
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Text style={{color: 'black', fontWeight: 'bold'}}>
+                      No Bike is Scheduled Yep,
+                    </Text>
+                    <TouchableOpacity onPress={()=>navigation.navigate('Bikes')} style={{paddingBottom: -20}}>
+                      <Text style={{color:"blue", fontWeight: 'bold'}}>
+                         {" "} Book Now
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </ScrollView>
               )}
             </View>
           </ScrollView>
@@ -205,9 +242,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     backgroundColor: '#fef9c3',
-    paddingHorizontal : 5 ,
-    paddingVertical:3 ,
-    borderRadius:10 ,
+    paddingHorizontal: 5,
+    paddingVertical: 3,
+    borderRadius: 10,
     fontWeight: '700',
     color: '#121212',
   },
