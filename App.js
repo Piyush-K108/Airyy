@@ -8,6 +8,7 @@ import {store, persistor} from './src/Redux/store';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import NetInfo from '@react-native-community/netinfo';
 import {Alert, Text, View, StyleSheet} from 'react-native';
+import LottieView from 'lottie-react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,10 +41,16 @@ function App() {
             <Navigation />
           ) : (
             <View style={styles.noInternetContainer}>
-              <Text style={styles.noInternetText}>NO INTERNET CONNECTION</Text>
-              <Text style={styles.connectionTypeText}>
-                Connection Type: {connectionType}
-              </Text>
+              <LottieView
+                style={{
+                  width: 350,
+                
+                  height: 350,
+                }}
+                source={require('./src/assets/No_Internet.json')}
+                autoPlay
+                loop
+              />
             </View>
           )}
         </GestureHandlerRootView>
@@ -54,7 +61,7 @@ function App() {
 
 const styles = StyleSheet.create({
   noInternetContainer: {
-    backgroundColor: 'black',
+    backgroundColor: 'white',
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
