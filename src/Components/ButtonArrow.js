@@ -8,7 +8,7 @@ import {logout} from '../Redux/Counter/counterAction';
 import {useDispatch} from 'react-redux';
 import {fetchProfile} from '../../Redux/Counter/counterAction';
 import {useSelector} from 'react-redux';
-const ButtonArrow = ({name, icon, screen, iconname, showProfilePic = false}) => {
+const ButtonArrow = ({name, icon, screen, iconname, showProfilePic = false ,}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
