@@ -130,7 +130,7 @@ const UserProfile = () => {
   }, [dispatch, navigation]);
 
   return (
-    <View style={styles.container}>
+    <View  style={styles.container}>
       {openEditComponent === 'name' && (
         <EditComponent
           initialValue={data ? data.name : 'Name'}
@@ -355,6 +355,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+    width:'100%',
     paddingHorizontal: 10,
     marginTop: -20,
     alignItems: 'center',
@@ -398,7 +399,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-
+    
     marginBottom: 0,
     marginLeft: 0,
     marginVertical: 20,
