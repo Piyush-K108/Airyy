@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   cancelButton: {
-    backgroundColor: '#60a5fa',
+    backgroundColor: '#000',
     paddingHorizontal: 30,
     paddingVertical: 10,
     borderRadius: 10,
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
+    color: '#feb101',
     fontWeight: 'bold',
     textAlign: 'center',
   },
