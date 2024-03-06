@@ -90,14 +90,16 @@ const Scedule = () => {
         setTimeout(() => {
           fetchData();
           setIsLoading(false);
-        }, 2000);
+        }, 5000);
       } else {
         console.error('Unexpected response:', response);
         setIsLoading(false);
       }
     } catch (error) {
-      fetchData();
-      setIsLoading(false);
+      setTimeout(() => {
+        fetchData();
+        setIsLoading(false);
+      }, 5000);
       console.error('Error during fetch:', error);
     } finally {
       // Reset selectedBooking after cancel is confirmed

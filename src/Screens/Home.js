@@ -291,7 +291,7 @@ export default function Home({navigation}) {
               padding: 15,
               borderRadius: animatedBorderRadius.interpolate({
                 inputRange: [0, 1],
-                outputRange: [0, 25], 
+                outputRange: [0, 25],
               }),
               backgroundColor: 'black',
             }}>
@@ -312,7 +312,7 @@ export default function Home({navigation}) {
         style={styles.bottomSheet}
         gestureEnabled={true}>
         <LinearGradient
-          colors={['white', '#e5e7eb']} 
+          colors={['white', '#e5e7eb']}
           style={styles.bottomSheetContent}>
           <View className="flex flex-row justify-between px-2 ">
             <Text className="text-black font-semibold">Filter Vehicle</Text>
@@ -390,6 +390,7 @@ export default function Home({navigation}) {
             style={{elevation: 1}}>
             <FlatList
               data={results}
+              showsVerticalScrollIndicator={false}
               keyExtractor={(item, index) => index.toString()}
               renderItem={({item}) => (
                 <View className="flex flex-row justify-between items-center gap-24 py-2">

@@ -7,7 +7,8 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {store, persistor} from './src/Redux/store';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import NetInfo from '@react-native-community/netinfo';
-import {Alert, Text, View, StyleSheet} from 'react-native';
+import {Alert, Text, View, StyleSheet, Image} from 'react-native';
+import LottieView from 'lottie-react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,14 +18,22 @@ function App() {
   const [initialLoading, setInitialLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener(state => {
+    const checkInternetConnection = async () => {
+      const state = await NetInfo.fetch();
       setIsConnected(state.isConnected);
       setConnectionType(state.type);
-
-      if (initialLoading && state.isConnected) {
+      
+      if (initialLoading) {
         SplashScreen.hide();
         setInitialLoading(false);
       }
+    };
+   
+    checkInternetConnection();
+
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+      setConnectionType(state.type);
     });
 
     return () => {
@@ -36,14 +45,18 @@ function App() {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <GestureHandlerRootView style={{flex: 1}}>
-          {initialLoading ? null : isConnected ? (
+          {initialLoading || isConnected ? (
             <Navigation />
           ) : (
             <View style={styles.noInternetContainer}>
-              <Text style={styles.noInternetText}>NO INTERNET CONNECTION</Text>
-              <Text style={styles.connectionTypeText}>
-                Connection Type: {connectionType}
-              </Text>
+              <Image
+                style={{
+                  width: 350,
+                  height: 350,
+                }}
+                source={require('./src/assets/No_internet_png.png')}
+              />
+              <Text style={{color: '#000' , fontWeight:'bold'}}>No internet connection</Text>
             </View>
           )}
         </GestureHandlerRootView>
@@ -54,7 +67,7 @@ function App() {
 
 const styles = StyleSheet.create({
   noInternetContainer: {
-    backgroundColor: 'black',
+    backgroundColor: '#fef9c3',
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
