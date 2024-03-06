@@ -42,12 +42,12 @@ const History = () => {
   }, []);
 
   return (
-    <View  style={{flex: 1, alignItems: 'center', backgroundColor: '#FFFFFF'}}>
+    <View style={{flex: 1, alignItems: 'center', backgroundColor: '#fef9c3'}}>
       <View style={{flex: 1, alignItems: 'center', marginTop: 40}}>
         <Text
           style={{
             marginTop: 0,
-            color: 'green',
+            color: '#000',
             fontFamily: 'Poppins-Medium',
             fontWeight: '800',
           }}>
@@ -60,23 +60,81 @@ const History = () => {
             <ActivityIndicator size="large" color="#000000" />
           </View>
         ) : (
-          <ScrollView  refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }>
+          <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
             <View style={styles.container}>
               {data.length > 0 ? (
                 data.reverse().map((item, index) => (
                   <View key={index} style={styles.item}>
-                    <Text style={styles.title}>
-                      {item.rental_date} {item.rental_time}
-                    </Text>
-                    <Text style={styles.expertin}>
-                      {item.return_date} {item.return_time}
-                    </Text>
-                    <Text style={styles.description}>
-                      {item.UPIMethod ? 'Online' : 'Cash'}
-                    </Text>
-                    <Text style={styles.description}>Rs{item.Amount}</Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: 10,
+                      }}>
+                      <View
+                        style={{
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'space-evenly',
+                        }}>
+                        <Text
+                          style={{
+                            margin: 10,
+                            color: '#000',
+                            fontWeight: '600',
+                          }}>
+                          Rental 
+                        </Text>
+                        <Text
+                          style={{
+                            color: '#000',
+                            fontWeight: '600',
+                          }}>
+                          Deposite 
+                        </Text>
+                      </View>
+
+                      <View
+                        style={{
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'space-evenly',
+                        }}>
+                        <Text
+                          style={{
+                            margin: 10,
+                            color: '#000',
+                            fontWeight: '400',
+                          }}>
+                          {item.rental_date} {item.rental_time}
+                        </Text>
+                        <Text style={{color: '#000', fontWeight: '400'}}>
+                          {item.return_date} {item.return_time}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'space-evenly',
+                        }}>
+                        <Text
+                          style={{
+                            margin: 10,
+                            color: 'green',
+                            fontWeight: '400',
+                          }}>
+                          {item.UPIMethod ? 'Online' : 'Cash'}
+                        </Text>
+                        <Text style={{color: 'green', fontWeight: '400'}}>
+                          ₹{item.Amount}
+                        </Text>
+                      </View>
+                    </View>
                     {/* <Image
                       source={bikeOne}
                       style={styles.img}
@@ -90,19 +148,22 @@ const History = () => {
                       }
                       style={{
                         padding: 5,
-                        backgroundColor: '#0096FF',
+                        backgroundColor: '#000',
                         borderRadius: 10,
-                        width: 100,
+                        width: '85%',
+                        marginTop: 20,
+                        // borderWidth: 1,
+                        // borderColor: '#feb101',
                         alignItems: 'center',
-                        marginTop: 10,
                       }}>
                       <Text
                         style={{
-                          color: '#ffffff',
+                          color: '#feb101',
+
                           fontSize: 15,
                           fontWeight: '600',
                         }}>
-                        Show
+                        View Detail
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -129,112 +190,25 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
   },
 
-  studentHomeHead: {
-    fontSize: 30,
-    fontWeight: '400',
-    marginBottom: 10,
-    color: '#404040',
-    fontFamily: 'Poppins-Black',
-  },
-
-  studentHomeHead2: {
-    fontSize: 18,
-    color: '#888888',
-    fontWeight: '600',
-    fontFamily: 'Poppins-Light',
-    marginBottom: 10,
-  },
-
-  container: {
-    flex: 1,
-
-    backgroundColor: '#F5FCFF',
-    padding: 20,
-  },
-  card: {
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    elevation: 2,
-    backgroundColor: '#FFF',
-    marginBottom: 20,
-    borderRadius: 10,
-
-    overflow: 'hidden',
-    flexDirection: 'row',
-  },
-  cardImage: {
-    width: 100,
-    height: 100,
-  },
-  cardTextContainer: {
-    padding: 20,
-    color: '#121212',
-    flex: 1,
-  },
-  cardTitle: {
-    fontSize: 20,
-    color: '#121212',
-    fontWeight: 'bold',
-  },
-  cardDescription: {
-    fontSize: 16,
-    color: '#121212',
-    color: '#333',
-    marginTop: 10,
-  },
-
-  container: {
-    flex: 1,
-    width: 350,
-    borderRadius: 20,
-    backgroundColor: '#fff',
-    padding: 16,
-  },
   item: {
-    alignItems: 'center',
     justifyContent: 'center',
-    elevation: 8,
-    flexDirection: 'column',
-    color: '#121212',
-    backgroundColor: '#ffffff',
-    borderRadius: 10,
-    padding: 20,
-    marginVertical: 8,
-  },
-  title: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#121212',
-    marginLeft: 120,
-  },
-  description: {
-    fontSize: 16,
-    marginLeft: 120,
-    color: '#121212',
-  },
-
-  expertin: {
-    marginLeft: 120,
-    color: '#121212',
-  },
-
-  img: {
-    borderWidth: 3,
-    color: '#121212',
-    borderColor: '#121212',
+    alignItems: 'center',
+    backgroundColor: '#fefce8',
+    width: '100%',
+    height: 170,
+    paddingHorizontal: 20,
+    // paddingVertical : 10 ,
+    // margin:20 ,
+    marginTop: 35,
     borderRadius: 20,
-    height: 100,
-    width: 100,
-    marginTop: -100,
-    marginRight: 200,
+    
+  },
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
   },
 });
 
