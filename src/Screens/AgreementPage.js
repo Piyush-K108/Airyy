@@ -11,12 +11,27 @@ import {useNavigation} from '@react-navigation/native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {useRoute} from '@react-navigation/core';
 import {DOMAIN} from '@env';
+import { useSelector } from 'react-redux';
 
 const AgreementPage = () => {
-  const [userData, setUserData] = useState({});
-  const phone = useSelector(state => state.counter.phone);
 
-  const [contentHeight, setContentHeight] = useState(0);
+
+  const route = useRoute();
+  const phone = useSelector(state => state.counter.phone);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    // Fetch user data from the API
+    // axios.get('API_ENDPOINT')
+    //   .then(response => {
+    //     setUserData(response.data);
+    //   })
+    //   .catch(error => {
+    //     console.error('Error fetching user data:', error);
+    //   });
+  }, []);
+
+
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -121,61 +136,72 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 26,
     lineHeight: 35,
-
-    elevation: 8,
+   
+    elevation:8 ,
     overflow: 'scroll', // Enable scrolling if content overflows
   },
   agreementText: {
     color: '#000',
     fontSize: 14, // Adjust the font size as needed
     lineHeight: 20,
-    fontWeight: '700', // Adjust the line height as needed
+    fontWeight:'700' ,// Adjust the line height as needed
   },
-  bottomContainer: {
-    backgroundColor: '#fff',
-    borderTopWidth: 1,
-    borderTopColor: 'lightgray',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 18,
-    paddingHorizontal: 18,
-  },
-  nextButton: {
-    backgroundColor: '#feb101',
-    borderRadius: 2,
-    paddingVertical: 5,
-    paddingHorizontal: 12,
-  },
-  nextButtonText: {
+    bottomContainer: {
+        backgroundColor: '#fff',
+        borderTopWidth: 1,
+        borderTopColor: 'lightgray',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 18,
+        paddingHorizontal: 18,
+    },
+    nextButton: {
+        backgroundColor: '#feb101',
+        borderRadius: 2,
+        paddingVertical: 5,
+        paddingHorizontal: 12,
+    },
+nextButtonText: {
     color: '#000',
     fontSize: 15,
     fontWeight: '700',
     letterSpacing: 0.5,
   },
-  disabledButtonText: {
-    color: 'gray',
-    fontSize: 16,
-    fontWeight: 'bold',
-    letterSpacing: 1,
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  checkbox: {
-    width: 20,
-    height: 20,
-    borderRadius: 5,
-    borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 10,
-  },
-  checkmark: {
-    color: '#000',
-  },
+    disabledButtonText: {
+        color: 'gray',
+        fontSize: 16,
+        fontWeight: 'bold',
+        letterSpacing: 1,
+    },
+    checkboxContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 4,
+        
+    },
+    checkbox: {
+        width: 20,
+        height: 20,
+        borderRadius: 5,
+        borderWidth: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
+        
+    },
+    checkmark: {
+        color: '#000',
+        
+    },
 });
 
 export default AgreementPage;
+
+
+
+
+
+
+
+

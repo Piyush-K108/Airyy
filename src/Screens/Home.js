@@ -40,9 +40,7 @@ export default function Home({navigation}) {
   const dispatch = useDispatch();
   const location = useSelector(state => state.counter.location);
 
-  useEffect(() => {
-    dispatch(fetchBikes());
-  }, []);
+
 
   const renderItem = ({item}) => (
     <TouchableOpacity

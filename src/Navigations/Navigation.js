@@ -31,6 +31,7 @@ import Home2 from '../Screens/Home2';
 import EditCity from '../Screens/Profile/EditCity';
 import AgreementPage from '../Screens/AgreementPage';
 
+
 const Stack = createNativeStackNavigator();
   const CustomHeader = ({navigation}) => (
     <View className="bg-yellow-200">
@@ -88,6 +89,7 @@ const MainStack = () => {
         name="Home"
         component={Home}
         />
+
             <Stack.Screen
         name="Bottom"
         component={BottomTabNavigation}

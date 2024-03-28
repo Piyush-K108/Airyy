@@ -11,23 +11,14 @@ import {
   Animated,
   // ScrollView,
 } from 'react-native';
-import {ScrollView, FlatList} from 'react-native-gesture-handler';
-import LinearGradient from 'react-native-linear-gradient';
-import BottomSheet from '@gorhom/bottom-sheet';
+import { FlatList} from 'react-native-gesture-handler';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import mapTemplate from '../Components/mapTemplate';
 import {WebView} from 'react-native-webview';
 import axios from 'axios';
 import {API_KEY} from '@env';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import debounce from 'lodash.debounce';
-import Checkbox from '../Components/Checkbox';
 import {useSelector} from 'react-redux';
-import {useDispatch} from 'react-redux';
-import {fetchBikes} from '../Redux/Counter/counterAction';
-import {useNavigation} from '@react-navigation/core';
-import ScooterSelectionModal from '../Modals/ScooterSelectionModal';
-
 import Header from '../Components/Header';
 
 export default function Home2() {
@@ -37,33 +28,12 @@ export default function Home2() {
   const [mapCenter, setMapCenter] = useState('22.6881149,75.8630678');
   const location = useSelector(state => state.counter.location);
 
-
-
-  useEffect(() => {
-    webRef.current.injectJavaScript(
-      `map.setCenter([${parseFloat(location.coords.longitude)}, ${parseFloat(
-        location.coords.latitude,
-      )}])`,
-    );
-    setMapCenter(`${location.coords.latitude},${location.coords.longitude}`); 
-  }, []);
-
-  useEffect(() => {
-    const [latitude, longitude] = mapCenter.split(',');
-    webRef.current.injectJavaScript(
-      `MyLocationMarker.setLngLat([${parseFloat(longitude)}, ${parseFloat(
-        latitude,
-      )}]).addTo(map)`,
-    );
-  }, [mapCenter]);
-
-
-  const webRef = useRef(null);
-
+  
   const delayedSearch = useMemo(
     () =>
       debounce(text => {
-        handleSearchSuggestion(text);
+        handleAutoComplete(text);
+        
       }, 500),
     [],
   );
@@ -84,6 +54,7 @@ export default function Home2() {
           params: {
             key: API_KEY,
             limit: 1,
+            countrySet: 'IND',
           },
         })
         .then(response => {
@@ -94,6 +65,11 @@ export default function Home2() {
 
             setMapCenter(`${position.lon},${position.lat}`);
 
+            webRef.current.injectJavaScript(
+              `LocationMarker.setLngLat([${parseFloat(
+                position.lon,
+              )}, ${parseFloat(position.lat)}]).addTo(map)`,
+            );
             webRef.current.injectJavaScript(
               `map.setCenter([${parseFloat(position.lon)}, ${parseFloat(
                 position.lat,
@@ -111,52 +87,100 @@ export default function Home2() {
     setResults([]);
   };
 
+ 
+      
+       
+  
+  const handleAutoComplete = useCallback(query => {
+    if (query === null || query === undefined || query === '') {
+      return;
+    }
+
+    axios
+      .get(`https://api.tomtom.com/search/2/autocomplete/${query}.json`, {
+        params: {
+          key: API_KEY,
+          language: 'en-US',
+          limit: 10,
+        },
+      })
+      .then(response => {
+        const results = response.data.results || [];
+        const newSuggestions = results.map(result => {
+          const brandSegment = result.segments.find(
+            segment => segment.type === 'brand' && segment.value,
+          );
+          return brandSegment ? brandSegment.value : result.displayString || null;
+        });
+        setResults(newSuggestions);
+      })
+      .catch(error => {
+        console.error('Error fetching autocomplete suggestions:', error);
+      });
+  }, []);
+
+  const handleSearchSuggetions = useCallback(
+    async query => {
+      if (query === null || query === undefined || query === '') {
+        return;
+      }
+  
+      try {
+        
+        const response = await axios.get(
+          `https://api.tomtom.com/search/2/search/${encodeURIComponent(
+            query,
+          )}.json?key=${API_KEY}&language=en-US&limit=5&lat=${mapCenter.lat}&lon=${mapCenter.lng}&radius=5000`,
+        );
+  
+        const suggestions = response.data.results.map(result => ({
+          id: result.id,
+          text: result.address.freeformAddress,
+        }));
+        
+        console.log('Search Suggestions:', suggestions);
+  
+        setResults(suggestions);
+      } catch (error) {
+        console.error('Error fetching search suggestions:', error);
+      }
+    },
+    [],
+  );
+  
+
+  const handleBook = () => {
+    console.log(mapCenter);
+  };
+
+  const webRef = useRef(null);
+
+  useEffect(() => {
+    if (location) {
+      const [latitude, longitude] = [
+        location.coords.latitude,
+        location.coords.longitude,
+      ];
+      webRef.current.injectJavaScript(
+        `map.setCenter([${parseFloat(longitude)}, ${parseFloat(latitude)}])`,
+      );
+      webRef.current.injectJavaScript(
+        `MyLocationMarker.setLngLat([${parseFloat(longitude)}, ${parseFloat(
+          latitude,
+        )}]).addTo(map)`,
+      );
+      webRef.current.injectJavaScript(
+        `LocationMarker.setLngLat([${parseFloat(longitude)}, ${parseFloat(
+          latitude,
+        )}]).addTo(map)`,
+      );
+    }
+  }, [location]);
+
   const handleMapEvent = event => {
     setMapCenter(event.nativeEvent.data);
   };
 
-  const handleSearchSuggestion = useCallback(
-    query => {
-      if (query === null || query === undefined || query === '') {
-        return;
-      }
-
-      const [latitude, longitude] = mapCenter.split(',');
-
-      axios
-        .get(`https://api.tomtom.com/search/2/autocomplete/${query}.json`, {
-          params: {
-            key: API_KEY,
-            language: 'en-US',
-            limit: 10,
-            lat: `${latitude}`,
-            lon: `${longitude}`,
-            radius: 10000,
-            countrySet: 'IND',
-          },
-        })
-        .then(response => {
-          console.log(JSON.stringify(response.data.results, null, 2));
-          const suggestions = response.data.results.map(result => {
-            // Get all segments
-            const segments = result.segments.map(segment => {
-              const {type, value, matches} = segment;
-              return {type, value, matches};
-            });
-
-            // Filter out null values (invalid results)
-            return segments.filter(segment => segment !== null);
-          });
-
-          console.log("das",suggestions);
-          setResults(suggestions);
-        })
-        .catch(error => {
-          console.error('Error fetching search suggestions:', error);
-        });
-    },
-    [mapCenter],
-  );
 
   return (
     <>
