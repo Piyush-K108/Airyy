@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import {View, Text, TouchableOpacity,PermissionsAndroid} from 'react-native';
+import React, {useEffect} from 'react';
+import {View, Text, TouchableOpacity, PermissionsAndroid} from 'react-native';
 import {useSelector} from 'react-redux';
 import BottomTabNavigation from './BottomTabNavigation';
 import {NavigationContainer} from '@react-navigation/native';
@@ -24,48 +24,50 @@ import FutureBook from '../Screens/Booking/FutureBook';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useDispatch } from 'react-redux';
-import { fetchBikes, fetchLocation, fetchProfile } from '../Redux/Counter/counterAction';
+import {useDispatch} from 'react-redux';
+import {
+  fetchBikes,
+  fetchLocation,
+  fetchProfile,
+} from '../Redux/Counter/counterAction';
 import Home from '../Screens/Home';
 import Home2 from '../Screens/Home2';
 import EditCity from '../Screens/Profile/EditCity';
 import AgreementPage from '../Screens/AgreementPage';
 
-
 const Stack = createNativeStackNavigator();
-  const CustomHeader = ({navigation}) => (
-    <View className="bg-yellow-200">
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        className="flex flex-row justify-evenly items-left ml-4 mt-4 -mb-8 w-20 rounded-full  bg-gray-50  py-2  "
-        style={{elevation: 2}}>
-        <Ionicons
-          name="arrow-back-outline"
-          style={{color: 'black'}}
-          size={22}
-          className="font-bold"
-        />
-        <Text className="text-center text-black font-extrabold">Back</Text>
-      </TouchableOpacity>
-    </View>
-  );
+const CustomHeader = ({navigation}) => (
+  <View className="bg-yellow-200">
+    <TouchableOpacity
+      onPress={() => navigation.goBack()}
+      className="flex flex-row justify-evenly items-left ml-4 mt-4 -mb-8 w-20 rounded-full  bg-gray-50  py-2  "
+      style={{elevation: 2}}>
+      <Ionicons
+        name="arrow-back-outline"
+        style={{color: 'black'}}
+        size={22}
+        className="font-bold"
+      />
+      <Text className="text-center text-black font-extrabold">Back</Text>
+    </TouchableOpacity>
+  </View>
+);
 
 const Navigation = () => {
-  const dispatch = useDispatch()
-  
+  const dispatch = useDispatch();
+
   const loggedIn = useSelector(state => state.counter.loggedIn);
   const phone = useSelector(state => state.counter.phone);
   const profile = useSelector(state => state.counter.profile);
   const location = useSelector(state => state.counter.location);
-  if(!profile){
-    dispatch(fetchProfile(phone))
+  if (!profile) {
+    dispatch(fetchProfile(phone));
   }
   useEffect(() => {
-    dispatch(fetchLocation())
-    dispatch(fetchBikes())
-    console.log(location)
-  }, [])
-
+    dispatch(fetchLocation());
+    dispatch(fetchBikes());
+    console.log(location);
+  }, []);
 
   return (
     <NavigationContainer>
@@ -85,19 +87,10 @@ const Navigation = () => {
 const MainStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen
-        name="Home"
-        component={Home}
-        />
+      <Stack.Screen name="Bottom" component={BottomTabNavigation} />
+      <Stack.Screen name="Home" component={Home} />
 
-            <Stack.Screen
-        name="Bottom"
-        component={BottomTabNavigation}
-      />
-            <Stack.Screen
-        name="Home2"
-        component={Home2}
-      />
+      <Stack.Screen name="Home2" component={Home2} />
       <Stack.Screen name="OtpScreen" component={OtpScreen} />
       <Stack.Screen
         name="Bill"
@@ -158,5 +151,3 @@ const MainStack = () => {
 };
 
 export default Navigation;
-
-
