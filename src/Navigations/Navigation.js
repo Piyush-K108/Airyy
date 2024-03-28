@@ -29,6 +29,7 @@ import { fetchBikes, fetchLocation, fetchProfile } from '../Redux/Counter/counte
 import Home from '../Screens/Home';
 import Home2 from '../Screens/Home2';
 import EditCity from '../Screens/Profile/EditCity';
+import AgreementPage from '../Screens/AgreementPage';
 
 const Stack = createNativeStackNavigator();
   const CustomHeader = ({navigation}) => (
@@ -86,6 +87,10 @@ const MainStack = () => {
       <Stack.Screen
         name="Home"
         component={Home}
+        />
+            <Stack.Screen
+        name="Bottom"
+        component={BottomTabNavigation}
       />
             <Stack.Screen
         name="Home2"
@@ -145,6 +150,7 @@ const MainStack = () => {
       <Stack.Screen name="EditGender" component={EditGender} />
       <Stack.Screen name="EditName" component={EditName} />
       <Stack.Screen name="EditCity" component={EditCity} />
+      <Stack.Screen name="AgreementPage" component={AgreementPage} />
     </Stack.Navigator>
   );
 };

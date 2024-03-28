@@ -7,6 +7,7 @@ import Bikes from "../Screens/Booking/Bikes";
 import Schedule from "../Screens/Schedule";
 import Offers from "../Screens/Offers";
 import History from "../Screens/History";
+import Home2 from "../Screens/Home2";
 
 const Tab = createBottomTabNavigator();
 
@@ -40,7 +41,7 @@ function BottomTabNavigation() {
       }}>
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={Home2}
         options={({route}) => ({
           headerShown: false,
           tabBarIcon: ({color, size}) => {

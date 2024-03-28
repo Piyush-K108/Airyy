@@ -67,7 +67,7 @@ const LeftModel = () => {
               icon="event-note"
               screen={'Schedule'}
             />
-            <ButtonArrow name={'Offers'} icon="local-offer" screen={'Offers'} />
+            <ButtonArrow name={'AgreementPage'} icon="local-offer" screen={'AgreementPage'} />
             <ButtonArrow
               name={'User Agreement'}
               icon="handshake"
@@ -78,7 +78,7 @@ const LeftModel = () => {
           <View className="items-center mt-10 bg-black py-2 px-4 rounded-lg w-80 ">
             <Text className="text-yellow-500">
               <Text className="text-yellow-500">&copy;</Text> {currentYear}{' '}
-              Airyyrides.com
+              airyyrides.com
             </Text>
           </View>
         </View>
@@ -88,13 +88,7 @@ const LeftModel = () => {
 };
 
 const styles = StyleSheet.create({
-  cardContainertwo: {
-    elevation: 0,
-    // Add elevation for shadow
-  },
-  cardContainer:{
-    elevation:0 ,
-  }
+
 });
 
 export default LeftModel;

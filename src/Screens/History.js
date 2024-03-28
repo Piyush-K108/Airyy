@@ -12,8 +12,11 @@ import React from 'react';
 import {useSelector} from 'react-redux';
 import {useEffect, useState} from 'react';
 import axios from 'axios';
+import LottieView from 'lottie-react-native';
 import {useNavigation} from '@react-navigation/native';
 import {DOMAIN} from '@env';
+import {Alert} from 'react-native';
+
 // import bikeOne from '../assets/Bikes/IMG_9496.JPG';
 
 const History = () => {
@@ -32,11 +35,28 @@ const History = () => {
   }, []);
 
   const fetchData = async () => {
-    const result = await axios.get(`https://${DOMAIN}/User/history/${phone2}`);
+    setIsLoading(true);
+    try {
+      const result = await axios.get(
+        `https://${DOMAIN}/User/history/${phone2}`,
+      );
+      setData(result.data.Data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching schedule data:', error);
 
-    setData(result.data.Data);
-    setIsLoading(false);
+      if (error.response) {
+        Alert.alert('Server Error', error.response.data.error);
+      } else if (error.request) {
+        Alert.alert('Error', 'No response from the server');
+      } else {
+        Alert.alert('Error', 'An unexpected error occurred');
+      }
+
+      setIsLoading(false);
+    }
   };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -168,10 +188,47 @@ const History = () => {
                     </TouchableOpacity>
                   </View>
                 ))
-              ) : (
-                <View className="justify-center items-center h-screen">
-                  <Text className="text-black">No Previous History</Text>
-                </View>
+              ) : null}
+              
+              {data.length === 0 && (
+                <ScrollView
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={onRefresh}
+                    />
+                  }
+                  contentContainerStyle={{
+                    marginTop: 50,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <LottieView
+                    style={{
+                      width: 350,
+                      marginBottom: -20,
+                      marginLeft: 18,
+                      height: 350,
+                    }}
+                    source={require('../assets/noschedule.json')}
+                    autoPlay
+                    loop
+                  />
+
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Text style={{color: 'black', fontWeight: 'bold'}}>
+                      Ride With us Noe
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('Bikes')}
+                      style={{paddingBottom: -20}}>
+                      <Text style={{color: 'blue', fontWeight: 'bold'}}>
+                        {' '}
+                        Book Now
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </ScrollView>
               )}
             </View>
           </ScrollView>
