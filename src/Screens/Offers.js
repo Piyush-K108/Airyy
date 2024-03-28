@@ -4,7 +4,7 @@ import Header from '../Components/Header';
 const Offers = () => {
   return (
     <View className="h-screen flex flex-col items-center justify-center">
-      Offers
+      <Text className='text-black'>Offers</Text>
     </View>
   );
 };
