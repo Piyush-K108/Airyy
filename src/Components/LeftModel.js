@@ -67,7 +67,7 @@ const LeftModel = () => {
               icon="event-note"
               screen={'Schedule'}
             />
-            <ButtonArrow name={'Offers'} icon="local-offer" screen={'AgreementPage'} />
+            <ButtonArrow name={'Offers'} icon="local-offer" screen={'Offers'} />
             <ButtonArrow
               name={'User Agreement'}
               icon="handshake"
