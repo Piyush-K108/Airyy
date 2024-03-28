@@ -32,7 +32,7 @@ const ButtonArrow = ({name, icon, screen, iconname, showProfilePic = false ,}) =
                 resizeMode="cover"
                 source={data.ProfilePic ? {uri: data.ProfilePic} : user}
                 className="w-6 h-6 rounded-full border"
-                style={{elevation:2 }}
+                
               />
             </>
           ) : (

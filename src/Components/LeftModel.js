@@ -44,7 +44,7 @@ const LeftModel = () => {
                 <ButtonArrow
                   name={'Rate Us'}
                   icon="star-rate"
-                  screen={'Home2'}
+                  screen={'Home3'}
                 />
               </View>
             </View>
@@ -71,14 +71,14 @@ const LeftModel = () => {
             <ButtonArrow
               name={'User Agreement'}
               icon="handshake"
-              screen={'Offers'}
+              screen={'AgreementPage'}
             />
             <ButtonArrow name={'Logout'} icon="logout" />
           </View>
           <View className="items-center mt-10 bg-black py-2 px-4 rounded-lg w-80 ">
             <Text className="text-yellow-500">
               <Text className="text-yellow-500">&copy;</Text> {currentYear}{' '}
-              Airyyrides.com
+              airyyrides.com
             </Text>
           </View>
         </View>
@@ -88,13 +88,7 @@ const LeftModel = () => {
 };
 
 const styles = StyleSheet.create({
-  cardContainertwo: {
-    elevation: 0,
-    // Add elevation for shadow
-  },
-  cardContainer:{
-    elevation:0 ,
-  }
+
 });
 
 export default LeftModel;
