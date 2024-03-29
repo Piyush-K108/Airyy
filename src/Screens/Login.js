@@ -58,6 +58,7 @@ const Login = () => {
   React.useEffect(() => {
     console.log(loggedIn);
   }, [loggedIn]);
+  
   const toggleCheckbox = () => {
     setIsChecked(!isChecked);
   };
