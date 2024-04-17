@@ -16,8 +16,7 @@ const BikeDetails = () => {
   const route = useRoute();
   const {selectedBike} = route.params;
   const navigation = useNavigation();
-
-
+  
   return (
     <>
       <View className="justify-center items-center bg-white h-[600px]">
@@ -65,8 +64,9 @@ const BikeDetails = () => {
         <View className="text-black bg-white flex-1  px-8 py-2">
           <Text className="text-xl text-black mb-2">Description</Text>
           <Text className="text-[14px] text-justify leading-5 text-black font-light">
-            Cillum dolor enim duis irure. Dolor anim ullamco nisi est non
-            commodo quis irure aliquip consectetur voluptate sint et.
+            {selectedBike.Electrical
+              ? 'The Jiva Stream E-scooter seamlessly combines a lightweight design with cutting-edge technology, offering a stylish appearance, comfortable urban and long-distance rides with advanced features.'
+              : 'The Honda Activa 6G, boasts a 109.51cc BS6 engine, modern features like telescopic forks, and keyless Smart Key variant, offering excellent reliability, fuel efficiency, and a stylish design.'}
           </Text>
         </View>
       </View>

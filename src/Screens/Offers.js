@@ -29,8 +29,8 @@ const Offers = () => {
         </Text>
       </View>
       <View className="px-8">
-        <Text className="text-[40px] text-black font-bold mb-6">
-          Discover Exclusive Deals Just for You !
+        <Text className="text-[40px] text-black  w-full font-bold mb-6">
+          Discover Exclusive Deals Just for You!
         </Text>
         <Text className="text-[20px] mb-6 text-black leading-8">
           Get ready to grab exciting discounts and unbeatable offers on your

@@ -21,13 +21,13 @@ const mapTemplate = `
           height: 40px;
         }
         #myLocationMarker {
-          background-image: url(https://s3airyy.s3.ap-south-1.amazonaws.com/Icons/location-icon-png-4226-Windows.ico);
+          background-image: url(https://s3airyy.s3.ap-south-1.amazonaws.com/Icons/house2.ico);
           background-size: cover;
           width: 35px;
           height: 40px;
         }
         #locationMarker {
-          background-image: url(https://s3airyy.s3.ap-south-1.amazonaws.com/Icons/location-icon-png-4226-Windows.ico);
+          background-image: url(https://s3airyy.s3.ap-south-1.amazonaws.com/Icons/man.ico);
           background-size: cover;
           width: 35px;
           height: 40px;
