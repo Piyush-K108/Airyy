@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {LOGIN, PHONE, BIKES, PROFILE, LOGOUT, LOCATION} from './counterActionTypes';
+import {LOGIN, PHONE, BIKES, PROFILE, LOGOUT, LOCATION,SET_MAP_HTML} from './counterActionTypes';
 import {DOMAIN} from '@env';
 import GetLocation from '../../Components/GetLocation';
 export const login = () => {
@@ -21,6 +21,11 @@ export const phone = Phone => {
     payload: Phone,
   };
 };
+
+export const setMapHTML = (html) => ({
+  type: SET_MAP_HTML,
+  payload: html,
+});
 
 export const fetchBikes = () => {
   return async dispatch => {

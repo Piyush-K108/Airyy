@@ -2,7 +2,7 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 For Development 
 
-C:\Airyy\android\app\build\outputs\apk\release\app-release.apk && npm start
+c:\Airyy\android\app\build\outputs\apk\release\app-release.apk && npm start
 
 For App
 

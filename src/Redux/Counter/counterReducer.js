@@ -1,11 +1,20 @@
-import {LOGIN, PHONE, BIKES, PROFILE,LOGOUT,LOCATION} from './counterActionTypes';
+import {
+  LOGIN,
+  PHONE,
+  BIKES,
+  PROFILE,
+  LOGOUT,
+  LOCATION,
+  SET_MAP_HTML,
+} from './counterActionTypes';
 
 const initialState = {
   loggedIn: false,
   phone: '',
   bikes: [],
   profile: [],
-  location:[]
+  location: [],
+  mapHTML: null,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -34,11 +43,16 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         bikes: action.payload,
       };
-      case LOCATION:
-        return {
-          ...state,
-          location: action.payload,
-        };
+    case LOCATION:
+      return {
+        ...state,
+        location: action.payload,
+      };
+    case SET_MAP_HTML:
+      return {
+        ...state,
+        mapHTML: action.payload,
+      };
     default:
       return state;
   }

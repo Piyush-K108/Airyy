@@ -14,7 +14,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import BottomSheet from '@gorhom/bottom-sheet';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicans from 'react-native-vector-icons/Ionicons';
-import mapTemplate from '../Components/mapTemplate';
 import {WebView} from 'react-native-webview';
 import axios from 'axios';
 import {API_KEY} from '@env';
@@ -40,6 +39,7 @@ export default function Home({navigation}) {
   const [mapCenter, setMapCenter] = useState('');
   const dispatch = useDispatch();
   const location = useSelector(state => state.counter.location);
+  const mapHTML = useSelector(state => state.counter.mapHTML);
  const [buttonTop, setButtonTop] = useState(new Animated.Value(660));
 
 
@@ -312,14 +312,14 @@ export default function Home({navigation}) {
           ref={webRef}
           onMessage={handleMapEvent}
           originWhitelist={['*']}
-          source={{html: mapTemplate}}
+          source={{html: mapHTML}}
           allowsInlineMediaPlayback={true}
         />
         <Animated.View
           style={{
             position: 'absolute',
             top: buttonTop,
-            left: 290,
+            right: 20,
             margin: 'auto',
             flexDirection: 'row',
             backgroundColor: '#000',

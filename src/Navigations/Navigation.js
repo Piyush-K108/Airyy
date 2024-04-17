@@ -21,7 +21,7 @@ import Bikes from '../Screens/Booking/Bikes';
 import Schedule from '../Screens/Schedule';
 import Offers from '../Screens/Offers';
 import FutureBook from '../Screens/Booking/FutureBook';
-
+import mapTemplate from '../Components/mapTemplate';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {useDispatch} from 'react-redux';
@@ -29,6 +29,7 @@ import {
   fetchBikes,
   fetchLocation,
   fetchProfile,
+  setMapHTML
 } from '../Redux/Counter/counterAction';
 import Home from '../Screens/Home';
 import Home2 from '../Screens/Home2';
@@ -62,12 +63,15 @@ const Navigation = () => {
   const phone = useSelector(state => state.counter.phone);
   const profile = useSelector(state => state.counter.profile);
   const location = useSelector(state => state.counter.location);
+  
   if (!profile) {
     dispatch(fetchProfile(phone));
   }
   useEffect(() => {
+    dispatch(setMapHTML(mapTemplate));
     dispatch(fetchLocation());
     dispatch(fetchBikes());
+    
     console.log(location);
   }, []);
 
