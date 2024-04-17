@@ -34,13 +34,15 @@ import Home from '../Screens/Home';
 import Home2 from '../Screens/Home2';
 import EditCity from '../Screens/Profile/EditCity';
 import AgreementPage from '../Screens/AgreementPage';
+// import StationLocation from '../Screens/StationLocation';
+import StationLocation from '../Screens/StationLocation';
 
 const Stack = createNativeStackNavigator();
-const CustomHeader = ({navigation}) => (
-  <View className="bg-yellow-200">
+const CustomHeader = ({navigation, title, yellow = true}) => (
+  <View className={yellow ? 'bg-yellow-200' : 'bg-white'}>
     <TouchableOpacity
       onPress={() => navigation.goBack()}
-      className="flex flex-row justify-evenly items-left ml-4 mt-4 -mb-8 w-20 rounded-full  bg-gray-50  py-2  "
+      className="flex flex-row justify-evenly items-left ml-4 mt-4 -mb-8 w-20 rounded-full   bg-gray-50  py-2  "
       style={{elevation: 2}}>
       <Ionicons
         name="arrow-back-outline"
@@ -48,7 +50,7 @@ const CustomHeader = ({navigation}) => (
         size={22}
         className="font-bold"
       />
-      <Text className="text-center text-black font-extrabold">Back</Text>
+      <Text className="text-center text-black font-extrabold">{title}</Text>
     </TouchableOpacity>
   </View>
 );
@@ -120,7 +122,7 @@ const MainStack = () => {
         component={LeftModel}
         options={({navigation}) => ({
           headerShown: true,
-          header: () => <CustomHeader navigation={navigation} />,
+          header: () => <CustomHeader navigation={navigation} title="Back" />,
         })}
       />
       <Stack.Screen
@@ -146,6 +148,14 @@ const MainStack = () => {
       <Stack.Screen name="EditName" component={EditName} />
       <Stack.Screen name="EditCity" component={EditCity} />
       <Stack.Screen name="AgreementPage" component={AgreementPage} />
+      <Stack.Screen
+        name="StationLocation"
+        component={StationLocation}
+        options={({navigation}) => ({
+          headerShown: true,
+          header: () => <CustomHeader navigation={navigation} title="Back"  yellow={false}/>,
+        })}
+      />
     </Stack.Navigator>
   );
 };

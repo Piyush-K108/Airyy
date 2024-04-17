@@ -22,9 +22,10 @@ import debounce from 'lodash.debounce';
 import Checkbox from '../Components/Checkbox';
 import {useSelector,useDispatch} from 'react-redux';
 import {fetchBikes} from '../Redux/Counter/counterAction';
-
+import Available from '../assets/available.png'
+import NotAvailable from '../assets/stop.png'
 import ScooterSelectionModal from '../Modals/ScooterSelectionModal';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 export default function Home({navigation}) {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
@@ -39,7 +40,7 @@ export default function Home({navigation}) {
   const [mapCenter, setMapCenter] = useState('');
   const dispatch = useDispatch();
   const location = useSelector(state => state.counter.location);
-
+ const [buttonTop, setButtonTop] = useState(new Animated.Value(660));
 
 
   const renderItem = ({item}) => (
@@ -51,8 +52,18 @@ export default function Home({navigation}) {
           navigation.navigate('BikeDetails', {selectedBike});
         }
       }}>
-      <View>
-        <Text style={styles.bikeName}>{item.b_id}</Text>
+      <View className="flex flex-col items-center">
+        <View className="flex flex-row items-center w-full justify-between">
+          <Text style={styles.bikeName}>{item.b_id}</Text>
+          {/* Display availability status based on is_assigned */}
+          {item.is_assigned ? (
+            <Image source={NotAvailable} className="w-[20px] h-[20px]" />
+          ) : (
+            <Image source={Available} className="w-[35px] h-[35px]" />
+          )}
+        </View>
+
+        {/* <Text>Available</Text> */}
         <Image
           resizeMode="cover"
           source={{uri: item.Image}}
@@ -92,9 +103,36 @@ export default function Home({navigation}) {
 
   const snapPoints = useMemo(() => ['10%', '25%', '50%', '80%'], []);
 
-  const handleSheetChanges = useCallback(index => {
-    console.log('handleSheetChanges', index);
-  }, []);
+ const handleSheetChanges = useCallback(
+   index => {
+     // Calculate the buttonTop value based on the bottom sheet's current index
+     let newButtonTop;
+     switch (index) {
+       case 0:
+         newButtonTop = 660; // Index 0 -> Top value of 660
+         break;
+       case 1:
+         newButtonTop = 540; // Index 1 -> Top value of 540
+         break;
+       case 2:
+         newButtonTop = 340; // Index 2 -> Top value of 340
+         break;
+       case 3:
+         newButtonTop = 100; // Index 3 -> Top value of 100
+         break;
+       default:
+         newButtonTop = buttonTop._value; // Default to the current buttonTop value
+         break;
+     }
+
+     // Animate buttonTop to the new value
+     Animated.spring(buttonTop, {
+       toValue: newButtonTop,
+       useNativeDriver: false,
+     }).start();
+   },
+   [buttonTop],
+ );
 
   const delayedSearch = useMemo(
     () =>
@@ -216,8 +254,8 @@ export default function Home({navigation}) {
   );
   
 
-  const handleBook = () => {
-    console.log(mapCenter);
+  const handleStation = () => {
+   navigation.navigate('StationLocation');
   };
 
   const webRef = useRef(null);
@@ -277,29 +315,27 @@ export default function Home({navigation}) {
           source={{html: mapTemplate}}
           allowsInlineMediaPlayback={true}
         />
-        <View>
-          <Animated.View
-            style={{
-              position: 'absolute',
-              top: -473,
-              left: 280,
-              margin: 'auto',
-              flexDirection: 'row',
-              alignItems: 'center',
-              padding: 15,
-              borderRadius: animatedBorderRadius.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 25],
-              }),
-              backgroundColor: 'black',
-            }}>
-            <TouchableOpacity onPress={handleBook}>
-              <Text style={{color: '#feb101', fontWeight: 'bold'}}>
-                Book now
-              </Text>
-            </TouchableOpacity>
-          </Animated.View>
-        </View>
+        <Animated.View
+          style={{
+            position: 'absolute',
+            top: buttonTop,
+            left: 290,
+            margin: 'auto',
+            flexDirection: 'row',
+            backgroundColor: '#000',
+            alignItems: 'center',
+            padding: 10,
+            borderRadius: 15,
+            elevation: 5,
+          }}>
+          <TouchableOpacity onPress={handleStation}>
+            <Ionicons
+              style={{color: '#facc15'}}
+              name="navigate-circle-outline"
+              size={30}
+            />
+          </TouchableOpacity>
+        </Animated.View>
       </View>
 
       <BottomSheet
@@ -325,7 +361,7 @@ export default function Home({navigation}) {
 
             <View className="flex flex-col">
               <Checkbox
-                label="Patrol"
+                label="Petrol"
                 value={isChecked2}
                 onPress={() => {
                   setIsChecked2(!isChecked2);
@@ -501,6 +537,7 @@ const styles = StyleSheet.create({
   bikeList: {
     paddingHorizontal: 0,
     paddingBottom: 4,
+    
   },
   bikeCard: {
     backgroundColor: '#ffff',
@@ -508,7 +545,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     margin: 6,
-
+    marginBottom:20 ,
     height: 120,
     justifyContent: 'center',
     alignItems: 'center',
