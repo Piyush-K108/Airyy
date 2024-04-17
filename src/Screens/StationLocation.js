@@ -25,8 +25,9 @@ const StationLocation = () => {
         <View className="flex border border-gray-200 flex-row items-center  w-full px-4  py-2 rounded-xl mb-6 mt-8">
           <Image source={Current} className="w-[25px] h-[25px] mr-2" />
           <TextInput
-            className=""
+            className="text-black"
             placeholder="Enter your current location"
+            placeholderTextColor={"#000"}
             value={currentLocation}
             onChangeText={setCurrentLocation}
           />
@@ -34,8 +35,9 @@ const StationLocation = () => {
         <View className="flex border border-gray-200 flex-row items-center w-full px-4  py-2 rounded-xl">
           <Image source={Destination} className="w-[25px] h-[25px] mr-2" />
           <TextInput
-            className="w-full"
+            className="w-full text-black"
             placeholder="Enter your Stations location"
+            placeholderTextColor={"#000"}
             value={StationcurrentLocation}
             onChangeText={setStationcurrentLocation}
           />
