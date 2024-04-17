@@ -10,7 +10,7 @@ const Checkbox = ({label, value, onPress, style}) => {
       <View
         style={[
           styles.checkbox,
-          {backgroundColor: value ? '#feb101' : 'transparent'},
+          {backgroundColor: value ? '#facc15' : 'transparent'},
         ]}>
         {value && <Text style={styles.checkmark}>✓</Text>}
       </View>
