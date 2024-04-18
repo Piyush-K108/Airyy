@@ -10,31 +10,48 @@ import {
   Image,
 } from 'react-native';
 import Header from '../../Components/Header';
+import Checkbox from '../../Components/Checkbox';
 import {useSelector} from 'react-redux';
 import {fetchBikes} from '../../Redux/Counter/counterAction';
 import {useDispatch} from 'react-redux';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/core';
+import Available from '../../assets/available.png';
+import NotAvailable from '../../assets/stop.png';
 const Bikes = () => {
-  const [search, setSearch] = useState('');
   const navigation = useNavigation();
+  const [isChecked, setIsChecked] = useState(true);
+  const [isChecked2, setIsChecked2] = useState(true);
   const dispatch = useDispatch();
   const Bikes = useSelector(state => state.counter.bikes);
-  const handleSearch = () => {
-    console.log(Bikes[0]);
+  const [ShowBikes, setShowBikes] = useState(Bikes);
+  const handleCheckboxPress = value => {
+    let filteredBikes = ShowBikes;
+    if (value) {
+      filteredBikes = Bikes.filter(bike => bike.Electrical === false);
+      setShowBikes(filteredBikes);
+    } else {
+      setShowBikes(Bikes);
+    }
+    if (!isChecked2) {
+      setShowBikes(Bikes);
+    }
   };
 
-  useEffect(() => {
-    dispatch(fetchBikes());
-  }, [dispatch]);
-
+  const handleCheckboxPress2 = value => {
+    let filteredBikes2 = ShowBikes;
+    if (value) {
+      filteredBikes2 = Bikes.filter(bike => bike.Electrical === true);
+      
+      setShowBikes(filteredBikes2);
+    } else {
+      setShowBikes(Bikes);
+    }
+    if (!isChecked) {
+      setShowBikes(Bikes);
+    }
+  };
   const renderItem = ({item}) => (
-    // <View className="bg-red-100 ">
-    // <LinearGradient
-    //   colors={[ 'yellow','orange']}
-    //   start={{x: 0, y: 0}}
-    //   end={{x: 0, y: 1}}
-    //   style={{flex: 1}}>
     <TouchableOpacity
       style={styles.bikeCard}
       onPress={() => {
@@ -44,7 +61,15 @@ const Bikes = () => {
         }
       }}>
       <View>
-        <Text style={styles.bikeName}>{item.b_id}</Text>
+        <View className="flex flex-row justify-between">
+          <Text style={styles.bikeName}>{item.b_id}</Text>
+          {item.is_assigned ? (
+            <Image source={NotAvailable} className="w-[20px] h-[20px]" />
+          ) : (
+            <Image source={Available} className="w-[35px] h-[35px]" />
+          )}
+        </View>
+
         <Image
           resizeMode="cover"
           source={{uri: item.Image}}
@@ -70,29 +95,31 @@ const Bikes = () => {
           </Text>
         </View>
 
-        <View style={styles.searchContainer}>
-          {/* IS Assigned and ev , Earned */}
-          <View style={styles.searchBar__unclicked}>
-            <TextInput
-              style={styles.inputForSearch}
-              placeholderTextColor={'#818181'}
-              placeholder="Find your Ride"
-              value={search}
-              onChangeText={text => {
-                setSearch(text);
+        <View className="flex flex-row justify-between px-5 p-5  ">
+          <Text className="text-black font-semibold s">Filter Vehicle</Text>
+          <Checkbox
+            label="EV"
+            value={isChecked}
+            onPress={() => {
+              setIsChecked(!isChecked);
+              handleCheckboxPress(isChecked);
+            }}
+          />
+
+          <View className="flex flex-col">
+            <Checkbox
+              label="Petrol"
+              value={isChecked2}
+              onPress={() => {
+                setIsChecked2(!isChecked2);
+                handleCheckboxPress2(isChecked2);
               }}
             />
-            <TouchableOpacity
-              onPress={() => {
-                handleSearch();
-              }}>
-              <MaterialIcons
-                name="search"
-                size={24}
-                color="#666"
-                style={{marginRight: 5}}
-              />
-            </TouchableOpacity>
+            {/* <ScooterSelectionModal
+              isVisible={modalVisible}
+              onClose={() => setModalVisible(false)}
+              onSelect={scooterType => setSelectedScooter(scooterType)}
+            /> */}
           </View>
         </View>
       </View>
@@ -116,7 +143,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: '#FBFDE9',
-    paddingBottom: 60,
+    paddingBottom: 0,
   },
   textContainer: {
     paddingHorizontal: 20,

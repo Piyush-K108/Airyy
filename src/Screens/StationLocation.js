@@ -7,8 +7,9 @@ const StationLocation = () => {
   
 
   // State to store user's current location and station location
-  const [currentLocation, setCurrentLocation] = useState('');
-  const [StationcurrentLocation, setStationcurrentLocation] = useState('Bhola ram ustad marg , Bhwarkuwan , indore');
+  const [CUlocation, setCUlocation] = useState('');
+  const location = useSelector(state => state.counter.location);
+  const [Stationlocation, setStationlocation] = useState('Bhola ram ustad marg , Bhwarkuwan , indore');
   const [stationLocation, setStationLocation] = useState('');
 
   // Handler to simulate fetching the station location
@@ -28,8 +29,8 @@ const StationLocation = () => {
             className="text-black"
             placeholder="Enter your current location"
             placeholderTextColor={"#000"}
-            value={currentLocation}
-            onChangeText={setCurrentLocation}
+            value={location}
+            onChangeText={setCUlocation}
           />
         </View>
         <View className="flex border border-gray-200 flex-row items-center w-full px-4  py-2 rounded-xl">
@@ -38,8 +39,8 @@ const StationLocation = () => {
             className="w-full text-black"
             placeholder="Enter your Stations location"
             placeholderTextColor={"#000"}
-            value={StationcurrentLocation}
-            onChangeText={setStationcurrentLocation}
+            value={Stationlocation}
+            onChangeText={setStationlocation}
           />
         </View>
       </View>

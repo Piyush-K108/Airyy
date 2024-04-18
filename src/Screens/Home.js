@@ -20,7 +20,6 @@ import {API_KEY} from '@env';
 import debounce from 'lodash.debounce';
 import Checkbox from '../Components/Checkbox';
 import {useSelector,useDispatch} from 'react-redux';
-import {fetchBikes} from '../Redux/Counter/counterAction';
 import Available from '../assets/available.png'
 import NotAvailable from '../assets/stop.png'
 import ScooterSelectionModal from '../Modals/ScooterSelectionModal';
@@ -42,7 +41,7 @@ export default function Home({navigation}) {
   const mapHTML = useSelector(state => state.counter.mapHTML);
  const [buttonTop, setButtonTop] = useState(new Animated.Value(660));
 
-
+ const scrollViewRef = useRef(null);
   const renderItem = ({item}) => (
     <TouchableOpacity
       style={styles.bikeCard}
@@ -133,6 +132,18 @@ export default function Home({navigation}) {
    },
    [buttonTop],
  );
+
+ const [scrollPosition, setScrollPosition] = useState(0);
+  
+
+ const handleScroll = (event) => {
+  const scrollY = event.nativeEvent.contentOffset.y;
+  // Update scroll position state
+  setScrollPosition(scrollY);
+};
+
+
+
 
   const delayedSearch = useMemo(
     () =>
@@ -384,7 +395,8 @@ export default function Home({navigation}) {
           numColumns={2}
           contentContainerStyle={styles.bikeList}
           style={{height: '100%'}}
-          // nestedScrollEnabled={true}
+          onScroll={handleScroll}
+          
         />
       </BottomSheet>
 
@@ -431,7 +443,6 @@ export default function Home({navigation}) {
                   <TouchableOpacity
                     onPress={() => {
                       setSearch(item);
-
                       handleAutoComplete(item);
                     }}
                     className="flex flex-col border-black ">

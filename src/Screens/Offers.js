@@ -23,7 +23,7 @@ const Offers = () => {
         style={styles.gradient}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}> */}
-      <View className="relative top-[-70px]  px-16 py-8 justify-center ">
+      <View className="relative top-0  px-16  justify-center ">
         <Text className="text-center text-white py-4 rounded-full text-[18px] font-bold bg-black">
           OFFERS
         </Text>
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fefce8',
     // flexDirection : 'column',
     // alignItems:'center' ,
-    justifyContent: 'center',
+    justifyContent: 'start',
   },
   gradient: {
     flex: 1,
