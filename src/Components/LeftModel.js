@@ -42,9 +42,9 @@ const LeftModel = () => {
                 />
 
                 <ButtonArrow
-                  name={'None'}
+                  name={'Rate Us'}
                   icon="star-rate"
-                  screen={'None'}
+                  screen={'Home2'}
                 />
               </View>
             </View>
