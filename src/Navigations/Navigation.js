@@ -110,17 +110,7 @@ const MainStack = () => {
         }}
       />
       <Stack.Screen name="UserProfile" component={UserProfile} />
-      <Stack.Screen
-        name="Rateus"
-        component={Rateus}
-        options={{
-          headerShown: true,
-          headerTitle: 'Rate US',
-          headerStyle: {
-            backgroundColor: '#fff',
-          },
-        }}
-      />
+     
       <Stack.Screen
         name="LeftModel"
         component={LeftModel}
