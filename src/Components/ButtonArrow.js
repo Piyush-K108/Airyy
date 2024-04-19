@@ -1,14 +1,21 @@
 import React from 'react';
-import {Text, View, TouchableOpacity , Image} from 'react-native';
+import {Text, View, TouchableOpacity, Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
-import user from "../images/userProfile.png"
+import user from '../images/userProfile.png';
 import {logout} from '../Redux/Counter/counterAction';
 import {useDispatch} from 'react-redux';
 import {fetchProfile} from '../../Redux/Counter/counterAction';
 import {useSelector} from 'react-redux';
-const ButtonArrow = ({name, icon, screen, iconname, showProfilePic = false ,}) => {
+import Rate from 'react-native-rate';
+const ButtonArrow = ({
+  name,
+  icon,
+  screen,
+  iconname,
+  showProfilePic = false,
+}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -16,13 +23,37 @@ const ButtonArrow = ({name, icon, screen, iconname, showProfilePic = false ,}) =
     dispatch(logout());
   };
 
-   const data = useSelector(state => state.counter.profile);
+  const data = useSelector(state => state.counter.profile);
   //  const dispatch = useDispatch();
+
+  // Function to handle the review process
+  const handleReview = () => {
+    const options = {
+      AppleAppID: 'your_app_id', // You can leave this as null for Android
+      GooglePackageName: 'your_package_name', // package name for your app on Google Play Store
+      preferredAndroidMarket: AndroidMarket.Google,
+      preferInApp: false,
+      openAppStoreIfInAppFails: true,
+      fallbackPlatformURL:
+        'https://play.google.com/store/apps/details?id=your_package_name', // URL to open if no store is installed
+    };
+
+    Rate.rate(options, success => {
+      if (success) {
+        
+        console.log('User rated the app');
+      }
+    });
+  };
 
   return (
     <TouchableOpacity
       onPress={() => {
-        name === 'Logout' ? handleLogout() : navigation.navigate(screen);
+        name === 'Logout'
+          ? handleLogout()
+          : name === 'None'
+          ? handleReview()
+          : navigation.navigate(screen);
       }}>
       <View className="flex flex-row w-[100%] justify-between py-1 px-4 ">
         <View className="flex-row ">
@@ -32,7 +63,6 @@ const ButtonArrow = ({name, icon, screen, iconname, showProfilePic = false ,}) =
                 resizeMode="cover"
                 source={data.ProfilePic ? {uri: data.ProfilePic} : user}
                 className="w-6 h-6 rounded-full border"
-                
               />
             </>
           ) : (

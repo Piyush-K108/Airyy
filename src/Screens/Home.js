@@ -42,6 +42,7 @@ export default function Home({navigation}) {
  const [buttonTop, setButtonTop] = useState(new Animated.Value(660));
 
  const scrollViewRef = useRef(null);
+ 
   const renderItem = ({item}) => (
     <TouchableOpacity
       style={styles.bikeCard}
