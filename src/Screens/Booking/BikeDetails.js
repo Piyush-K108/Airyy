@@ -25,16 +25,16 @@ const BikeDetails = () => {
           source={{uri: selectedBike.Image}}
           className="w-72 h-72 "
         />
-        <Text className="text-black mb-40">Coming Soon the 3d Image</Text>
+        <Text className="text-[#121212] mb-40">Coming Soon the 3d Image</Text>
       </View>
 
       <View className="border-x-[4px] z-[100] border-t-[4px] border-b-[1px] rounded-t-[40px] h-screen bottom-40 w-screen  border-yellow-200">
         <View className="w-screen flex-row justify-between mb-2">
           <View>
-            <Text className="text-black text-2xl px-8 py-2">
+            <Text className="text-[#121212] text-2xl px-8 py-2">
               {selectedBike.b_id}
             </Text>
-            <Text className="text-black font-extralight text-[18px] px-8 ">
+            <Text className="text-[#121212] font-extralight text-[18px] px-8 ">
               {selectedBike.license_plate}
             </Text>
           </View>
@@ -49,21 +49,21 @@ const BikeDetails = () => {
 
         <View className="flex justify-evenly  gap-4 p-4  flex-row">
           <View className="bg-yellow-200 w-24 h-10 flex rounded-[15px] items-center justify-center shadow-md">
-            <Text className="text-black font-bold">
+            <Text className="text-[#121212] font-bold">
               {selectedBike.KM_Now}-KM
             </Text>
           </View>
 
           <View className="bg-yellow-200 w-24 h-10 flex rounded-[15px] items-center justify-center">
-            <Text className="text-black font-bold">BLDC Model</Text>
+            <Text className="text-[#121212] font-bold">BLDC Model</Text>
           </View>
           <View className="bg-yellow-200 w-24 h-10 flex rounded-[15px] items-center justify-center">
-            <Text className="text-black font-bold">65km range</Text>
+            <Text className="text-[#121212] font-bold">65km range</Text>
           </View>
         </View>
-        <View className="text-black bg-white flex-1  px-8 py-2">
-          <Text className="text-xl text-black mb-2">Description</Text>
-          <Text className="text-[14px] text-justify leading-5 text-black font-light">
+        <View className="text-[#121212] bg-white flex-1  px-8 py-2">
+          <Text className="text-xl text-[#121212] mb-2">Description</Text>
+          <Text className="text-[14px] text-justify leading-5 text-[#121212] font-light">
             {selectedBike.Electrical
               ? 'The Jiva Stream E-scooter seamlessly combines a lightweight design with cutting-edge technology, offering a stylish appearance, comfortable urban and long-distance rides with advanced features.'
               : 'The Honda Activa 6G, boasts a 109.51cc BS6 engine, modern features like telescopic forks, and keyless Smart Key variant, offering excellent reliability, fuel efficiency, and a stylish design.'}

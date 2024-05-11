@@ -82,7 +82,7 @@ const Bikes = () => {
 
   return (
     <View style={styles.container}>
-      <View className="bg-yellow-200">
+      <View className="bg-yellow-400">
         <Header />
 
         <View className="px-5 w-screen">
@@ -96,7 +96,7 @@ const Bikes = () => {
         </View>
 
         <View className="flex flex-row justify-between px-5 p-5  ">
-          <Text className="text-black font-semibold s">Filter Vehicle</Text>
+          <Text className="text-[#121212] font-semibold s">Filter Vehicle</Text>
           <Checkbox
             label="EV"
             value={isChecked}
@@ -125,7 +125,7 @@ const Bikes = () => {
       </View>
 
       <FlatList
-        data={Bikes}
+        data={ShowBikes}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
         numColumns={2}
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: '#FBFDE9',
-    paddingBottom: 0,
+    paddingBottom: 60,
   },
   textContainer: {
     paddingHorizontal: 20,
@@ -176,10 +176,11 @@ const styles = StyleSheet.create({
   bikeList: {
     paddingHorizontal: 10,
     paddingBottom: 16,
+    
   },
   bikeCard: {
     backgroundColor: '#ffffff',
-
+    
     borderRadius: 10,
     padding: 10,
     margin: 5,

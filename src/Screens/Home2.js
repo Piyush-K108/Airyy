@@ -184,7 +184,7 @@ export default function Home2() {
 
   return (
     <>
-      <View className="h-screen bg-yellow-200  flex flex-col">
+      <View className="h-screen bg-yellow-400  flex flex-col">
         {/* Header */}
         <Header />
 
@@ -233,7 +233,7 @@ export default function Home2() {
                       
                       handleSearchSuggestion(item);
                     }}>
-                    <Text className="text-black   border-b-2">{item}</Text>
+                    <Text className="text-[#121212]   border-b-2">{item}</Text>
                   </TouchableOpacity>
                 </View>
               )}

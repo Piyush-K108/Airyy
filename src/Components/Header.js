@@ -13,7 +13,7 @@ const Header = () => {
 
   return (
     <>
-      <View className="my-8 mx-5 bg-yellow-100  rounded-full   flex flex-row justify-between">
+      <View className="my-8 mx-5 bg-yellow-400  rounded-full   flex flex-row justify-between">
         <TouchableOpacity onPress={() => navigation.navigate('LeftModel')}>
           <View className="mt-3 flex-row  mx-2 overflow-hidden rounded-full">
             <MaterialIcons name="menu" size={32} color="#666" />

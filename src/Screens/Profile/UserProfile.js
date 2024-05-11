@@ -8,6 +8,7 @@ import {
   Touchable,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 
 import user from '../../images/userProfile.png';
@@ -23,12 +24,14 @@ import {fetchProfile, logout} from '../../Redux/Counter/counterAction';
 import {useSelector} from 'react-redux';
 import EditComponent from '../../Components/EditComponent';
 import {ProfileEdit} from './ProfileEdit';
+import {ScrollView} from 'react-native-gesture-handler';
 const UserProfile = () => {
   const data = useSelector(state => state.counter.profile);
   const [openEditComponent, setopenEditComponent] = useState('');
   const currentYear = new Date().getFullYear();
   const navigation = useNavigation();
   const editProfile = ProfileEdit();
+  const [refreshing, setRefreshing] = useState(false);
   const phone = useSelector(state => state.counter.phone);
   const dispatch = useDispatch();
 
@@ -85,7 +88,6 @@ const UserProfile = () => {
 
           data.append('ProfilePic', Pic);
 
-
           editProfile(data, 'multipart/form-data');
         }
       });
@@ -123,231 +125,246 @@ const UserProfile = () => {
     dispatch(logout());
   };
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   if (phone) {
+  //     dispatch(fetchProfile(phone));
+  //   }
+  // }, [dispatch, navigation]);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
     if (phone) {
       dispatch(fetchProfile(phone));
     }
-  }, [dispatch, navigation]);
+
+    setTimeout(() => {
+      setRefreshing(false);
+      setIsLoading(false);
+    }, 2000);
+  }, []);
 
   return (
-    <View  style={styles.container}>
-      {openEditComponent === 'name' && (
-        <EditComponent
-          initialValue={data ? data.name : 'Name'}
-          onCancel={() => setopenEditComponent('')}
-        />
-      )}
-      {/* <View style={styles.boxContainer}> */}
-      {/* <Text>We can show our offers</Text> */}
-      {/* </View> */}
-      <LinearGradient
-        colors={['#fde047', 'white']}
-        style={styles.boxContainer}></LinearGradient>
-      {data && (
-        <>
-          <TouchableOpacity
-            onPress={() => {
-              ImagePicker('pic');
-            }}>
-            <View className="rounded-full justify-end flex -mt-[18%] overflow-hidden">
-              <Image
-                resizeMode="cover"
-                source={data.ProfilePic ? {uri: data.ProfilePic} : user}
-                className="w-24 h-24  "
+    <ScrollView refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }>
+      <View style={styles.container}>
+        {openEditComponent === 'name' && (
+          <EditComponent
+            initialValue={data ? data.name : 'Name'}
+            onCancel={() => setopenEditComponent('')}
+          />
+        )}
+        {/* <View style={styles.boxContainer}> */}
+        {/* <Text>We can show our offers</Text> */}
+        {/* </View> */}
+        <LinearGradient
+          colors={['#fde047', 'white']}
+          style={styles.boxContainer}></LinearGradient>
+        {data && (
+          <>
+            <TouchableOpacity
+              onPress={() => {
+                ImagePicker('pic');
+              }}>
+              <View className="rounded-full justify-end flex -mt-[18%] overflow-hidden">
+                <Image
+                  resizeMode="cover"
+                  source={data.ProfilePic ? {uri: data.ProfilePic} : user}
+                  className="w-24 h-24  "
+                />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              className="w-screen flex justify-center items-center"
+              onPress={() => handleEdit2('name')}>
+              <Text
+                style={{
+                  fontSize: getNameFontSize(),
+                  color: data && data.name ? 'black' : 'red',
+                }}>
+                {isFieldRequired(data ? data.name : 'Required')}
+              </Text>
+              <Text className="text-black">{phone}</Text>
+            </TouchableOpacity>
+          </>
+        )}
+        <View style={styles.parentContainerForProfile}>
+          <TouchableOpacity onPress={() => handleEdit('EditEmail', data.email)}>
+            <View style={styles.fieldContainer}>
+              <FontAwesome5
+                name="envelope"
+                size={20}
+                color="#73C2FB"
+                style={styles.icon}
               />
+              <Text style={styles.labelText}>Email</Text>
+              <View
+                style={{
+                  marginLeft: 30,
+                  borderBottomColor: 'green',
+                  padding: 2,
+                  width: 220,
+                  alignItems: 'center',
+                  fontWeight: 'bold',
+                }}>
+                <Text
+                  className={`${data && data.email ? '' : 'ml-[102px]'}`}
+                  style={{
+                    ...styles.label,
+                    color: data && data.email ? '#121212' : 'red',
+                  }}>
+                  {isFieldRequired(data && data.email)}
+                </Text>
+              </View>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            className="w-screen flex justify-center items-center"
-            onPress={() => handleEdit2('name')}>
-            <Text
-              style={{
-                fontSize: getNameFontSize(),
-                color: data && data.name ? 'black' : 'red',
-              }}>
-              {isFieldRequired(data ? data.name : 'Required')}
-            </Text>
-            <Text className="text-black">{phone}</Text>
+
+          <TouchableOpacity onPress={() => handleEdit('EditCity', data.City)}>
+            <View style={styles.fieldContainer}>
+              <MaterialCommunityIcons
+                name="city"
+                size={20}
+                color="#8F00FF"
+                style={styles.icon}
+              />
+              <Text style={styles.labelText}>City{'  '}</Text>
+              <View
+                style={{
+                  marginLeft: 30,
+                  borderBottomColor: 'green',
+                  padding: 5,
+                  width: 200,
+                  alignItems: 'center',
+                  fontWeight: 'bold',
+                }}>
+                <Text
+                  className="ml-[131px]"
+                  style={{
+                    ...styles.label,
+                    color: data && data.Gender ? '#121212' : 'red',
+                  }}>
+                  {isFieldRequired(data && data.City)}
+                </Text>
+              </View>
+            </View>
           </TouchableOpacity>
-        </>
-      )}
-      <View style={styles.parentContainerForProfile}>
-        <TouchableOpacity onPress={() => handleEdit('EditEmail', data.email)}>
-          <View style={styles.fieldContainer}>
-            <FontAwesome5
-              name="envelope"
-              size={20}
-              color="#73C2FB"
-              style={styles.icon}
-            />
-            <Text style={styles.labelText}>Email</Text>
-            <View
-              style={{
-                marginLeft: 30,
-                borderBottomColor: 'green',
-                padding: 2,
-                width: 220,
-                alignItems: 'center',
-                fontWeight: 'bold',
-              }}>
-              <Text
-                className={`${data && data.email ? '' : 'ml-[102px]'}`}
-                style={{
-                  ...styles.label,
-                  color: data && data.email ? '#121212' : 'red',
-                }}>
-                {isFieldRequired(data && data.email)}
-              </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => handleEdit('EditCity',data.City)}>
-          <View style={styles.fieldContainer}>
-            <MaterialCommunityIcons
-              name="city"
-              size={20}
-              color="#8F00FF"
-              style={styles.icon}
-            />
-            <Text style={styles.labelText}>City{'  '}</Text>
-            <View
-              style={{
-                marginLeft: 30,
-                borderBottomColor: 'green',
-                padding: 5,
-                width: 200,
-                alignItems: 'center',
-                fontWeight: 'bold',
-              }}>
-              <Text
-                className="ml-[131px]"
+          <TouchableOpacity onPress={() => handleEdit('EditGender')}>
+            <View style={styles.fieldContainer}>
+              <MaterialCommunityIcons
+                name="gender-male-female"
+                size={20}
+                color="#8F00FF"
+                style={styles.icon}
+              />
+              <Text style={styles.labelText}>Gender</Text>
+              <View
                 style={{
-                  ...styles.label,
-                  color: data && data.Gender ? '#121212' : 'red',
+                  marginLeft: 30,
+                  borderBottomColor: 'green',
+                  padding: 5,
+                  width: 200,
+                  alignItems: 'center',
+                  fontWeight: 'bold',
                 }}>
-                {isFieldRequired(data && data.City)}
-              </Text>
+                <Text
+                  className="ml-[101px]"
+                  style={{
+                    ...styles.label,
+                    color: data && data.Gender ? '#121212' : 'red',
+                  }}>
+                  {isFieldRequired(data && data.Gender)}
+                </Text>
+              </View>
             </View>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => handleEdit('EditGender')}>
-          <View style={styles.fieldContainer}>
-            <MaterialCommunityIcons
-              name="gender-male-female"
-              size={20}
-              color="#8F00FF"
-              style={styles.icon}
-            />
-            <Text style={styles.labelText}>Gender</Text>
-            <View
-              style={{
-                marginLeft: 30,
-                borderBottomColor: 'green',
-                padding: 5,
-                width: 200,
-                alignItems: 'center',
-                fontWeight: 'bold',
-              }}>
+          <TouchableOpacity onPress={() => handleEdit('EditDateOfBirth')}>
+            <View style={styles.fieldContainer}>
+              <FontAwesome5
+                name="birthday-cake"
+                size={20}
+                color="#FF007F"
+                style={styles.icon}
+              />
+              <Text style={styles.labelText}>Date of birth</Text>
+              <View
+                style={{
+                  marginLeft: 30,
+                  borderBottomColor: 'green',
+                  padding: 5,
+                  width: 200,
+                  alignItems: 'center',
+                  fontWeight: 'bold',
+                }}>
+                <Text
+                  style={{
+                    ...styles.label,
+                    color:
+                      data && data.Date_of_Birth === 'Invalid Date'
+                        ? 'red'
+                        : '#121212',
+                  }}>
+                  {new Date(data && data.Date_of_Birth).toLocaleDateString(
+                    'en-IN',
+                    {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    },
+                  )}
+                </Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => ImagePicker('adhar')}>
+            <View style={styles.fieldContainer}>
+              <FontAwesome5
+                name="address-card"
+                size={20}
+                color="#8F00FF"
+                style={styles.icon}
+              />
+              <Text style={styles.labelText}>Adhar Card</Text>
               <Text
-                className="ml-[101px]"
+                className="ml-28"
                 style={{
                   ...styles.label,
-                  color: data && data.Gender ? '#121212' : 'red',
+                  color: data && data.Adhar_Card ? 'green' : 'red',
                 }}>
-                {isFieldRequired(data && data.Gender)}
+                {isFieldRequired2(data && data.Adhar_Card)}
               </Text>
             </View>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => handleEdit('EditDateOfBirth')}>
-          <View style={styles.fieldContainer}>
-            <FontAwesome5
-              name="birthday-cake"
-              size={20}
-              color="#FF007F"
-              style={styles.icon}
-            />
-            <Text style={styles.labelText}>Date of birth</Text>
-            <View
-              style={{
-                marginLeft: 30,
-                borderBottomColor: 'green',
-                padding: 5,
-                width: 200,
-                alignItems: 'center',
-                fontWeight: 'bold',
-              }}>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => ImagePicker('License')}>
+            <View style={styles.fieldContainer}>
+              <FontAwesome
+                name="drivers-license-o"
+                size={20}
+                color="#8F00FF"
+                style={styles.icon}
+              />
+              <Text style={styles.labelText}>Driving License</Text>
               <Text
+                className="ml-20"
                 style={{
                   ...styles.label,
-                  color:
-                    data && data.Date_of_Birth === 'Invalid Date'
-                      ? 'red'
-                      : '#121212',
+                  color: data && data.license_id ? 'green' : 'red',
                 }}>
-                {new Date(data && data.Date_of_Birth).toLocaleDateString(
-                  'en-IN',
-                  {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                  },
-                )}
+                {isFieldRequired2(data && data.license_id)}
               </Text>
             </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => ImagePicker('adhar')}>
-          <View style={styles.fieldContainer}>
-            <FontAwesome5
-              name="address-card"
-              size={20}
-              color="#8F00FF"
-              style={styles.icon}
-            />
-            <Text style={styles.labelText}>Adhar Card</Text>
-            <Text
-              className="ml-28"
-              style={{
-                ...styles.label,
-                color: data && data.Adhar_Card ? 'green' : 'red',
-              }}>
-              {isFieldRequired2(data && data.Adhar_Card)}
+          </TouchableOpacity>
+        </View>
+        <View className="flex flex-row absolute top-[730px] px-24 py-2 justify-between shadow-xl   bg-yellow-200  rounded-full">
+          <Ionican name="power" size={20} color="#000" style={styles.icon} />
+          <TouchableOpacity onPress={handelLogout}>
+            <Text className="text-black font-bold text-[16px] flex  justify-center items-center">
+              Delete
             </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => ImagePicker('License')}>
-          <View style={styles.fieldContainer}>
-            <FontAwesome
-              name="drivers-license-o"
-              size={20}
-              color="#8F00FF"
-              style={styles.icon}
-            />
-            <Text style={styles.labelText}>Driving License</Text>
-            <Text
-              className="ml-20"
-              style={{
-                ...styles.label,
-                color: data && data.license_id ? 'green' : 'red',
-              }}>
-              {isFieldRequired2(data && data.license_id)}
-            </Text>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View className="flex flex-row absolute top-[730px] px-24 py-2 justify-between shadow-xl   bg-yellow-200  rounded-full">
-        <Ionican name="power" size={20} color="#000" style={styles.icon} />
-        <TouchableOpacity onPress={handelLogout}>
-          <Text className="text-black font-bold text-[16px] flex  justify-center items-center">
-            Delete
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -355,7 +372,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    width:'100%',
+    width: '100%',
     paddingHorizontal: 10,
     marginTop: -20,
     alignItems: 'center',
@@ -399,7 +416,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    
+
     marginBottom: 0,
     marginLeft: 0,
     marginVertical: 20,

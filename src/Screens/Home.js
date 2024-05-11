@@ -7,7 +7,7 @@ import {
   Keyboard,
   TouchableOpacity,
   Image,
-  Animated
+  Animated,
 } from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
@@ -19,9 +19,9 @@ import axios from 'axios';
 import {API_KEY} from '@env';
 import debounce from 'lodash.debounce';
 import Checkbox from '../Components/Checkbox';
-import {useSelector,useDispatch} from 'react-redux';
-import Available from '../assets/available.png'
-import NotAvailable from '../assets/stop.png'
+import {useSelector, useDispatch} from 'react-redux';
+import Available from '../assets/available.png';
+import NotAvailable from '../assets/stop.png';
 import ScooterSelectionModal from '../Modals/ScooterSelectionModal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 export default function Home({navigation}) {
@@ -39,10 +39,10 @@ export default function Home({navigation}) {
   const dispatch = useDispatch();
   const location = useSelector(state => state.counter.location);
   const mapHTML = useSelector(state => state.counter.mapHTML);
- const [buttonTop, setButtonTop] = useState(new Animated.Value(660));
+  const [buttonTop, setButtonTop] = useState(new Animated.Value(660));
 
- const scrollViewRef = useRef(null);
- 
+  const scrollViewRef = useRef(null);
+
   const renderItem = ({item}) => (
     <TouchableOpacity
       style={styles.bikeCard}
@@ -90,7 +90,7 @@ export default function Home({navigation}) {
     let filteredBikes2 = ShowBikes;
     if (value) {
       filteredBikes2 = Bikes.filter(bike => bike.Electrical === true);
-      
+
       setShowBikes(filteredBikes2);
     } else {
       setShowBikes(Bikes);
@@ -100,57 +100,51 @@ export default function Home({navigation}) {
     }
   };
 
-
   const snapPoints = useMemo(() => ['10%', '25%', '50%', '80%'], []);
 
- const handleSheetChanges = useCallback(
-   index => {
-     // Calculate the buttonTop value based on the bottom sheet's current index
-     let newButtonTop;
-     switch (index) {
-       case 0:
-         newButtonTop = 660; // Index 0 -> Top value of 660
-         break;
-       case 1:
-         newButtonTop = 540; // Index 1 -> Top value of 540
-         break;
-       case 2:
-         newButtonTop = 340; // Index 2 -> Top value of 340
-         break;
-       case 3:
-         newButtonTop = 100; // Index 3 -> Top value of 100
-         break;
-       default:
-         newButtonTop = buttonTop._value; // Default to the current buttonTop value
-         break;
-     }
+  const handleSheetChanges = useCallback(
+    index => {
+      // Calculate the buttonTop value based on the bottom sheet's current index
+      let newButtonTop;
+      switch (index) {
+        case 0:
+          newButtonTop = 660; // Index 0 -> Top value of 660
+          break;
+        case 1:
+          newButtonTop = 540; // Index 1 -> Top value of 540
+          break;
+        case 2:
+          newButtonTop = 340; // Index 2 -> Top value of 340
+          break;
+        case 3:
+          newButtonTop = 100; // Index 3 -> Top value of 100
+          break;
+        default:
+          newButtonTop = buttonTop._value; // Default to the current buttonTop value
+          break;
+      }
 
-     // Animate buttonTop to the new value
-     Animated.spring(buttonTop, {
-       toValue: newButtonTop,
-       useNativeDriver: false,
-     }).start();
-   },
-   [buttonTop],
- );
+      // Animate buttonTop to the new value
+      Animated.spring(buttonTop, {
+        toValue: newButtonTop,
+        useNativeDriver: false,
+      }).start();
+    },
+    [buttonTop],
+  );
 
- const [scrollPosition, setScrollPosition] = useState(0);
-  
+  const [scrollPosition, setScrollPosition] = useState(0);
 
- const handleScroll = (event) => {
-  const scrollY = event.nativeEvent.contentOffset.y;
-  // Update scroll position state
-  setScrollPosition(scrollY);
-};
-
-
-
+  const handleScroll = event => {
+    const scrollY = event.nativeEvent.contentOffset.y;
+    // Update scroll position state
+    setScrollPosition(scrollY);
+  };
 
   const delayedSearch = useMemo(
     () =>
       debounce(text => {
         handleAutoComplete(text);
-        
       }, 500),
     [],
   );
@@ -204,10 +198,6 @@ export default function Home({navigation}) {
     setResults([]);
   };
 
- 
-      
-       
-  
   const handleAutoComplete = useCallback(query => {
     if (query === null || query === undefined || query === '') {
       return;
@@ -227,7 +217,9 @@ export default function Home({navigation}) {
           const brandSegment = result.segments.find(
             segment => segment.type === 'brand' && segment.value,
           );
-          return brandSegment ? brandSegment.value : result.displayString || null;
+          return brandSegment
+            ? brandSegment.value
+            : result.displayString || null;
         });
         setResults(newSuggestions);
       })
@@ -236,38 +228,35 @@ export default function Home({navigation}) {
       });
   }, []);
 
-  const handleSearchSuggetions = useCallback(
-    async query => {
-      if (query === null || query === undefined || query === '') {
-        return;
-      }
-  
-      try {
-        
-        const response = await axios.get(
-          `https://api.tomtom.com/search/2/search/${encodeURIComponent(
-            query,
-          )}.json?key=${API_KEY}&language=en-US&limit=5&lat=${mapCenter.lat}&lon=${mapCenter.lng}&radius=5000`,
-        );
-  
-        const suggestions = response.data.results.map(result => ({
-          id: result.id,
-          text: result.address.freeformAddress,
-        }));
-        
-        console.log('Search Suggestions:', suggestions);
-  
-        setResults(suggestions);
-      } catch (error) {
-        console.error('Error fetching search suggestions:', error);
-      }
-    },
-    [],
-  );
-  
+  const handleSearchSuggetions = useCallback(async query => {
+    if (query === null || query === undefined || query === '') {
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `https://api.tomtom.com/search/2/search/${encodeURIComponent(
+          query,
+        )}.json?key=${API_KEY}&language=en-US&limit=5&lat=${
+          mapCenter.lat
+        }&lon=${mapCenter.lng}&radius=5000`,
+      );
+
+      const suggestions = response.data.results.map(result => ({
+        id: result.id,
+        text: result.address.freeformAddress,
+      }));
+
+      console.log('Search Suggestions:', suggestions);
+
+      setResults(suggestions);
+    } catch (error) {
+      console.error('Error fetching search suggestions:', error);
+    }
+  }, []);
 
   const handleStation = () => {
-   navigation.navigate('StationLocation');
+    navigation.navigate('StationLocation');
   };
 
   const webRef = useRef(null);
@@ -298,24 +287,23 @@ export default function Home({navigation}) {
     setMapCenter(event.nativeEvent.data);
   };
 
-    const animatedBorderRadius = useRef(new Animated.Value(0)).current;
+  const animatedBorderRadius = useRef(new Animated.Value(0)).current;
 
-    useEffect(() => {
-      const animateBorder = Animated.loop(
-        Animated.timing(animatedBorderRadius, {
-          toValue: 1,
-          duration: 1000, 
-          useNativeDriver: false, 
-        }),
-      );
+  useEffect(() => {
+    const animateBorder = Animated.loop(
+      Animated.timing(animatedBorderRadius, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: false,
+      }),
+    );
 
-      animateBorder.start();
+    animateBorder.start();
 
-      return () => {
-        animateBorder.stop();
-      };
-    }, [animatedBorderRadius]);
-   
+    return () => {
+      animateBorder.stop();
+    };
+  }, [animatedBorderRadius]);
 
   return (
     <View style={styles.container}>
@@ -357,11 +345,19 @@ export default function Home({navigation}) {
         onChange={handleSheetChanges}
         style={styles.bottomSheet}
         gestureEnabled={true}>
+        <View className='py-2 flex w-full items-center'>
+          <Text className='text-[#121212] text-3xl font-semibold'>Rent Bike With Us!</Text>
+          {/* <Text className="text-[#121212] text-3xl   font-semibold">
+            Rent <Text className="text-[#facc15]">Bike</Text> With{' '}
+            <Text className="text-[#facc15]">Us!</Text>
+          </Text> */}
+        </View>
         <LinearGradient
           colors={['white', '#e5e7eb']}
           style={styles.bottomSheetContent}>
           <View className="flex flex-row justify-between px-2 ">
-            <Text className="text-black font-semibold">Filter Vehicle</Text>
+            <Text className="text-[#121212] font-semibold">Filter Vehicle</Text>
+
             <Checkbox
               label="EV"
               value={isChecked}
@@ -397,7 +393,6 @@ export default function Home({navigation}) {
           contentContainerStyle={styles.bikeList}
           style={{height: '100%'}}
           onScroll={handleScroll}
-          
         />
       </BottomSheet>
 
@@ -447,7 +442,7 @@ export default function Home({navigation}) {
                       handleAutoComplete(item);
                     }}
                     className="flex flex-col border-black ">
-                    <Text className="text-black">{item}</Text>
+                    <Text className="text-[#121212]">{item}</Text>
                   </TouchableOpacity>
                   <Ionicans name="arrow-undo-outline" size={22} color="#000" />
                 </View>
@@ -549,7 +544,6 @@ const styles = StyleSheet.create({
   bikeList: {
     paddingHorizontal: 0,
     paddingBottom: 4,
-    
   },
   bikeCard: {
     backgroundColor: '#ffff',
@@ -557,7 +551,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     margin: 6,
-    marginBottom:20 ,
+    marginBottom: 20,
     height: 120,
     justifyContent: 'center',
     alignItems: 'center',

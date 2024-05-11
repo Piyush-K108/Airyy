@@ -7,6 +7,7 @@ c:\Airyy\android\app\build\outputs\apk\release\app-release.apk && npm start
 For App
 
 cd android && .\gradlew clean &&  gradlew assembleRelease && cd..
+cd android  &&  gradlew assembleRelease && cd..
 
 # Getting Started
 

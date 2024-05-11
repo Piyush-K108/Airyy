@@ -12,7 +12,6 @@ import EditEmail from '../Screens/Profile/EditEmail';
 import EditName from '../Screens/Profile/EditName';
 import UserProfile from '../Screens/Profile/UserProfile';
 import Bill from '../Screens/Bill';
-import Rateus from '../Screens/Rateus';
 import LeftModel from '../Components/LeftModel';
 import History from '../Screens/History';
 import BikeDetails from '../Screens/Booking/BikeDetails';
@@ -51,7 +50,7 @@ const CustomHeader = ({navigation, title, yellow = true}) => (
         size={22}
         className="font-bold"
       />
-      <Text className="text-center text-black font-extrabold">{title}</Text>
+      <Text className="text-center text-[#121212] font-extrabold">{title}</Text>
     </TouchableOpacity>
   </View>
 );

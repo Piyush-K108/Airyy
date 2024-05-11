@@ -40,7 +40,26 @@ const History = () => {
       const result = await axios.get(
         `https://${DOMAIN}/User/history/${phone2}`,
       );
-      setData(result.data.Data);
+      const formattedData = result.data.Data.map(item => {
+        // Parse rental_date and return_date as Date objects
+        const rentalDate = new Date(item.rental_date);
+        const returnDate = new Date(item.return_date);
+    
+        // Format the dates as dd--mm--yy
+        const formatOptions = { day: '2-digit', month: '2-digit', year: '2-digit' };
+        const formattedRentalDate = rentalDate.toLocaleDateString('en-GB', formatOptions).replace(/\//g, '/');
+        const formattedReturnDate = returnDate.toLocaleDateString('en-GB', formatOptions).replace(/\//g, '/');
+    
+        // Return the item with formatted dates
+        return {
+            ...item,
+            rental_date: formattedRentalDate,
+            return_date: formattedReturnDate
+        };
+    });
+    
+    setData(formattedData);
+      
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching schedule data:', error);

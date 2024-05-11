@@ -26,7 +26,7 @@ function BottomTabNavigation() {
         },
         tabBarStyle: {
           // backgroundColor: '#FDFEE7' light,
-          backgroundColor: '#FDFEE0',
+          backgroundColor: '#facc15',
           // backgroundColor: '#FBFCB4',
           position: 'absolute',
           bottom: 10,
