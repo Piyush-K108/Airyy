@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 
 const StationLocation = () => {
   
-
   // State to store user's current location and station location
   const [CUlocation, setCUlocation] = useState('');
   const location = useSelector(state => state.counter.location);
@@ -39,9 +38,11 @@ const StationLocation = () => {
     const data = await response.json();
     setCUlocation(data)  
   }
+
   useEffect(() => {
     handleLocation()
   }, [])
+
   const memoizedCUlocation = useMemo(() => CUlocation, [CUlocation]);
   
   return (
@@ -58,6 +59,7 @@ const StationLocation = () => {
             value={location}
             onChangeText={setCUlocation}
           /> */}
+          
         </View>
         <View className="flex border border-gray-200 flex-row items-center w-full px-4  py-2 rounded-xl">
           <Image source={Destination} className="w-[25px] h-[25px] mr-2" />

@@ -92,8 +92,8 @@ const Navigation = () => {
 const MainStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Bottom" component={BottomTabNavigation} />
+      <Stack.Screen name="Home" component={Home} />
 
       <Stack.Screen name="Home2" component={Home2} />
       <Stack.Screen name="OtpScreen" component={OtpScreen} />
